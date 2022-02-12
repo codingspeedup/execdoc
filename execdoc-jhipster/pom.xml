@@ -7,12 +7,12 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>2022-02-12.17-SNAPSHOT</version>
     </parent>
 
     <groupId>io.github.codingspeedup</groupId>
     <artifactId>execdoc-jhipster</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2022-02-12.17-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -35,7 +35,7 @@
         <dependency>
             <groupId>io.github.codingspeedup</groupId>
             <artifactId>execdoc-apps</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>2022-02-12.17-SNAPSHOT</version>
         </dependency>
 
         <dependency>

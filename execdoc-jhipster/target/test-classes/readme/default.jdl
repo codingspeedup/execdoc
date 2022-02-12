@@ -1,0 +1,62 @@
+application {
+  config {
+    baseName myApp,
+    applicationType gateway,
+    authenticationType jwt,
+    clientFramework react,
+    dtoSuffix DTO,
+    jhiPrefix jhi,
+    languages [en, fr],
+    nativeLanguage en,
+    packageName com.myapp,
+    prodDatabaseType mysql
+  }
+  entities *
+}
+
+application {
+  config {
+    baseName myApp1,
+    applicationType microservice,
+    authenticationType jwt,
+    dtoSuffix DTO,
+    jhiPrefix jhi,
+    languages [en, fr],
+    nativeLanguage en,
+    packageName com.myapp,
+    prodDatabaseType mysql
+  }
+  entities A, B
+}
+
+application {
+  config {
+    baseName myApp2,
+    applicationType microservice,
+    authenticationType jwt,
+    dtoSuffix DTO,
+    jhiPrefix jhi,
+    languages [en, fr],
+    nativeLanguage en,
+    packageName com.myapp,
+    prodDatabaseType mysql
+  }
+  entities C
+}
+
+
+entity A (A) {
+}
+
+entity B (B) {
+}
+
+entity C (C) {
+}
+
+entity D (D) {
+}
+
+relationship OneToMany {
+  A to B
+}

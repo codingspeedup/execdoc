@@ -10,12 +10,12 @@
         <version>2022-02-12.17-SNAPSHOT</version>
     </parent>
 
-    <artifactId>execdoc-core</artifactId>
+    <artifactId>execdoc-kb</artifactId>
     <version>2022-02-12.17-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>execdoc-core</name>
-    <description>Core functionality for building code mining and code generation utilities</description>
+    <name>execdoc-kb</name>
+    <description>Knowledge representation and operations module</description>
     <url>https://github.com/codingspeedup/execdoc</url>
 
     <licenses>
@@ -46,89 +46,6 @@
     </distributionManagement>
 
     <dependencies>
-
-        <dependency>
-            <groupId>io.github.codingspeedup</groupId>
-            <artifactId>execdoc-kb</artifactId>
-            <version>2022-02-12.17-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.tika</groupId>
-            <artifactId>tika-core</artifactId>
-            <version>${tika.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-full</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jgrapht</groupId>
-            <artifactId>jgrapht-core</artifactId>
-            <version>${jgrapht.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.openhtmltopdf</groupId>
-            <artifactId>openhtmltopdf-pdfbox</artifactId>
-            <version>${openhtmltopdf.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.dom4j</groupId>
-            <artifactId>dom4j</artifactId>
-            <version>${dom4j.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>${json.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.github.javaparser</groupId>
-            <artifactId>javaparser-symbol-solver-core</artifactId>
-            <version>${javaparser.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.github.java-diff-utils</groupId>
-            <artifactId>java-diff-utils</artifactId>
-            <version>${java-diff-utils.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>net.sourceforge.plantuml</groupId>
-            <artifactId>plantuml</artifactId>
-            <version>${plantuml.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.thymeleaf</groupId>
-            <artifactId>thymeleaf</artifactId>
-            <version>${thymeleaf.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.devskiller.friendly-id</groupId>
-            <artifactId>friendly-id</artifactId>
-            <version>${friendly-id.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>it.unibo.tuprolog</groupId>
-            <artifactId>ide-plp</artifactId>
-            <version>${tuprolog.version}</version>
-        </dependency>
 
     </dependencies>
 
@@ -251,5 +168,6 @@
             </plugins>
         </pluginManagement>
     </build>
+
 
 </project>

@@ -13,6 +13,7 @@
         <module name="execdoc-jhipster" />
         <module name="execdoc-core" />
         <module name="execdoc-apps" />
+        <module name="execdoc-kb" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

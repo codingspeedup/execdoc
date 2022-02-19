@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.kb;
 
+import io.github.codingspeedup.execdoc.kb.BpKb;
 import it.unibo.tuprolog.core.Clause;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;

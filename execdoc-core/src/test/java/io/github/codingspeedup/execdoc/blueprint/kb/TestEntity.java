@@ -1,6 +1,7 @@
 package io.github.codingspeedup.execdoc.blueprint.kb;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.tuple.Pair;
@@ -9,7 +10,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.*;
 
 @KbFunctor
-public class TestEntity implements BpEntity {
+public class TestEntity implements KbConcept {
 
     @Getter
     @KbFunctor(T1 = String.class)

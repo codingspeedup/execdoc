@@ -1,11 +1,11 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.data.BpRelationalTable;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpSheet;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.data.BpRelationalTable;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,16 +19,16 @@ import java.util.List;
 public class JdlEntity extends BpEntityCell implements BpRelationalTable {
 
     @Getter
-    @KbFunctor(value = KbNames.ITEM_UNIT_FUNCTOR, T1 = JdlField.class)
+    @KbFunctor(value = BpNames.ITEM_UNIT_FUNCTOR, T1 = JdlField.class)
     private final List<JdlField> itemUnit = new ArrayList<>();
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     @Getter
-    @KbFunctor(KbNames.OWNER_FUNCTOR)
+    @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
     public JdlEntity(Cell cell) {
@@ -36,7 +36,7 @@ public class JdlEntity extends BpEntityCell implements BpRelationalTable {
     }
 
     @Override
-    public void setOwner(BpEntity owner) {
+    public void setOwner(KbConcept owner) {
         this.owner = (BpSheet) owner;
     }
 

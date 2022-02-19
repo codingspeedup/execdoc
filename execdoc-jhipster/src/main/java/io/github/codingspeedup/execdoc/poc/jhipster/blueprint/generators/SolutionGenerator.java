@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.generators;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterBlueprint;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;

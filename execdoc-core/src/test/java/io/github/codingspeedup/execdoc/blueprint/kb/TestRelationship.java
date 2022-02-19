@@ -1,6 +1,7 @@
 package io.github.codingspeedup.execdoc.blueprint.kb;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpRelationship;
+import io.github.codingspeedup.execdoc.kb.vocabulary.BpRelationship;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 

@@ -1,8 +1,9 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.structure.BpSubsystem;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.structure.BpSubsystem;
+import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.JdlNames;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,7 +32,7 @@ public class JdlApplication implements BpSubsystem {
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     public JdlApplication(AppSheet appSheet) {

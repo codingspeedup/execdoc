@@ -1,11 +1,11 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbResult;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.code.BpItemUnit;
+import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.kb.KbResult;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpItemUnit;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.JdlNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnum;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlFieldType;
@@ -26,7 +26,7 @@ public class JdlField extends BpEntityCell implements BpItemUnit {
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     @Getter
@@ -35,7 +35,7 @@ public class JdlField extends BpEntityCell implements BpItemUnit {
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.KEY_FUNCTOR)
+    @KbFunctor(BpNames.KEY_FUNCTOR)
     private Boolean primaryKey;
 
     @Getter
@@ -71,14 +71,14 @@ public class JdlField extends BpEntityCell implements BpItemUnit {
     public void kbStore(BpKb bpKb) {
         super.kbStore(bpKb);
         if (type != null) {
-            bpKb.learn(KbNames.TYPE_FUNCTOR, getKbId(), type.getKbId());
+            bpKb.learn(BpNames.TYPE_FUNCTOR, getKbId(), type.getKbId());
         }
     }
 
     @Override
     public void kbRetrieve(BpKb bpKb) {
         super.kbRetrieve(bpKb);
-        KbResult result = bpKb.solveOnce(KbNames.TYPE_FUNCTOR, getKbId(), "X");
+        KbResult result = bpKb.solveOnce(BpNames.TYPE_FUNCTOR, getKbId(), "X");
         List<Term[]> substitutions = result.getSubstitutions();
         if (CollectionUtils.isNotEmpty(substitutions)) {
             String typeId = KbResult.asString(substitutions.get(0)[0]);

@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellStyles;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.SheetNameComparator;
@@ -188,7 +188,7 @@ public abstract class BlueprintMaster extends XlsxDocument {
                     }
                     Class<? extends BlueprintSheet> sheetClass = entry.getValue();
                     try {
-                        modelSheets.put(sheetName, ConstructorUtils.invokeConstructor(sheetClass, new Object[]{this, sheet}));
+                        modelSheets.put(sheetName, (BlueprintSheet) ConstructorUtils.invokeConstructor(sheetClass, new Object[]{this, sheet}));
                     } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
                         System.err.println("There was an error reading sheet " + sheetName + " " + e.getMessage());
                     }

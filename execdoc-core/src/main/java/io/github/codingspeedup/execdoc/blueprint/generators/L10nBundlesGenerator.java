@@ -1,8 +1,8 @@
 package io.github.codingspeedup.execdoc.blueprint.generators;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.ui.BpL10nLabel;
+import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.ui.BpL10nLabel;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -47,6 +47,12 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>it.unibo.tuprolog</groupId>
+            <artifactId>ide-plp</artifactId>
+            <version>${tuprolog.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

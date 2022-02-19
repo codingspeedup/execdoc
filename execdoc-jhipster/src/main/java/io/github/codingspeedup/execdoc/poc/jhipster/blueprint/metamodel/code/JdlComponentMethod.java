@@ -1,9 +1,9 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.code.BpMethodUnit;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpMethodUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,7 +15,7 @@ public abstract class JdlComponentMethod extends BpEntityCell implements BpMetho
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     public JdlComponentMethod(Cell cell) {

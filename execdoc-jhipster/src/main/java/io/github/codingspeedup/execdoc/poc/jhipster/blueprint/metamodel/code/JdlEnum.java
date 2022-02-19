@@ -1,12 +1,12 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.code.BpEnumeratedType;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpSheet;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.blueprint.kb.IsOwned;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpEnumeratedType;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -20,16 +20,16 @@ import java.util.List;
 public class JdlEnum extends BpEntityCell implements BpEnumeratedType, IsOwned, JdlFieldType {
 
     @Getter
-    @KbFunctor(value = KbNames.VALUE_FUNCTOR, T1 = JdlEnumEntry.class)
+    @KbFunctor(value = BpNames.VALUE_FUNCTOR, T1 = JdlEnumEntry.class)
     private final List<JdlEnumEntry> value = new ArrayList<>();
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     @Getter
-    @KbFunctor(KbNames.OWNER_FUNCTOR)
+    @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
     public JdlEnum(Cell cell) {
@@ -41,7 +41,7 @@ public class JdlEnum extends BpEntityCell implements BpEnumeratedType, IsOwned, 
     }
 
     @Override
-    public void setOwner(BpEntity owner) {
+    public void setOwner(KbConcept owner) {
         this.owner = (BpSheet) owner;
     }
 

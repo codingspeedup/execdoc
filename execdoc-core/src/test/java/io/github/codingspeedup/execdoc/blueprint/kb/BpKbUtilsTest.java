@@ -1,8 +1,9 @@
 package io.github.codingspeedup.execdoc.blueprint.kb;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpElement;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpRelationship;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.BpRelationship;
+import io.github.codingspeedup.execdoc.kb.BpKbUtils;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxDocument;
 import it.unibo.tuprolog.core.Clause;
 import it.unibo.tuprolog.core.Struct;
@@ -26,7 +27,7 @@ class BpKbUtilsTest {
     @Test
     void ensureKbId() {
         assertThrows(NullPointerException.class, () -> BpKbUtils.ensureKbId(null));
-        BpElement bpElt = new BpElement() {
+        KbElement bpElt = new KbElement() {
             @Getter
             @Setter
             private String kbId;
@@ -61,7 +62,7 @@ class BpKbUtilsTest {
         clauses = BpKbUtils.parseClauses(BpRelationship.class, "(", 12, ",", "twelve", ")");
         assertEquals(1, clauses.size());
 
-        clauses = BpKbUtils.parseClauses(BpEntity.class, "(bar)");
+        clauses = BpKbUtils.parseClauses(KbConcept.class, "(bar)");
         assertEquals(1, clauses.size());
 
         assertThrows(UnsupportedOperationException.class, () -> BpKbUtils.parseClauses(Object.class, "(", new String[]{"abc"}, ",", Collections.emptyMap(), ")"));
@@ -74,7 +75,7 @@ class BpKbUtilsTest {
         assertThrows(UnsupportedOperationException.class, () -> BpKbUtils.parseStruct("hello(world)", "\n.", "foo(bar)"));
         assertThrows(UnsupportedOperationException.class, () -> BpKbUtils.parseStruct("hello(world) :- foo(bar)"));
         assertEquals("foo", BpKbUtils.parseStruct("foo").toString());
-        assertEquals("'BpEntity'(bar)", BpKbUtils.parseStruct(BpEntity.class, "(bar)").toString());
+        assertEquals("'BpEntity'(bar)", BpKbUtils.parseStruct(KbConcept.class, "(bar)").toString());
     }
 
     @Test
@@ -84,7 +85,7 @@ class BpKbUtilsTest {
         structVar = BpKbUtils.structOf(true, "foo");
         assertEquals("foo", structVar.getLeft().toString());
 
-        structVar = BpKbUtils.structOf(true,BpEntity.class);
+        structVar = BpKbUtils.structOf(true, KbConcept.class);
         assertEquals("'BpEntity'", structVar.getLeft().toString());
 
         structVar = BpKbUtils.structOf(true,"foo", null);
@@ -155,7 +156,7 @@ class BpKbUtilsTest {
 
     @Test
     void structOf_element() {
-        BpElement bpElt = new BpElement() {
+        KbElement bpElt = new KbElement() {
             @Getter
             @Setter
             private String kbId;

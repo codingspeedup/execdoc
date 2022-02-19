@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellComment;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;

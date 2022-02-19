@@ -60,17 +60,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml-full</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.jgrapht</groupId>
             <artifactId>jgrapht-core</artifactId>
             <version>${jgrapht.version}</version>
@@ -116,18 +105,6 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.devskiller.friendly-id</groupId>
-            <artifactId>friendly-id</artifactId>
-            <version>${friendly-id.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>it.unibo.tuprolog</groupId>
-            <artifactId>ide-plp</artifactId>
-            <version>${tuprolog.version}</version>
         </dependency>
 
     </dependencies>

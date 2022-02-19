@@ -1,8 +1,9 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.kb.KbNames;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,9 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlValue implements BpEntity {
+public class JdlValue implements KbConcept {
 
-    @KbFunctor(value = KbNames.VALUE_FUNCTOR, T1 = String.class)
+    @KbFunctor(value = BpNames.VALUE_FUNCTOR, T1 = String.class)
     private final List<String> value = new ArrayList<>();
 
     @Getter

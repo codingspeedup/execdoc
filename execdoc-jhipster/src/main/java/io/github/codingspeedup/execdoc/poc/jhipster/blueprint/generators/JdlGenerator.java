@@ -1,9 +1,10 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.generators;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.blueprint.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbResult;
+import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.kb.KbNames;
+import io.github.codingspeedup.execdoc.kb.KbResult;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlDto;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnum;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnumEntry;
@@ -160,7 +161,7 @@ public class JdlGenerator {
 
             KbResult dtoResult = bpKb.solve(false,
                     StringUtility.simpleQuote(KbNames.getFunctor(JdlDto.class)), "(X),",
-                    KbNames.NAME_FUNCTOR, "(X, ", StringUtility.simpleQuote(jdlEntity.getName()), ")");
+                    BpNames.NAME_FUNCTOR, "(X, ", StringUtility.simpleQuote(jdlEntity.getName()), ")");
             if (!dtoResult.getYes().isEmpty()) {
                 jdl.append("\n@dto(mapstruct)");
             }
@@ -235,7 +236,7 @@ public class JdlGenerator {
                         appendAnnotation(jdl, bol, entry);
                     } else if (OPT_PAGINATE.equals(entry.getKey()) && Arrays.asList("pagination", "infinite-scroll").contains(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);
-                    } else if (OPT_SEARCH.equals(entry.getKey()) && Arrays.asList("elasticsearch").contains(entry.getValue())) {
+                    } else if (OPT_SEARCH.equals(entry.getKey()) && List.of("elasticsearch").contains(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);
                     } else if (OPT_ANGULAR_SUFFIX.equals(entry.getKey()) && StringUtils.isNotBlank(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);
@@ -313,7 +314,7 @@ public class JdlGenerator {
             entity = bpKb.solveEntity(JdlEntity.class, kbId);
         } else if (functors.contains(KbNames.getFunctor(JdlField.class))) {
             field = bpKb.solveEntity(JdlField.class, kbId);
-            List<Term[]> subst = bpKb.solveOnce(KbNames.ITEM_UNIT_FUNCTOR, X, Var.anonymous(), kbId).getSubstitutions();
+            List<Term[]> subst = bpKb.solveOnce(BpNames.ITEM_UNIT_FUNCTOR, X, Var.anonymous(), kbId).getSubstitutions();
             entity = bpKb.solveEntity(JdlEntity.class, KbResult.asString(subst.get(0)[0]));
         }
         return Pair.of(entity, field);

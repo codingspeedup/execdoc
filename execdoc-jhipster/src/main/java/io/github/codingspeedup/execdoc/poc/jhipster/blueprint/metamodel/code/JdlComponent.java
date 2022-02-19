@@ -1,12 +1,12 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.KbNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.ontology.BpSheet;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.BpEntity;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.kb.taxonomy.code.BpClassUnit;
+import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
+import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.blueprint.kb.IsOwned;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpClassUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,11 +18,11 @@ public abstract class JdlComponent extends BpEntityCell implements BpClassUnit, 
 
     @Getter
     @Setter
-    @KbFunctor(KbNames.NAME_FUNCTOR)
+    @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
     @Getter
-    @KbFunctor(KbNames.OWNER_FUNCTOR)
+    @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
     public JdlComponent(Cell cell) {
@@ -30,7 +30,7 @@ public abstract class JdlComponent extends BpEntityCell implements BpClassUnit, 
     }
 
     @Override
-    public void setOwner(BpEntity owner) {
+    public void setOwner(KbConcept owner) {
         this.owner = (BpSheet) owner;
     }
 

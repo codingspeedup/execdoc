@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpMethodUnit;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.BpMethodUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

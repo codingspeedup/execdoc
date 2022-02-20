@@ -6,7 +6,7 @@ import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
 import io.github.codingspeedup.execdoc.blueprint.kb.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpClassUnit;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.BpClassUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

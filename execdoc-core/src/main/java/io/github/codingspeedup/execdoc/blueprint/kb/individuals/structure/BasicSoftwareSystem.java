@@ -2,7 +2,7 @@ package io.github.codingspeedup.execdoc.blueprint.kb.individuals.structure;
 
 import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.structure.BpSoftwareSystem;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.structure.BpSoftwareSystem;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

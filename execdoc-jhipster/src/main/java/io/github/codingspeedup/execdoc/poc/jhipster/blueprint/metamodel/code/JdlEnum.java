@@ -4,7 +4,7 @@ import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
 import io.github.codingspeedup.execdoc.blueprint.kb.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.BpEnumeratedType;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.BpEnumeratedType;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
 import lombok.Getter;

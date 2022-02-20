@@ -4,7 +4,7 @@ import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
 import io.github.codingspeedup.execdoc.blueprint.kb.IsNamed;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.ui.BpAbstractUiElement;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.ui.BpAbstractUiElement;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

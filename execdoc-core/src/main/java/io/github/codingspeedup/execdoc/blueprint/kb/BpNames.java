@@ -14,7 +14,4 @@ public class BpNames {
     public static final String TYPE_FUNCTOR = "bpType";
     public static final String VALUE_FUNCTOR = "bpValue";
 
-
-
-
 }

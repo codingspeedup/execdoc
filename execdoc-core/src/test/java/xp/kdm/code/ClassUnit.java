@@ -1,6 +1,6 @@
 package xp.kdm.code;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.code.ExportKind;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.ExportKind;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

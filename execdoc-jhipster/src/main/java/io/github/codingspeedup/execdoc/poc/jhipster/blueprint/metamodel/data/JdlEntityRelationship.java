@@ -1,9 +1,8 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data;
 
-import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpRelationshipCell;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.data.BpDataRelationship;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.relations.data.BpDataRelationship;
 import io.github.codingspeedup.execdoc.blueprint.master.SemanticTriple;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;

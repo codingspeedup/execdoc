@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data;
 import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.data.BpRelationalTable;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.data.BpRelationalTable;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpEntityCell;
 import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
 import lombok.Getter;

@@ -2,7 +2,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structu
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.structure.BpSubsystem;
+import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.structure.BpSubsystem;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.JdlNames;
 import lombok.Getter;

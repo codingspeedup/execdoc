@@ -1,22 +1,40 @@
 package io.github.codingspeedup.execdoc.kb.vocabulary;
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
 
 @KbFunctor
-public interface BpRelationship extends KbElement {
+public class BpRelationship extends KbRelation {
 
-    String getFrom();
+    public BpRelationship() {
+        super(null, new String[2]);
+    }
 
-    void setFrom(String kbId);
+    public BpRelationship(String kbId, String fromKbId, String toKbId) {
+        super(kbId, fromKbId, toKbId);
+    }
 
-    String getTo();
+    public String getFrom() {
+        return getMembers()[0];
+    }
 
-    void setTo(String kbId);
+    public void setFrom(String kbId) {
+        getMembers()[0] = kbId;
+    }
 
-    default void setFrom(KbConcept entity) { setFrom(entity.getKbId()); }
+    public void setFrom(KbConcept entity) {
+        setFrom(entity.getKbId());
+    }
 
-    default void setTo(KbConcept entity) { setTo(entity.getKbId()); }
+    public String getTo() {
+        return getMembers()[1];
+    }
+
+    public void setTo(String kbId) {
+        getMembers()[1] = kbId;
+    }
+
+    public void setTo(KbConcept entity) {
+        setTo(entity.getKbId());
+    }
 
 }

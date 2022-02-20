@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.individuals.ui.BpL10nLabel;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.BpL10nLabel;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;

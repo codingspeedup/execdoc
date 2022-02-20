@@ -2,9 +2,9 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.AbstractMethodsSheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlController;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlController;
 import org.apache.poi.ss.usermodel.Sheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlControllerMethod;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlControllerMethod;
 
 public class ControllerMethodsSheet extends AbstractMethodsSheet<JdlController, JdlControllerMethod> {
 

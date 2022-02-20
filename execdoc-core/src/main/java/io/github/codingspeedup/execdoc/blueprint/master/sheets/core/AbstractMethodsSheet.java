@@ -1,10 +1,10 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
-import io.github.codingspeedup.execdoc.blueprint.kb.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.BpClassUnit;
-import io.github.codingspeedup.execdoc.blueprint.kb.vocabulary.concepts.code.BpMethodUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpClassUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpMethodUnit;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;

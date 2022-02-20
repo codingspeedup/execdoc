@@ -10,10 +10,10 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>execdoc-kb</module>
         <module>execdoc-core</module>
         <module>execdoc-apps</module>
         <module>execdoc-jhipster</module>
-        <module>execdoc-kb</module>
     </modules>
 
     <properties>

@@ -1,11 +1,11 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterSheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlDto;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlDto;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;

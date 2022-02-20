@@ -2,12 +2,11 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.kb.KbNames;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure.JdlApplication;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure.JdlValue;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;

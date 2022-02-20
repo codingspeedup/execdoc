@@ -2,18 +2,18 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.generators;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.kb.KbResult;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlDto;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnum;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnumEntry;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlFieldType;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlEntity;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlEntityRelationship;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlField;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure.JdlApplication;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.structure.JdlValue;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlDto;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlEnum;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlEnumEntry;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlEntity;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelationship;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlField;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets.EntitySheet;
 import io.github.codingspeedup.execdoc.toolbox.utilities.NumberUtility;
 import io.github.codingspeedup.execdoc.toolbox.utilities.StringUtility;
@@ -236,7 +236,7 @@ public class JdlGenerator {
                         appendAnnotation(jdl, bol, entry);
                     } else if (OPT_PAGINATE.equals(entry.getKey()) && Arrays.asList("pagination", "infinite-scroll").contains(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);
-                    } else if (OPT_SEARCH.equals(entry.getKey()) && List.of("elasticsearch").contains(entry.getValue())) {
+                    } else if (OPT_SEARCH.equals(entry.getKey()) && Arrays.asList("elasticsearch").contains(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);
                     } else if (OPT_ANGULAR_SUFFIX.equals(entry.getKey()) && StringUtils.isNotBlank(entry.getValue())) {
                         appendAnnotation(jdl, bol, entry);

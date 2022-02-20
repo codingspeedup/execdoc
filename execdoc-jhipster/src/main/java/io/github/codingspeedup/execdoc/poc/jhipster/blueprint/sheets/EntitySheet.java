@@ -2,8 +2,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.kb.BpNames;
-import io.github.codingspeedup.execdoc.blueprint.kb.individuals.BpSheet;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.SemanticTriple;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellComment;
@@ -25,12 +24,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellAddress;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterSheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlEnum;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlFieldType;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlType;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlEntity;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlEntityRelationship;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.data.JdlField;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlEnum;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlType;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlEntity;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelationship;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlField;
 
 import java.math.BigDecimal;
 import java.util.*;

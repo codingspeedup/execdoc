@@ -2,8 +2,8 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.AbstractMethodsSheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlService;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.code.JdlServiceMethod;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlService;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlServiceMethod;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class ServiceMethodsSheet extends AbstractMethodsSheet<JdlService, JdlServiceMethod> {

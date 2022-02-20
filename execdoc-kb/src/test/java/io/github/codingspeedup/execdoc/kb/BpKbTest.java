@@ -1,6 +1,5 @@
 package io.github.codingspeedup.execdoc.kb;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
 import it.unibo.tuprolog.core.Clause;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
@@ -32,7 +31,7 @@ class BpKbTest {
 
     @Test
     void learn_entity() {
-        TestEntity exEnt = new TestEntity();
+        TestConcept exEnt = new TestConcept();
         exEnt.setSelfReference(exEnt);
         exEnt.setDescription("Lorem ipsum");
 
@@ -66,18 +65,18 @@ class BpKbTest {
         exEnt.setNonFinalMap(new TreeMap<>());
         exEnt.getNonFinalMap().put("foo", "bar");
 
-        TestEntity exEnt2 = new TestEntity();
+        TestConcept exEnt2 = new TestConcept();
         exEnt.setOtherReference(exEnt2);
         exEnt2.setOtherReference(exEnt);
 
         String exId = kb.learn(exEnt);
         String exId2 = kb.learn(exEnt2);
-        Set<String> entIds = kb.solveEntities(TestEntity.class);
+        Set<String> entIds = kb.solveConcepts(TestConcept.class);
         assertTrue(entIds.contains(exId));
         assertTrue(entIds.contains(exId2));
 
-        TestEntity acEnt = kb.solveEntity(TestEntity.class, exId);
-        TestEntity acEnt2 = kb.solveEntity(TestEntity.class, exId2);
+        TestConcept acEnt = kb.solveConcept(TestConcept.class, exId);
+        TestConcept acEnt2 = kb.solveConcept(TestConcept.class, exId2);
 
         assertEquals(exId, acEnt.getKbId());
         assertEquals(exId, acEnt.getSelfReference().getKbId());
@@ -114,14 +113,14 @@ class BpKbTest {
 
     @Test
     void learn_relationship() {
-        TestRelationship exRel = new TestRelationship();
-        exRel.setFrom(kb.learn(new TestEntity()));
-        exRel.setTo(kb.learn(new TestEntity()));
+        TestRelation exRel = new TestRelation();
+        exRel.setFrom(kb.learn(new TestConcept()));
+        exRel.setTo(kb.learn(new TestConcept()));
         exRel.setDescription("Lorem ipsum...");
         String exId = kb.learn(exRel);
-        assertTrue(kb.solveRelationships(TestRelationship.class).stream().map(Triple::getLeft).collect(Collectors.toSet()).contains(exId));
+        assertTrue(kb.solveRelation(TestRelation.class).stream().map(Triple::getLeft).collect(Collectors.toSet()).contains(exId));
 
-        TestRelationship acRel = kb.solveRelationship(TestRelationship.class, exId);
+        TestRelation acRel = kb.solveRelation(TestRelation.class, exId);
         assertEquals(exRel.getFrom(), acRel.getFrom());
         assertEquals(exRel.getTo(), acRel.getTo());
         assertEquals(exRel.getDescription(), acRel.getDescription());

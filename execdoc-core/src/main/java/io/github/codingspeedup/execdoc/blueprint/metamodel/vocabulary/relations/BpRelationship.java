@@ -1,12 +1,14 @@
-package io.github.codingspeedup.execdoc.kb.vocabulary;
+package io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.relations;
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.relations.KbRelation2;
 
 @KbFunctor
-public class BpRelationship extends KbRelation {
+public class BpRelationship extends KbRelation2 {
 
     public BpRelationship() {
-        super(null, new String[2]);
+        super();
     }
 
     public BpRelationship(String kbId, String fromKbId, String toKbId) {
@@ -14,11 +16,11 @@ public class BpRelationship extends KbRelation {
     }
 
     public String getFrom() {
-        return getMembers()[0];
+        return getMember(0);
     }
 
     public void setFrom(String kbId) {
-        getMembers()[0] = kbId;
+        setMember(0, kbId);
     }
 
     public void setFrom(KbConcept entity) {
@@ -26,11 +28,11 @@ public class BpRelationship extends KbRelation {
     }
 
     public String getTo() {
-        return getMembers()[1];
+        return getMember(1);
     }
 
     public void setTo(String kbId) {
-        getMembers()[1] = kbId;
+        setMember(1, kbId);
     }
 
     public void setTo(KbConcept entity) {

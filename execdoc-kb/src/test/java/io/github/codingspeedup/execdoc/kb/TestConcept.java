@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.kb;
 
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.tuple.Pair;
@@ -9,7 +9,7 @@ import org.apache.commons.lang3.tuple.Triple;
 import java.util.*;
 
 @KbFunctor
-public class TestEntity implements KbConcept {
+public class TestConcept implements KbConcept {
 
     @Getter
     @KbFunctor(T1 = String.class)
@@ -30,12 +30,12 @@ public class TestEntity implements KbConcept {
     @Getter
     @Setter
     @KbFunctor("self")
-    private TestEntity selfReference;
+    private TestConcept selfReference;
 
     @Getter
     @Setter
     @KbFunctor("other")
-    private TestEntity otherReference;
+    private TestConcept otherReference;
 
     @Getter
     @Setter

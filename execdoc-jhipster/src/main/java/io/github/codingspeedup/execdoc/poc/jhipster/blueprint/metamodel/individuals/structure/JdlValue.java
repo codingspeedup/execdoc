@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbNames;
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

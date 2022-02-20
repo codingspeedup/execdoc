@@ -85,7 +85,7 @@ public class JdlField extends BpEntityCell implements BpItemUnit {
             if (typeId.startsWith(JdlType.PREFIX)) {
                 type = new JdlType(typeId.substring(JdlType.PREFIX.length()));
             } else {
-                type = bpKb.solveEntity(JdlEnum.class, typeId);
+                type = bpKb.solveConcept(JdlEnum.class, typeId);
             }
         }
     }

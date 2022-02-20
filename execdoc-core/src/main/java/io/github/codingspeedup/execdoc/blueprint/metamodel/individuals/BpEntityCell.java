@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.blueprint.metamodel.individuals;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

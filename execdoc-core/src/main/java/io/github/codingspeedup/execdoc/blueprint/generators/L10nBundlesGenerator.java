@@ -18,8 +18,8 @@ public class L10nBundlesGenerator {
 
     public Map<String, Properties> getLabels() {
         Map<String, Properties> translations = new HashMap<>();
-        for (String labelId : bpKb.solveEntities(BpL10nLabel.class)) {
-            BpL10nLabel l10nLabel = bpKb.solveEntity(BpL10nLabel.class, labelId);
+        for (String labelId : bpKb.solveConcepts(BpL10nLabel.class)) {
+            BpL10nLabel l10nLabel = bpKb.solveConcept(BpL10nLabel.class, labelId);
             for (Map.Entry<String, String> l10n : l10nLabel.getL10n().entrySet()) {
                 Properties translation = translations.computeIfAbsent(l10n.getKey(), lang -> new Properties());
                 translation.put(l10nLabel.getName(), l10n.getValue());

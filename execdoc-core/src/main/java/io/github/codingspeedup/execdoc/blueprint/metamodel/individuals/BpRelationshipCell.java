@@ -4,7 +4,7 @@ import io.github.codingspeedup.execdoc.blueprint.metamodel.BpCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.KbNames;
-import io.github.codingspeedup.execdoc.kb.vocabulary.BpRelationship;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.relations.BpRelationship;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

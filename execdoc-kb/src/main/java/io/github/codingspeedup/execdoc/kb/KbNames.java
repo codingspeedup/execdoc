@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.kb;
 
 import com.google.common.base.CaseFormat;
-import io.github.codingspeedup.execdoc.kb.vocabulary.BpRelationship;
+import io.github.codingspeedup.execdoc.kb.vocabulary.relations.KbRelation;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,7 +32,7 @@ public class KbNames {
             String valueName = functorAnnotation.value();
             if (StringUtils.isBlank(valueName)) {
                 functor = typePredicate.getSimpleName();
-                if (BpRelationship.class.isAssignableFrom(typePredicate)) {
+                if (KbRelation.class.isAssignableFrom(typePredicate)) {
                     functor = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, functor);
                 }
             } else {

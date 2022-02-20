@@ -1,7 +1,6 @@
 package io.github.codingspeedup.execdoc.kb;
 
-import io.github.codingspeedup.execdoc.kb.vocabulary.BpRelationship;
-import io.github.codingspeedup.execdoc.kb.vocabulary.KbConcept;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
 import it.unibo.tuprolog.core.Clause;
 import it.unibo.tuprolog.core.Struct;
@@ -58,7 +57,7 @@ class BpKbUtilsTest {
         clauses = BpKbUtils.parseClauses("hello(world)", "\n.", "foo(bar)", ".");
         assertEquals(2, clauses.size());
 
-        clauses = BpKbUtils.parseClauses(BpRelationship.class, "(", 12, ",", "twelve", ")");
+        clauses = BpKbUtils.parseClauses(TestRelation.class, "(", 12, ",", "twelve", ")");
         assertEquals(1, clauses.size());
 
         clauses = BpKbUtils.parseClauses(KbConcept.class, "(bar)");

@@ -3,8 +3,8 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.data.BpRelationalTable;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.data.CRelationalTable;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlEntity extends BpEntityCell implements BpRelationalTable {
+public class JdlEntity extends BpConceptCell implements CRelationalTable {
 
     @Getter
     @KbFunctor(value = BpNames.ITEM_UNIT_FUNCTOR, T1 = JdlField.class)

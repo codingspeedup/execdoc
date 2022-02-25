@@ -2,8 +2,8 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpValue;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CValue;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlEnumEntry extends BpEntityCell implements BpValue {
+public class JdlEnumEntry extends BpConceptCell implements CValue {
 
     @Getter
     @Setter

@@ -4,8 +4,8 @@ import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbResult;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpItemUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CItemUnit;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.JdlNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlEnum;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlField extends BpEntityCell implements BpItemUnit {
+public class JdlField extends BpConceptCell implements CItemUnit {
 
     @Getter
     @Setter

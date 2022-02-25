@@ -4,8 +4,8 @@ import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpEnumeratedType;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CEnumeratedType;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
 import lombok.Getter;
@@ -18,7 +18,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlEnum extends BpEntityCell implements BpEnumeratedType, IsOwned, JdlFieldType {
+public class JdlEnum extends BpConceptCell implements CEnumeratedType, IsOwned, JdlFieldType {
 
     @Getter
     @KbFunctor(value = BpNames.VALUE_FUNCTOR, T1 = JdlEnumEntry.class)

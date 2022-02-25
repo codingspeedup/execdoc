@@ -28,7 +28,7 @@ import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individu
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlType;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlEntity;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelationship;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlField;
 
 import java.math.BigDecimal;
@@ -55,7 +55,7 @@ public class EntitySheet extends JHipsterSheet {
     public static final String ATTRIBUTE_CLASS_NAME = "class-name";
     public static final String ATTRIBUTE_MEMBER_NAME = "member-name";
 
-    public static final Set<String> ENTITY_RELATIONSHIPS = Stream.of(JdlEntityRelationship.ENTITY_RELATIONSHIPS).map(KbNames::getFunctor).collect(Collectors.toSet());
+    public static final Set<String> ENTITY_RELATIONSHIPS = Stream.of(JdlEntityRelation.ENTITY_RELATIONSHIPS).map(KbNames::getFunctor).collect(Collectors.toSet());
 
     public static final String OPT_ANGULAR_SUFFIX = "angularSuffix";
     public static final String OPT_CLIENT_ROOT_FOLDER = "clientRootFolder";
@@ -219,7 +219,7 @@ public class EntitySheet extends JHipsterSheet {
                     if (CollectionUtils.isEmpty(triple.getSubject())) {
                         triple.setSubject(nameCell);
                     }
-                    bpKb.learn(JdlEntityRelationship.from(triple));
+                    bpKb.learn(JdlEntityRelation.from(triple));
                 }
             }
         }

@@ -2,8 +2,8 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpMethodUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CMethodUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public abstract class JdlComponentMethod extends BpEntityCell implements BpMethodUnit {
+public abstract class JdlComponentMethod extends BpConceptCell implements CMethodUnit {
 
     @Getter
     @Setter

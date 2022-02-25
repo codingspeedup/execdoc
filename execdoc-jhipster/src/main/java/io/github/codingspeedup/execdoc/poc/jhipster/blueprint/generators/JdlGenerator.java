@@ -10,7 +10,7 @@ import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individu
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlEnumEntry;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlEntity;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelationship;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.data.JdlField;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
@@ -187,11 +187,11 @@ public class JdlGenerator {
     }
 
     private void appendRelationships(StringBuilder jdl) {
-        for (Triple<String, String, String> relId : bpKb.solveRelation(JdlEntityRelationship.class)) {
+        for (Triple<String, String, String> relId : bpKb.solveRelation(JdlEntityRelation.class)) {
             for (String relName : bpKb.findFunctors(relId.getLeft())) {
-                for (Class<? extends JdlEntityRelationship> relType : JdlEntityRelationship.ENTITY_RELATIONSHIPS) {
+                for (Class<? extends JdlEntityRelation> relType : JdlEntityRelation.ENTITY_RELATIONSHIPS) {
                     if (relName.equals(KbNames.getFunctor(relType))) {
-                        JdlEntityRelationship rel = bpKb.solveRelation(relType, relId.getLeft());
+                        JdlEntityRelation rel = bpKb.solveRelation(relType, relId.getLeft());
                         Pair<JdlEntity, JdlField> from = solveRelationshipEntity(rel.getFrom());
                         Pair<JdlEntity, JdlField> to = solveRelationshipEntity(rel.getTo());
                         appendRelationship(jdl, rel, from, to);
@@ -320,7 +320,7 @@ public class JdlGenerator {
         return Pair.of(entity, field);
     }
 
-    private void appendRelationship(StringBuilder jdl, JdlEntityRelationship rel, Pair<JdlEntity, JdlField> from, Pair<JdlEntity, JdlField> to) {
+    private void appendRelationship(StringBuilder jdl, JdlEntityRelation rel, Pair<JdlEntity, JdlField> from, Pair<JdlEntity, JdlField> to) {
         jdl.append("\nrelationship ").append(rel.getJdlName()).append(" {");
         jdl.append("\n").append(INDENT);
         jdl.append(from.getLeft().getAttributes().get(EntitySheet.ATTRIBUTE_CLASS_NAME));

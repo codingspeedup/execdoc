@@ -2,11 +2,11 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpEntityCell;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpClassUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CClassUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public abstract class JdlComponent extends BpEntityCell implements BpClassUnit, IsOwned {
+public abstract class JdlComponent extends BpConceptCell implements CClassUnit, IsOwned {
 
     @Getter
     @Setter

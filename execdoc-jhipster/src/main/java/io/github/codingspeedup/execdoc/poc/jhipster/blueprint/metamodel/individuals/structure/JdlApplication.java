@@ -2,7 +2,7 @@ package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individ
 
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.structure.BpSubsystem;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.structure.CSubsystem;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.JdlNames;
 import lombok.Getter;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlApplication implements BpSubsystem {
+public class JdlApplication implements CSubsystem {
 
     @KbFunctor(value = JdlNames.CONFIG_FUNCTOR, T1 = String.class, T2 = JdlValue.class)
     private final Map<String, JdlValue> config = new HashMap<>();

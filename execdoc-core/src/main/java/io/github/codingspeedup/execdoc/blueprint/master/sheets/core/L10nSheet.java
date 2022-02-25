@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
 import io.github.codingspeedup.execdoc.kb.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.BpL10nLabel;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.L10NLabel;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
@@ -127,7 +127,7 @@ public class L10nSheet extends BlueprintSheet {
             if (cell == null) {
                 continue;
             }
-            BpL10nLabel l10n = new BpL10nLabel(cell);
+            L10NLabel l10n = new L10NLabel(cell);
             if (StringUtils.isBlank(l10n.getName())) {
                 continue;
             }
@@ -136,7 +136,7 @@ public class L10nSheet extends BlueprintSheet {
                 if (StringUtils.isNotBlank(label)) {
                     label = StringUtils.trim(label);
                     if (ANCHOR_LABEL.equals(anchor)) {
-                        l10n.getL10n().put(BpL10nLabel.DEFAULT_LANGUAGE_KEY, label);
+                        l10n.getL10n().put(L10NLabel.DEFAULT_LANGUAGE_KEY, label);
                     } else {
                         String languageKey = anchor.substring(CellMarkers.ANCHOR_MARKER.length());
                         l10n.getL10n().put(languageKey, label);

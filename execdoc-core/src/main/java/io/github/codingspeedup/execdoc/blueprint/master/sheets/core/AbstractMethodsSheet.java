@@ -3,8 +3,8 @@ package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpClassUnit;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.BpMethodUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CClassUnit;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CMethodUnit;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
@@ -18,7 +18,7 @@ import org.apache.poi.ss.util.CellAddress;
 
 import java.util.List;
 
-public abstract class AbstractMethodsSheet<C extends BpClassUnit, M extends BpMethodUnit> extends BlueprintSheet {
+public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMethodUnit> extends BlueprintSheet {
 
     public static final String ANCHOR_NAME = CellMarkers.ANCHOR_MARKER + "ClassName / methodName";
 

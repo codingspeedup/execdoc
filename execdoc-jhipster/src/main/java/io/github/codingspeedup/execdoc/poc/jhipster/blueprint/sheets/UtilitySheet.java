@@ -6,7 +6,7 @@ import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterSheet;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.code.JdlType;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelationship;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import io.github.codingspeedup.execdoc.toolbox.utilities.NamingUtility;
 import org.apache.poi.ss.usermodel.Name;
@@ -160,7 +160,7 @@ public class UtilitySheet extends JHipsterSheet {
         createNamedDomain(rowIdx, colIdx, ENTITY_PREDEFINED_TYPES, values);
 
         colIdx += 2;
-        values = Stream.of(JdlEntityRelationship.ENTITY_RELATIONSHIPS).map(cls -> CellMarkers.PREDICATE_MARKER + KbNames.getFunctor(cls)).collect(Collectors.toList());
+        values = Stream.of(JdlEntityRelation.ENTITY_RELATIONSHIPS).map(cls -> CellMarkers.PREDICATE_MARKER + KbNames.getFunctor(cls)).collect(Collectors.toList());
         values.add(0, "");
         createNamedDomain(rowIdx, colIdx, ENTITY_RELATIONSHIPS, values);
 

@@ -22,10 +22,10 @@ public class JHipsterMaster extends BlueprintMaster {
         registerSheet(SystemSheet.class);
         registerSheet(AppSheet.class);
         registerSheet(L10nSheet.class);
-        registerSheet(ControllerMethodsSheet.class);
         registerSheet(DtoSheet.class);
-        registerSheet(EnumsSheet.class);
+        registerSheet(ControllerMethodsSheet.class);
         registerSheet(ServiceMethodsSheet.class);
+        registerSheet(EnumsSheet.class);
         registerSheet(EntitySheet.class);
     }
 

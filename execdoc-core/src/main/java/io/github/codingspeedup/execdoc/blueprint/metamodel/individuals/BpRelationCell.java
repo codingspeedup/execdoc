@@ -35,15 +35,6 @@ public abstract class BpRelationCell extends KbRelation2 implements BpCell {
     @KbFunctor(value = BpNames.ATTRIBUTE_FUNCTOR, T1 = String.class, T2 = String.class)
     private Map<String, String> attributes;
 
-
-    @Getter
-    @Setter
-    private String from;
-
-    @Getter
-    @Setter
-    private String to;
-
     public BpRelationCell(Cell cell, Cell from, Cell to) {
         this(cell, KbNames.getAtom(from), KbNames.getAtom(to));
     }

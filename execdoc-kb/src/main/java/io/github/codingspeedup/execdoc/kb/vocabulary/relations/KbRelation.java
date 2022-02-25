@@ -4,7 +4,6 @@ import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
 
 @KbFunctor
 public abstract class KbRelation implements KbElement {
@@ -19,9 +18,11 @@ public abstract class KbRelation implements KbElement {
         this.members = members;
     }
 
-    @SneakyThrows
     public static int getArity(Class<? extends KbRelation> relationType) {
-        return relationType.getConstructor().newInstance().getArity();
+        if (KbRelation2.class.isAssignableFrom(relationType)) {
+            return 2;
+        }
+        throw new UnsupportedOperationException("class " + relationType.getName());
     }
 
     public String getMember(int index) {

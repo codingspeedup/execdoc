@@ -1,18 +1,18 @@
 package xp;
 
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtx;
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtxProvider;
+import io.github.codingspeedup.execdoc.apps.AppCtx;
+import io.github.codingspeedup.execdoc.apps.AppCtxProvider;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.utilities.OsUtility;
 
 import java.io.File;
 
-public class Workplace implements BpCtxProvider {
+public class Workplace implements AppCtxProvider {
 
     private static final String MARKER = "blueprint-xp";
 
     public static void initialize() {
-        BpCtx.registerEnvironmentProvider(new Workplace());
+        AppCtx.registerEnvironmentProvider(new Workplace());
     }
 
     @Override

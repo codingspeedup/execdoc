@@ -5,7 +5,7 @@ import io.github.codingspeedup.execdoc.miners.diff.folders.FolderDiffMiner;
 import io.github.codingspeedup.execdoc.reporters.folderdiff.FolderDiffReport;
 import io.github.codingspeedup.execdoc.reporters.folderdiff.FolderDiffReportPreferences;
 import io.github.codingspeedup.execdoc.reporters.folderdiff.FolderDiffReporter;
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtx;
+import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.toolbox.utilities.OsUtility;
 import io.github.codingspeedup.execdoc.toolbox.utilities.SwingUtility;
 import jiconfont.icons.font_awesome.FontAwesome;
@@ -55,19 +55,19 @@ public class FolderDiffGUI extends JFrame {
         super("Folder Diff GUI (blueprint)");
 
         if (left == null) {
-            String lastPath = BpCtx.getInstance().getProperty(PROP_KEY_LAST_LEFT_PATH);
+            String lastPath = AppCtx.getInstance().getProperty(PROP_KEY_LAST_LEFT_PATH);
             if (StringUtils.isNotBlank(lastPath)) {
                 left = new File(lastPath);
             } else {
-                left = BpCtx.getInstance().getTempFolder();
+                left = AppCtx.getInstance().getTempFolder();
             }
         }
         if (right == null) {
-            String lastPath = BpCtx.getInstance().getProperty(PROP_KEY_LAST_RIGHT_PATH);
+            String lastPath = AppCtx.getInstance().getProperty(PROP_KEY_LAST_RIGHT_PATH);
             if (StringUtils.isNotBlank(lastPath)) {
                 right = new File(lastPath);
             } else {
-                right = BpCtx.getInstance().getTempFolder();
+                right = AppCtx.getInstance().getTempFolder();
             }
         }
 
@@ -93,7 +93,7 @@ public class FolderDiffGUI extends JFrame {
         leftField.setText(left.getCanonicalPath());
         rightField.setText(right.getCanonicalPath());
 
-        destinationField.setText(BpCtx.getInstance().getDefaultDiffReportsFolder().getCanonicalPath());
+        destinationField.setText(AppCtx.getInstance().getDefaultDiffReportsFolder().getCanonicalPath());
 
         leftField.getDocument().addDocumentListener(docListener);
         browseLeftButton.addActionListener(this::openLeftFolder);
@@ -139,8 +139,8 @@ public class FolderDiffGUI extends JFrame {
             }
         }
 
-        BpCtx.getInstance().setProperty(PROP_KEY_LAST_LEFT_PATH, leftField.getText());
-        BpCtx.getInstance().setProperty(PROP_KEY_LAST_RIGHT_PATH, rightField.getText());
+        AppCtx.getInstance().setProperty(PROP_KEY_LAST_LEFT_PATH, leftField.getText());
+        AppCtx.getInstance().setProperty(PROP_KEY_LAST_RIGHT_PATH, rightField.getText());
     }
 
     @SneakyThrows

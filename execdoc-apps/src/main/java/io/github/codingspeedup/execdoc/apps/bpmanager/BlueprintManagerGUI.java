@@ -2,8 +2,8 @@ package io.github.codingspeedup.execdoc.apps.bpmanager;
 
 import io.github.codingspeedup.execdoc.apps.folderdiff.FolderDiffGUI;
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.blueprint.BlueprintGenCfg;
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtx;
+import io.github.codingspeedup.execdoc.generators.GenCfg;
+import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
 import io.github.codingspeedup.execdoc.toolbox.processes.JavaProcess;
@@ -29,7 +29,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
     }
 
     private final Class<T> bpType;
-    private final BlueprintGenCfg genCfg;
+    private final GenCfg genCfg;
 
     private JPanel mainPanel;
     private JTextField pathField;
@@ -44,7 +44,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
     private JLabel statusLabel;
 
     @SneakyThrows
-    public BlueprintManagerGUI(Class<T> bpType, File initialLocation, BlueprintGenCfg genCfg) {
+    public BlueprintManagerGUI(Class<T> bpType, File initialLocation, GenCfg genCfg) {
         super("Blueprint Manager GUI (blueprint)");
         setContentPane(mainPanel);
 
@@ -54,11 +54,11 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
         if (initialLocation != null) {
             pathField.setText(initialLocation.getCanonicalPath());
         } else {
-            String lastPath = BpCtx.getInstance().getProperty(PROP_KEY_LAST_BLUEPRINT_PATH);
+            String lastPath = AppCtx.getInstance().getProperty(PROP_KEY_LAST_BLUEPRINT_PATH);
             if (StringUtils.isNotBlank(lastPath)) {
                 pathField.setText(lastPath);
             } else {
-                pathField.setText(BpCtx.getInstance().getTempFolder().getCanonicalPath());
+                pathField.setText(AppCtx.getInstance().getTempFolder().getCanonicalPath());
             }
         }
 
@@ -118,7 +118,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
         generateKbButton.setEnabled(initialized);
         tuPrologButton.setEnabled(true);
         generateProjectButton.setEnabled(initialized);
-        BpCtx.getInstance().setProperty(PROP_KEY_LAST_BLUEPRINT_PATH, pathField.getText());
+        AppCtx.getInstance().setProperty(PROP_KEY_LAST_BLUEPRINT_PATH, pathField.getText());
     }
 
     @SneakyThrows

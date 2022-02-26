@@ -5,7 +5,7 @@ import io.github.codingspeedup.execdoc.miners.logs.LogMiner;
 import io.github.codingspeedup.execdoc.miners.logs.LogMinerFinding;
 import io.github.codingspeedup.execdoc.miners.logs.LogMinerListener;
 import io.github.codingspeedup.execdoc.miners.logs.defaults.DefaultLogMinerListener;
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtx;
+import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.toolbox.resources.ResourceGroup;
 import io.github.codingspeedup.execdoc.toolbox.utilities.OsUtility;
 import io.github.codingspeedup.execdoc.toolbox.utilities.SwingUtility;
@@ -144,7 +144,7 @@ public class LogMinerGUI extends JFrame implements LogMinerListener {
         item.addActionListener(e -> {
             LogMinerFinding finding = findingsList.getSelectedValue();
             File logFile = finding.getFile();
-            File cachedFile = new File(BpCtx.getInstance().getLocalCopyLogFolder(), logFile.getName());
+            File cachedFile = new File(AppCtx.getInstance().getLocalCopyLogFolder(), logFile.getName());
             try {
                 FileUtils.copyFile(logFile, cachedFile);
                 OsUtility.open(cachedFile);
@@ -158,7 +158,7 @@ public class LogMinerGUI extends JFrame implements LogMinerListener {
         item.addActionListener(e -> {
             LogMinerFinding finding = findingsList.getSelectedValue();
             File logFile = finding.getFile();
-            File cachedFile = new File(BpCtx.getInstance().getLocalCopyLogFolder(), logFile.getName());
+            File cachedFile = new File(AppCtx.getInstance().getLocalCopyLogFolder(), logFile.getName());
             try {
                 FileUtils.copyFile(logFile, cachedFile);
                 OsUtility.open(cachedFile.getParentFile());
@@ -171,7 +171,7 @@ public class LogMinerGUI extends JFrame implements LogMinerListener {
         menu.addSeparator();
 
         item = new JMenuItem("Open log cache folder");
-        item.addActionListener(e -> OsUtility.open(BpCtx.getInstance().getLocalCopyLogFolder()));
+        item.addActionListener(e -> OsUtility.open(AppCtx.getInstance().getLocalCopyLogFolder()));
         menu.add(item);
 
         return menu;

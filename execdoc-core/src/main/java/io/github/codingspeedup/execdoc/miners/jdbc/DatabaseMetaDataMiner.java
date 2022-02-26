@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.miners.jdbc;
 
-import io.github.codingspeedup.execdoc.miners.jdbc.model.*;
+import io.github.codingspeedup.execdoc.bootstrap.sql.metamodel.*;
 import lombok.SneakyThrows;
 
 import java.sql.DatabaseMetaData;

@@ -1,10 +1,10 @@
 package io.github.codingspeedup.execdoc.blueprint;
 
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpKb;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.BpTermBuilder;
+import io.github.codingspeedup.execdoc.generators.GenCfg;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
-import io.github.codingspeedup.execdoc.blueprint.sql.XlsxBase;
+import io.github.codingspeedup.execdoc.bootstrap.sql.XlsxBase;
 import io.github.codingspeedup.execdoc.toolbox.documents.FolderWrapper;
 import lombok.SneakyThrows;
 
@@ -51,7 +51,7 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
         return sqlData;
     }
 
-    public abstract void generate(BlueprintGenCfg bpGenCfg);
+    public abstract void generate(GenCfg bpGenCfg);
 
     @Override
     protected void saveToWrappedFile() {

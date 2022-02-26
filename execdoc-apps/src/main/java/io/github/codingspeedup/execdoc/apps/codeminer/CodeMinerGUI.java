@@ -2,7 +2,7 @@ package io.github.codingspeedup.execdoc.apps.codeminer;
 
 import io.github.codingspeedup.execdoc.apps.codeminer.clipboard.CodeMinerClipboard;
 import io.github.codingspeedup.execdoc.reporters.codexray.XRayReporter;
-import io.github.codingspeedup.execdoc.toolbox.bpctx.BpCtx;
+import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.toolbox.resources.DefaultResourceFactory;
 import io.github.codingspeedup.execdoc.toolbox.resources.Resource;
 import io.github.codingspeedup.execdoc.toolbox.resources.ResourceFilter;
@@ -77,7 +77,7 @@ public class CodeMinerGUI extends JFrame {
         setContentPane(mainPanel);
 
         if (initialClipboard == null) {
-            String lastPath = BpCtx.getInstance().getProperty(PROP_KEY_LAST_CLIPBOARD_PATH);
+            String lastPath = AppCtx.getInstance().getProperty(PROP_KEY_LAST_CLIPBOARD_PATH);
             if (StringUtils.isNotBlank(lastPath)) {
                 File lastFile = new File(lastPath);
                 if (lastFile.exists()) {
@@ -205,7 +205,7 @@ public class CodeMinerGUI extends JFrame {
             }
         }
         if (start == null) {
-            start = BpCtx.getInstance().getTempFolder();
+            start = AppCtx.getInstance().getTempFolder();
         }
         fc.setCurrentDirectory(start);
 
@@ -225,7 +225,7 @@ public class CodeMinerGUI extends JFrame {
             clipboardFileField.setText(clipboardFile.getCanonicalPath());
         }
         clipboard = new CodeMinerClipboard(clipboardFile);
-        BpCtx.getInstance().setProperty(PROP_KEY_LAST_CLIPBOARD_PATH, clipboard.getFile().getCanonicalPath());
+        AppCtx.getInstance().setProperty(PROP_KEY_LAST_CLIPBOARD_PATH, clipboard.getFile().getCanonicalPath());
         updateUi(null);
     }
 
@@ -339,7 +339,7 @@ public class CodeMinerGUI extends JFrame {
 
     private void onVisualize(ActionEvent e) {
         String xRayName = "CodeMiner-" + DateTimeUtility.toCompactIsoDateTimeString(new Date());
-        File xRayFolder = new File(BpCtx.getInstance().getDefaultXrayReportsFolder(), xRayName);
+        File xRayFolder = new File(AppCtx.getInstance().getDefaultXrayReportsFolder(), xRayName);
         XRayReporter reporter = new XRayReporter(xRayFolder, clipboard.getResourcesSheet().getResourceGroup());
         reporter.buildReport(Collections.list(((DefaultListModel<Resource>) resourceList.getModel()).elements()));
         reporter.getXRay().save();

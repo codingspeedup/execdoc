@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -77,13 +77,13 @@ public class EnumsSheet extends JHipsterSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
         JdlEnum enumType = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             if (XlsxUtil.isBlank(nameCell)) {
-                bpKb.learn(enumType);
+                kb.learn(enumType);
                 enumType = null;
                 continue;
             }
@@ -100,7 +100,7 @@ public class EnumsSheet extends JHipsterSheet {
                 enumType.getValue().add(enumConstant);
             }
         }
-        bpKb.learn(enumType);
+        kb.learn(enumType);
     }
 
 }

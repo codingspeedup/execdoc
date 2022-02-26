@@ -25,7 +25,7 @@ public class BpSheet implements KbConcept {
     private Pair<String, String> name;
 
     public BpSheet(Sheet sheet) {
-        this.kbId = KbNames.getAtom(sheet);
+        this.kbId = BpNames.getAtom(sheet);
         String[] nameParts = sheet.getSheetName().split(BlueprintMaster.INSTANTIABLE_SHEET_MARKER, 2);
         if (nameParts.length == 1) {
             name = Pair.of(nameParts[0], null);

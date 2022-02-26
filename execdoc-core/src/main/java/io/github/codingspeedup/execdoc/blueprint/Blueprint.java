@@ -1,6 +1,8 @@
 package io.github.codingspeedup.execdoc.blueprint;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpKb;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpTermBuilder;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.sql.XlsxBase;
 import io.github.codingspeedup.execdoc.toolbox.documents.FolderWrapper;
@@ -28,10 +30,10 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
         getMaster().normalize();
     }
 
-    public BpKb compileKb() {
-        BpKb bpKb = new BpKb();
-        getMaster().train(bpKb);
-        return bpKb;
+    public Kb compileKb() {
+        Kb kb = new BpKb();
+        getMaster().train(kb);
+        return kb;
     }
 
     @SneakyThrows

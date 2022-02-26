@@ -36,7 +36,7 @@ public class JdlApplication implements CSubsystem {
     private String name;
 
     public JdlApplication(AppSheet appSheet) {
-        setKbId(KbNames.getAtom(appSheet.getSheet()));
+        setKbId(BpNames.getAtom(appSheet.getSheet()));
         setName(appSheet.getInstanceName());
     }
 

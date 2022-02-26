@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellComment;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -36,7 +36,7 @@ public abstract class BlueprintSheet {
 
     public abstract void normalize();
 
-    public abstract void expand(BpKb bpKb);
+    public abstract void expand(Kb kb);
 
     public XSSFWorkbook getWorkbook() {
         return getMaster().getWorkbook();

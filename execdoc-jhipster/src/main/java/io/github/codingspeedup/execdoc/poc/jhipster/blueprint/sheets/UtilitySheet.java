@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.kb.KbNames;
@@ -172,7 +172,7 @@ public class UtilitySheet extends JHipsterSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
     }
 
     private void createNamedDomain(int rowIdx, int colIdx, String name, List<String> values) {

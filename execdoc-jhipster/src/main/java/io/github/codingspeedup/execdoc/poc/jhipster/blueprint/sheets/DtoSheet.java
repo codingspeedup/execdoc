@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -122,14 +122,14 @@ public class DtoSheet extends JHipsterSheet {
 //    }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
         JdlDto dtoUnit = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             String nameString = XlsxUtil.getCellValue(nameCell, String.class);
             if (StringUtils.isBlank(nameString)) {
-                bpKb.learn(dtoUnit);
+                kb.learn(dtoUnit);
                 dtoUnit = null;
                 continue;
             }
@@ -139,7 +139,7 @@ public class DtoSheet extends JHipsterSheet {
                 dtoUnit.setOwner(owner);
             }
         }
-        bpKb.learn(dtoUnit);
+        kb.learn(dtoUnit);
     }
 
 }

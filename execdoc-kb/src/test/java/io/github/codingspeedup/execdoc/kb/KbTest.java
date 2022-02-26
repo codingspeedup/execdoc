@@ -14,13 +14,15 @@ import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BpKbTest {
+class KbTest {
 
-    private BpKb kb;
+    private Kb kb;
 
     @BeforeEach
     void init() {
-        kb = new BpKb();
+        kb = new Kb(new KbTermBuilder() {
+        }) {
+        };
     }
 
     @Test

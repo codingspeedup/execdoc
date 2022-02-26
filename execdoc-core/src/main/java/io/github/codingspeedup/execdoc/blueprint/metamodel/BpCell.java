@@ -1,7 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.metamodel;
 
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellComment;
-import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -25,7 +24,7 @@ public interface BpCell {
     default String assignFrom(Cell cell) {
         String kbId = null;
         if (cell != null) {
-            kbId = KbNames.getAtom(cell);
+            kbId = BpNames.getAtom(cell);
             String cellCommentString = XlsxUtil.getCellComment(cell);
             if (StringUtils.isNotBlank(cellCommentString)) {
                 CellComment cellComment = CellComment.parse(cellCommentString);

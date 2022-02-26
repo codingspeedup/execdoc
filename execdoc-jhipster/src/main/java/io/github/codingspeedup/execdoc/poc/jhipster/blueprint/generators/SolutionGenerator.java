@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.generators;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterBlueprint;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
@@ -19,7 +19,7 @@ public class SolutionGenerator {
     public static final Logger LOGGER = LoggerFactory.getLogger(SolutionGenerator.class);
 
     private final JHipsterBlueprint bp;
-    private final BpKb bpKb;
+    private final Kb kb;
     private final JHipsterGenCfg genCfg;
     private final Folder appFolder;
     private final TextFile defaultJdl;
@@ -28,7 +28,7 @@ public class SolutionGenerator {
     @SneakyThrows
     public SolutionGenerator(JHipsterBlueprint bp, JHipsterGenCfg genCfg) {
         this.bp = bp;
-        this.bpKb = bp.compileKb();
+        this.kb = bp.compileKb();
         this.genCfg = genCfg;
         if (genCfg.getDestinationFolder().exists() && genCfg.isForce()) {
             FileUtils.deleteQuietly(genCfg.getDestinationFolder());
@@ -39,7 +39,7 @@ public class SolutionGenerator {
     }
 
     public synchronized void generateApp() {
-        defaultJdl.writeStringToContent(new JdlGenerator(bpKb).getJdl());
+        defaultJdl.writeStringToContent(new JdlGenerator(kb).getJdl());
         os.execute(appFolder, "jhipster", "jdl", defaultJdl.getName());
         OsUtility.open(appFolder);
     }

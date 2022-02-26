@@ -36,7 +36,7 @@ public abstract class BpRelationCell extends KbRelation2 implements BpCell {
     private Map<String, String> attributes;
 
     public BpRelationCell(Cell cell, Cell from, Cell to) {
-        this(cell, KbNames.getAtom(from), KbNames.getAtom(to));
+        this(cell, BpNames.getAtom(from), BpNames.getAtom(to));
     }
 
     public BpRelationCell(Cell cell, String from, String to) {

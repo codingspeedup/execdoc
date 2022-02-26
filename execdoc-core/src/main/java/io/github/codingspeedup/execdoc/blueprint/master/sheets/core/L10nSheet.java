@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.L10NLabel;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -115,7 +115,7 @@ public class L10nSheet extends BlueprintSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         int keyColIdx = getAnchors().getColumn(ANCHOR_KEY);
         List<String> labelAnchors = getAnchors().anchorSet().stream().filter(key -> !ANCHOR_KEY.equals(key)).collect(Collectors.toList());
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
@@ -143,7 +143,7 @@ public class L10nSheet extends BlueprintSheet {
                     }
                 }
             }
-            bpKb.learn(l10n);
+            kb.learn(l10n);
         }
     }
 

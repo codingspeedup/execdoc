@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CClassUnit;
@@ -54,7 +54,7 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
     @SneakyThrows
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
         C classUnit = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
@@ -66,7 +66,7 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
             Cell nameCell = row.getCell(getAnchors().getColumn(ANCHOR_NAME));
             String nameString = XlsxUtil.getCellValue(nameCell, String.class);
             if (StringUtils.isBlank(nameString)) {
-                bpKb.learn(classUnit);
+                kb.learn(classUnit);
                 classUnit = null;
                 continue;
             }
@@ -79,7 +79,7 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
                 ((List) classUnit.getCodeElement()).add(methodUnit);
             }
         }
-        bpKb.learn(classUnit);
+        kb.learn(classUnit);
     }
 
 }

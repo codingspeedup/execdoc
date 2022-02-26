@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellStyles;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.SheetNameComparator;
@@ -198,9 +198,9 @@ public abstract class BlueprintMaster extends XlsxDocument {
         });
     }
 
-    public void train(BpKb bpKb) {
+    public void train(Kb kb) {
         for (Map.Entry<String, BlueprintSheet> entry : modelSheets.entrySet()) {
-            entry.getValue().expand(bpKb);
+            entry.getValue().expand(kb);
         }
     }
 

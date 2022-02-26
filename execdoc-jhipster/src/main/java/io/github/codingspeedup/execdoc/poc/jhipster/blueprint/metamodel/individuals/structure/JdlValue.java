@@ -28,7 +28,7 @@ public class JdlValue implements KbConcept {
 
     public JdlValue(Cell cell) {
         if (cell != null) {
-            this.kbId = KbNames.getAtom(cell);
+            this.kbId = BpNames.getAtom(cell);
             Row row = cell.getRow();
             for (int colIdx = cell.getColumnIndex(); colIdx <= row.getLastCellNum(); ++colIdx) {
                 String v = XlsxUtil.getCellValue(row.getCell(colIdx), String.class);

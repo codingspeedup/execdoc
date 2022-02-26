@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellStyles;
@@ -99,7 +99,7 @@ public class TocSheet extends BlueprintSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
     }
 
     private int addReferences(int rowIdx, List<? extends BlueprintSheet> bSheets) {

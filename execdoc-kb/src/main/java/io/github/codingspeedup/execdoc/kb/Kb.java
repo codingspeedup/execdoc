@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.kb;
 
+import com.devskiller.friendly_id.FriendlyId;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.kb.vocabulary.relations.KbRelation;
@@ -22,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class BpKb {
+public abstract class Kb {
 
     private static final Var X = Var.of("X");
     private static final Var Y = Var.of("Y");
@@ -45,12 +46,21 @@ public class BpKb {
         }
     }
 
+    public static String ensureKbId(KbElement element) {
+        if (StringUtils.isBlank(element.getKbId())) {
+            element.setKbId(FriendlyId.toFriendlyId(UUID.randomUUID()));
+        }
+        return element.getKbId();
+    }
+
     @Getter
     private final Theory theory = Theory.empty().toMutableTheory();
     private final Set<String> learnedPredicates = new HashSet<>();
+    private final KbTermBuilder termBuilder;
     private Solver solver;
 
-    public BpKb() {
+    public Kb(KbTermBuilder termBuilder) {
+        this.termBuilder = termBuilder;
         learnedPredicates.add(KbNames.getFunctor(KbConcept.class));
     }
 
@@ -69,7 +79,7 @@ public class BpKb {
     }
 
     public Clause learn(Object functor, Object... arguments) {
-        Clause clause = Clause.of(BpKbUtils.structOf(false, functor, arguments).getLeft());
+        Clause clause = Clause.of(termBuilder.structOf(false, functor, arguments).getLeft());
         learn(clause);
         return clause;
     }
@@ -85,8 +95,8 @@ public class BpKb {
             return null;
         }
         String functor = learnTypeHierarchy(entity.getClass());
-        String kbId = BpKbUtils.ensureKbId(entity);
-        Struct declaration = BpKbUtils.structOf(false, functor, Atom.of(kbId)).getLeft();
+        String kbId = ensureKbId(entity);
+        Struct declaration = termBuilder.structOf(false, functor, Atom.of(kbId)).getLeft();
         if (!theory.contains(declaration)) {
             learn(declaration);
             learnFields(entity.getClass(), entity);
@@ -108,9 +118,9 @@ public class BpKb {
             idMembers[i + 1] = member;
         }
         String functor = learnTypeHierarchy(relation.getClass());
-        String kbId = BpKbUtils.ensureKbId(relation);
+        String kbId = ensureKbId(relation);
         idMembers[0] = Atom.of(kbId);
-        Struct declaration = BpKbUtils.structOf(false, functor, idMembers).getLeft();
+        Struct declaration = termBuilder.structOf(false, functor, idMembers).getLeft();
         if (!theory.contains(declaration)) {
             learn(declaration);
             learnFields(relation.getClass(), relation);
@@ -150,7 +160,7 @@ public class BpKb {
     }
 
     public KbResult solve(boolean solveList, Object... goal) {
-        return solve(solveList, BpKbUtils.parseStruct(goal));
+        return solve(solveList, termBuilder.parseStruct(goal));
     }
 
     public KbResult solveList(Object functor, Object... args) {
@@ -192,7 +202,7 @@ public class BpKb {
     }
 
     private KbResult solve(boolean solveList, Object functor, Object... args) {
-        Pair<Struct, List<Var>> structVar = BpKbUtils.structOf(true, functor, args);
+        Pair<Struct, List<Var>> structVar = termBuilder.structOf(true, functor, args);
         return new KbResult(solve(solveList, structVar.getLeft()), structVar.getRight());
     }
 
@@ -278,7 +288,7 @@ public class BpKb {
     @SneakyThrows
     @SuppressWarnings({"unchecked"})
     private <E extends KbConcept> E solveConcept(Map<String, KbElement> discovered, Class<E> entityType, String kbId) {
-        Struct goal = BpKbUtils.structOf(true, entityType, Atom.of(kbId)).getLeft();
+        Struct goal = termBuilder.structOf(true, entityType, Atom.of(kbId)).getLeft();
         String goalKey = goal.toString();
         if (discovered.containsKey(goalKey)) {
             return (E) discovered.get(goalKey);
@@ -301,7 +311,7 @@ public class BpKb {
         Object[] args = new Object[1 + KbRelation.getArity(relationType)];
         args[0] = Atom.of(kbId);
         IntStream.range(1, args.length).forEach(i -> args[i] = Var.of("M" + i));
-        Pair<Struct, List<Var>> structVar = BpKbUtils.structOf(true, relationType, args);
+        Pair<Struct, List<Var>> structVar = termBuilder.structOf(true, relationType, args);
         Struct goal = structVar.getLeft();
         String goalKey = goal.toString();
         if (discovered.containsKey(goalKey)) {

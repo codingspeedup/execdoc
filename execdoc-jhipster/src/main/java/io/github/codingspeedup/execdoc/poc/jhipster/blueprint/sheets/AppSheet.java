@@ -1,10 +1,11 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import com.google.common.base.CaseFormat;
-import io.github.codingspeedup.execdoc.kb.BpKb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
-import io.github.codingspeedup.execdoc.kb.KbNames;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
+import io.github.codingspeedup.execdoc.kb.Kb;
+import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterSheet;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
 import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
@@ -13,7 +14,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
-import io.github.codingspeedup.execdoc.poc.jhipster.blueprint.JHipsterSheet;
 
 import java.util.Arrays;
 import java.util.List;
@@ -238,7 +238,7 @@ public class AppSheet extends JHipsterSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         JdlApplication ss = new JdlApplication(this);
         int nameColIdx = getAnchors().getColumn(ANCHOR_OPTION_NAME);
         int valueColIdx = getAnchors().getColumn(ANCHOR_OPTION_VALUE);
@@ -254,7 +254,7 @@ public class AppSheet extends JHipsterSheet {
                             if (cell != null) {
                                 if (cell.getCellType() == CellType.FORMULA) {
                                     cell = XlsxUtil.backtraceCellBySimpleFormulaReference(cell);
-                                    ss.getEntities().add(KbNames.getAtom(cell));
+                                    ss.getEntities().add(BpNames.getAtom(cell));
                                 } else if ("*".equals(XlsxUtil.getCellValue(cell, String.class))) {
                                     ss.getEntities().clear();
                                     ss.getEntities().add("*");
@@ -269,7 +269,7 @@ public class AppSheet extends JHipsterSheet {
                 }
             }
         }
-        bpKb.learn(ss);
+        kb.learn(ss);
     }
 
 }

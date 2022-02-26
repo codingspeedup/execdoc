@@ -1,6 +1,5 @@
 package io.github.codingspeedup.execdoc.kb;
 
-import com.devskiller.friendly_id.FriendlyId;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
 import it.unibo.tuprolog.core.*;
 import it.unibo.tuprolog.core.parsing.ParseException;
@@ -9,24 +8,15 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
 
 import java.lang.Integer;
 import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class BpKbUtils {
+public interface KbTermBuilder {
 
-    public static String ensureKbId(KbElement element) {
-        if (StringUtils.isBlank(element.getKbId())) {
-            element.setKbId(FriendlyId.toFriendlyId(UUID.randomUUID()));
-        }
-        return element.getKbId();
-    }
-
-    public static List<Clause> parseClauses(Object... statement) {
+    default List<Clause> parseClauses(Object... statement) {
         String source = null;
         if (ArrayUtils.isNotEmpty(statement)) {
             source = Arrays.stream(statement)
@@ -52,7 +42,7 @@ public class BpKbUtils {
         }
     }
 
-    public static Struct parseStruct(Object... statement) {
+    default Struct parseStruct(Object... statement) {
         List<Clause> clauses = parseClauses(statement);
         if (CollectionUtils.isNotEmpty(clauses)) {
             if (clauses.size() == 1) {
@@ -68,8 +58,7 @@ public class BpKbUtils {
         return null;
     }
 
-
-    public static Pair<Struct, List<Var>> structOf(boolean varStrings, Object functor, Object... args) {
+    default Pair<Struct, List<Var>> structOf(boolean varStrings, Object functor, Object... args) {
         String functorName;
         if (functor instanceof String) {
             functorName = (String) functor;
@@ -111,10 +100,6 @@ public class BpKbUtils {
                     terms.add(it.unibo.tuprolog.core.Real.of((Double) arg));
                 } else if (arg instanceof Boolean) {
                     terms.add(Truth.of((Boolean) arg));
-                } else if (arg instanceof Cell) {
-                    terms.add(Atom.of(KbNames.getAtom((Cell) arg)));
-                } else if (arg instanceof Sheet) {
-                    terms.add(Atom.of(KbNames.getAtom((Sheet) arg)));
                 } else if (arg instanceof KbElement) {
                     String kbId = ((KbElement) arg).getKbId();
                     if (StringUtils.isBlank(kbId)) {
@@ -122,12 +107,15 @@ public class BpKbUtils {
                     }
                     terms.add(Atom.of(kbId));
                 } else {
-                    throw new UnsupportedOperationException("Undefined mapping for " + arg.getClass().getName());
+                    terms.add(termOf(arg));
                 }
             }
         }
-
         return Pair.of(Struct.of(functorName, terms), varList);
+    }
+
+    default Term termOf(Object arg) {
+        throw new UnsupportedOperationException("Undefined mapping for " + arg.getClass().getName());
     }
 
 }

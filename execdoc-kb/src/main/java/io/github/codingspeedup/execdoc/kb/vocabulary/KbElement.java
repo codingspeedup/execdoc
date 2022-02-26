@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.kb.vocabulary;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 
 @KbFunctor
@@ -10,10 +10,10 @@ public interface KbElement {
 
     void setKbId(String kbId);
 
-    default void kbStore(BpKb bpKb) {
+    default void kbStore(Kb kb) {
     }
 
-    default void kbRetrieve(BpKb bpKb) {
+    default void kbRetrieve(Kb kb) {
     }
 
 }

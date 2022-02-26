@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.sheets;
 
 import com.google.common.base.CaseFormat;
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.SemanticTriple;
@@ -179,14 +179,14 @@ public class EntitySheet extends JHipsterSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
 
         JdlEntity jdlEntity = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             if (XlsxUtil.isBlank(nameCell)) {
-                bpKb.learn(jdlEntity);
+                kb.learn(jdlEntity);
                 jdlEntity = null;
                 continue;
             }
@@ -209,7 +209,7 @@ public class EntitySheet extends JHipsterSheet {
             }
 
         }
-        bpKb.learn(jdlEntity);
+        kb.learn(jdlEntity);
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             if (XlsxUtil.isNotBlank(nameCell)) {
@@ -219,7 +219,7 @@ public class EntitySheet extends JHipsterSheet {
                     if (CollectionUtils.isEmpty(triple.getSubject())) {
                         triple.setSubject(nameCell);
                     }
-                    bpKb.learn(JdlEntityRelation.from(triple));
+                    kb.learn(JdlEntityRelation.from(triple));
                 }
             }
         }

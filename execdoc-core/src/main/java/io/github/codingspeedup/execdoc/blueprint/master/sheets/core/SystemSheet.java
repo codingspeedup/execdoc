@@ -1,6 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.structure.BasicSoftwareSystem;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -36,10 +36,10 @@ public class SystemSheet extends BlueprintSheet {
     }
 
     @Override
-    public void expand(BpKb bpKb) {
+    public void expand(Kb kb) {
         BasicSoftwareSystem ss = new BasicSoftwareSystem(getMaster());
         ss.setName(getSystemName());
-        bpKb.learn(ss);
+        kb.learn(ss);
     }
 
 }

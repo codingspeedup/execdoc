@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.poc.jhipster.blueprint.generators;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.kb.BpKb;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.kb.KbResult;
@@ -44,14 +44,14 @@ public class JdlGenerator {
     private static final String INDENT = "  ";
     private static final Var X = Var.of("X");
 
-    private final BpKb bpKb;
+    private final Kb kb;
 
     public JdlGenerator(Blueprint<?> bp) {
         this(bp.compileKb());
     }
 
-    public JdlGenerator(BpKb bpKb) {
-        this.bpKb = bpKb;
+    public JdlGenerator(Kb kb) {
+        this.kb = kb;
     }
 
     public String getJdl() {
@@ -64,8 +64,8 @@ public class JdlGenerator {
     }
 
     private void appendApplications(StringBuilder jdl) {
-        for (String appId : bpKb.solveConcepts(JdlApplication.class)) {
-            JdlApplication ss = bpKb.solveConcept(JdlApplication.class, appId);
+        for (String appId : kb.solveConcepts(JdlApplication.class)) {
+            JdlApplication ss = kb.solveConcept(JdlApplication.class, appId);
             String baseName;
             JdlValue ssValue = ss.getConfig(BASE_NAME);
             if (ssValue == null || ssValue.isEmpty()) {
@@ -135,9 +135,9 @@ public class JdlGenerator {
     }
 
     private void appendEnums(StringBuilder jdl) {
-        Set<String> ids = bpKb.solveConcepts(JdlEnum.class);
+        Set<String> ids = kb.solveConcepts(JdlEnum.class);
         for (String id : ids) {
-            JdlEnum jdlEnum = bpKb.solveConcept(JdlEnum.class, id);
+            JdlEnum jdlEnum = kb.solveConcept(JdlEnum.class, id);
             appendComment(jdl, jdlEnum.getDocString(), false);
             jdl.append("\nenum ").append(jdlEnum.getName()).append(" {");
             for (JdlEnumEntry jdlEnumEntry : jdlEnum.getValue()) {
@@ -153,13 +153,13 @@ public class JdlGenerator {
     }
 
     private void appendEntities(StringBuilder jdl) {
-        Set<String> ids = bpKb.solveConcepts(JdlEntity.class);
+        Set<String> ids = kb.solveConcepts(JdlEntity.class);
         for (String id : ids) {
-            JdlEntity jdlEntity = bpKb.solveConcept(JdlEntity.class, id);
+            JdlEntity jdlEntity = kb.solveConcept(JdlEntity.class, id);
             appendComment(jdl, jdlEntity.getDocString(), false);
             appendEntityAnnotations(jdl, jdlEntity.getAnnotations(), false);
 
-            KbResult dtoResult = bpKb.solve(false,
+            KbResult dtoResult = kb.solve(false,
                     StringUtility.simpleQuote(KbNames.getFunctor(JdlDto.class)), "(X),",
                     BpNames.NAME_FUNCTOR, "(X, ", StringUtility.simpleQuote(jdlEntity.getName()), ")");
             if (!dtoResult.getYes().isEmpty()) {
@@ -187,11 +187,11 @@ public class JdlGenerator {
     }
 
     private void appendRelationships(StringBuilder jdl) {
-        for (Triple<String, String, String> relId : bpKb.solveRelation(JdlEntityRelation.class)) {
-            for (String relName : bpKb.findFunctors(relId.getLeft())) {
+        for (Triple<String, String, String> relId : kb.solveRelation(JdlEntityRelation.class)) {
+            for (String relName : kb.findFunctors(relId.getLeft())) {
                 for (Class<? extends JdlEntityRelation> relType : JdlEntityRelation.ENTITY_RELATIONSHIPS) {
                     if (relName.equals(KbNames.getFunctor(relType))) {
-                        JdlEntityRelation rel = bpKb.solveRelation(relType, relId.getLeft());
+                        JdlEntityRelation rel = kb.solveRelation(relType, relId.getLeft());
                         Pair<JdlEntity, JdlField> from = solveRelationshipEntity(rel.getFrom());
                         Pair<JdlEntity, JdlField> to = solveRelationshipEntity(rel.getTo());
                         appendRelationship(jdl, rel, from, to);
@@ -309,13 +309,13 @@ public class JdlGenerator {
     private Pair<JdlEntity, JdlField> solveRelationshipEntity(String kbId) {
         JdlEntity entity = null;
         JdlField field = null;
-        Set<String> functors = bpKb.findFunctors(kbId);
+        Set<String> functors = kb.findFunctors(kbId);
         if (functors.contains(KbNames.getFunctor(JdlEntity.class))) {
-            entity = bpKb.solveConcept(JdlEntity.class, kbId);
+            entity = kb.solveConcept(JdlEntity.class, kbId);
         } else if (functors.contains(KbNames.getFunctor(JdlField.class))) {
-            field = bpKb.solveConcept(JdlField.class, kbId);
-            List<Term[]> subst = bpKb.solveOnce(BpNames.ITEM_UNIT_FUNCTOR, X, Var.anonymous(), kbId).getSubstitutions();
-            entity = bpKb.solveConcept(JdlEntity.class, KbResult.asString(subst.get(0)[0]));
+            field = kb.solveConcept(JdlField.class, kbId);
+            List<Term[]> subst = kb.solveOnce(BpNames.ITEM_UNIT_FUNCTOR, X, Var.anonymous(), kbId).getSubstitutions();
+            entity = kb.solveConcept(JdlEntity.class, KbResult.asString(subst.get(0)[0]));
         }
         return Pair.of(entity, field);
     }

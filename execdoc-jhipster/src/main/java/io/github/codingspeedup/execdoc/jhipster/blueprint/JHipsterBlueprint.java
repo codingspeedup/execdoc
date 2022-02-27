@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.jhipster.blueprint;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.generators.GenCfg;
+import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
 import io.github.codingspeedup.execdoc.jhipster.generators.JHipsterGenCfg;
 import io.github.codingspeedup.execdoc.jhipster.generators.SolutionGenerator;
 

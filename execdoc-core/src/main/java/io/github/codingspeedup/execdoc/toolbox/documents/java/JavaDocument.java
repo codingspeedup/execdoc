@@ -39,7 +39,7 @@ public class JavaDocument extends TextFileWrapper {
     @SneakyThrows
     @Override
     protected void loadFromWrappedFile() {
-        compilationUnit = PARSER.parse(getFile()).getResult().orElse(new CompilationUnit());
+        compilationUnit = PARSER.parse(getWrappedFile()).getResult().orElse(new CompilationUnit());
     }
 
     public CompilationUnit getCompilationUnit() {

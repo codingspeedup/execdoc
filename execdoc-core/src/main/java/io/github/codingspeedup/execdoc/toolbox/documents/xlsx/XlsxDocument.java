@@ -27,7 +27,7 @@ public class XlsxDocument extends BinaryFileWrapper {
     @SneakyThrows
     @Override
     protected void loadFromWrappedFile() {
-        workbook = new XSSFWorkbook(getFile());
+        workbook = new XSSFWorkbook(getWrappedFile());
     }
 
     public XSSFWorkbook getWorkbook() {
@@ -133,8 +133,8 @@ public class XlsxDocument extends BinaryFileWrapper {
             getWorkbook().write(fileOut);
         }
         getWorkbook().close();
-        FileUtils.delete(getFile());
-        FileUtils.moveFile(tempXlsx, getFile());
+        FileUtils.delete(getWrappedFile());
+        FileUtils.moveFile(tempXlsx, getWrappedFile());
         loadFromWrappedFile();
     }
 

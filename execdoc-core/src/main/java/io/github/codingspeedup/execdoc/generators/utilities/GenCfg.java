@@ -1,4 +1,4 @@
-package io.github.codingspeedup.execdoc.generators;
+package io.github.codingspeedup.execdoc.generators.utilities;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

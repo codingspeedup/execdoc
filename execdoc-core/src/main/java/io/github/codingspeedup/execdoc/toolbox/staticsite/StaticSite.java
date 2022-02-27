@@ -50,16 +50,16 @@ public abstract class StaticSite extends FolderWrapper {
     }
 
     public File getIndexHtml() {
-        return new File(getFile(), "_index.xhtml");
+        return new File(getWrappedFile(), "_index.xhtml");
     }
 
     public Folder getEmbeddingsFolder() {
-        return new Folder(new File(getFile(), EMBEDDINGS));
+        return new Folder(new File(getWrappedFile(), EMBEDDINGS));
     }
 
     @SneakyThrows
     protected void saveToWrappedFile() {
-        Folder coreFolder = Folder.of(new File(getFile(), "core"));
+        Folder coreFolder = Folder.of(new File(getWrappedFile(), "core"));
         for (String resource : CORE_RESOURCES) {
             File coreResource = new File(coreFolder, resource.substring(CORE_ROOT.length()));
             if (!coreResource.exists()) {

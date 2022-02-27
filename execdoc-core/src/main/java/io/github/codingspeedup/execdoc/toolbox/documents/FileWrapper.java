@@ -3,11 +3,13 @@ package io.github.codingspeedup.execdoc.toolbox.documents;
 import io.github.codingspeedup.execdoc.toolbox.files.BinaryFile;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
+import lombok.Getter;
 
 import java.io.File;
 
 public abstract class FileWrapper {
 
+    @Getter
     private File wrappedFile;
 
     protected FileWrapper() {
@@ -36,10 +38,6 @@ public abstract class FileWrapper {
             return (Folder) file;
         }
         return new Folder(file);
-    }
-
-    public File getFile() {
-        return wrappedFile;
     }
 
     protected void open(File file) {

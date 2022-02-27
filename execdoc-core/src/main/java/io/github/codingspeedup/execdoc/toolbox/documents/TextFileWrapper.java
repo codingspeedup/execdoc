@@ -14,7 +14,7 @@ public abstract class TextFileWrapper extends FileWrapper {
     }
 
     public TextFile getTextFile() {
-        return asTextFile(getFile());
+        return asTextFile(getWrappedFile());
     }
 
     @Override

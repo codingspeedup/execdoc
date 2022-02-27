@@ -1,7 +1,7 @@
 package io.github.codingspeedup.execdoc.blueprint;
 
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpKb;
-import io.github.codingspeedup.execdoc.generators.GenCfg;
+import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.bootstrap.sql.XlsxBase;
@@ -39,14 +39,14 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
     @SneakyThrows
     public M getMaster() {
         if (master == null) {
-            master = masterClass.getConstructor(File.class).newInstance(new File(getFile(), "_master.xlsx"));
+            master = masterClass.getConstructor(File.class).newInstance(new File(getWrappedFile(), "_master.xlsx"));
         }
         return master;
     }
 
     public XlsxBase getSqlData() {
         if (sqlData == null) {
-            sqlData = new XlsxBase(new File(getFile(), "_sql.xlsx"));
+            sqlData = new XlsxBase(new File(getWrappedFile(), "_sql.xlsx"));
         }
         return sqlData;
     }

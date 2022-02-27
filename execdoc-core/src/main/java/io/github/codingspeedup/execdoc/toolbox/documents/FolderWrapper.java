@@ -11,7 +11,7 @@ public abstract class FolderWrapper extends FileWrapper {
     }
 
     public Folder getDirectory() {
-        return asFileParent(getFile());
+        return asFileParent(getWrappedFile());
     }
 
     @Override

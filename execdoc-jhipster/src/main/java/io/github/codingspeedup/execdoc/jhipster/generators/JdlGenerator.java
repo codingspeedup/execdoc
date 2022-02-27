@@ -1,6 +1,7 @@
 package io.github.codingspeedup.execdoc.jhipster.generators;
 
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
+import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.code.JdlEnum;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.code.JdlEnumEntry;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
@@ -153,8 +154,8 @@ public class JdlGenerator {
             appendEntityAnnotations(jdl, jdlEntity.getAnnotations(), false);
 
             KbResult dtoResult = kb.solve(false,
-                    StringUtility.simpleQuote(KbNames.getFunctor(JdlDto.class)), "(X),",
-                    BpNames.NAME_FUNCTOR, "(X, ", StringUtility.simpleQuote(jdlEntity.getName()), ")");
+                    GenUtility.simpleQuote(KbNames.getFunctor(JdlDto.class)), "(X),",
+                    BpNames.NAME_FUNCTOR, "(X, ", GenUtility.simpleQuote(jdlEntity.getName()), ")");
             if (!dtoResult.getYes().isEmpty()) {
                 jdl.append("\n@dto(mapstruct)");
             }

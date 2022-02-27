@@ -14,6 +14,7 @@
         <module>execdoc-core</module>
         <module>execdoc-apps</module>
         <module>execdoc-jhipster</module>
+        <module>execdoc-spring</module>
     </modules>
 
     <properties>

@@ -12,7 +12,7 @@ public class Workplace implements AppCtxProvider {
     private static final String MARKER = "blueprint-xp";
 
     public static void initialize() {
-        AppCtx.registerEnvironmentProvider(new Workplace());
+        AppCtx.initialize(new Workplace());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
+import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.L10NLabel;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
@@ -148,7 +149,7 @@ public class L10nSheet extends BlueprintSheet {
     }
 
     private String createL10nKey(String label, Set<String> l10nKeys) {
-        String basicKey = StringUtility.toBasicL10nKey(label);
+        String basicKey = GenUtility.toBasicL10nKey(label);
         int keyIndex = 1;
         String key = basicKey;
         while (l10nKeys.contains(key)) {

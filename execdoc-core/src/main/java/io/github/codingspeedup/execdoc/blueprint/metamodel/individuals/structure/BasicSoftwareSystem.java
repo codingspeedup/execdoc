@@ -22,7 +22,7 @@ public class BasicSoftwareSystem implements CSoftwareSystem {
     private String name;
 
     public BasicSoftwareSystem(BlueprintMaster master) {
-        setKbId(master.getFile().getParentFile().getName());
+        setKbId(master.getWrappedFile().getParentFile().getName());
     }
 
 }

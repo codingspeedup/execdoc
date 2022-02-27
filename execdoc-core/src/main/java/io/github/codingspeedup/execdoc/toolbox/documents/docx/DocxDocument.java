@@ -41,7 +41,7 @@ public class DocxDocument extends BinaryFileWrapper {
     @SneakyThrows
     @Override
     protected void loadFromWrappedFile() {
-        try (InputStream inp = new FileInputStream(getFile())) {
+        try (InputStream inp = new FileInputStream(getWrappedFile())) {
             document = new XWPFDocument(inp);
         }
     }
@@ -49,7 +49,7 @@ public class DocxDocument extends BinaryFileWrapper {
     @SneakyThrows
     @Override
     protected void saveToWrappedFile() {
-        try (OutputStream fileOut = new FileOutputStream(getFile())) {
+        try (OutputStream fileOut = new FileOutputStream(getWrappedFile())) {
             getDocument().write(fileOut);
             getDocument().close();
         }

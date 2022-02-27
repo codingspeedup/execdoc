@@ -12,6 +12,7 @@
         </processorPath>
         <module name="execdoc-core" />
         <module name="execdoc-jhipster" />
+        <module name="execdoc-spring" />
         <module name="execdoc-apps" />
         <module name="execdoc-kb" />
       </profile>

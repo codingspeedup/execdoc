@@ -33,7 +33,7 @@ public class XmlDocument extends TextFileWrapper {
     @Override
     protected void loadFromWrappedFile() {
         SAXReader reader = new SAXReader();
-        document = reader.read(getFile());
+        document = reader.read(getWrappedFile());
     }
 
     @SneakyThrows

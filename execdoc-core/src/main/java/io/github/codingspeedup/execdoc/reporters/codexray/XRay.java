@@ -30,7 +30,7 @@ public class XRay extends StaticSite {
         style += ".diagrams { display: flex; flex-flow: row wrap; justify-content: flex-start; align-items: center;}\n";
         style += ".diagram { display: inline-block; margin: 15px 0px 25px 40px}\n";
         setIndexXhtmlStyle(style);
-        setIndexXhtmlTitle("XRay: " + getFile().getName());
+        setIndexXhtmlTitle("XRay: " + getWrappedFile().getName());
     }
 
     private static String renderPlantUmlSvgDiagram(String script) {
@@ -40,7 +40,7 @@ public class XRay extends StaticSite {
     @Override
     protected String getIndexXhtmlContent() {
         StringBuilder tocXhtml = new StringBuilder();
-        tocXhtml.append("<h1>").append(getFile().getName().toUpperCase(Locale.ROOT)).append("</h1>\n");
+        tocXhtml.append("<h1>").append(getWrappedFile().getName().toUpperCase(Locale.ROOT)).append("</h1>\n");
         StringBuilder contentsXhtml = new StringBuilder();
         sections.forEach(section -> {
             tocXhtml.append(section.getTocEntry()).append("<br/>\n");
@@ -90,9 +90,9 @@ public class XRay extends StaticSite {
 
     private void fillClassVertex(ClassVertex v) {
         if (v.getJavaDocument() != null) {
-            String embeddedName = v.getJavaDocument().getPackageName() + "." + v.getJavaDocument().getFile().getName();
-            v.setUrl(embedAsXhtml(v.getJavaDocument().getFile(), embeddedName));
-            v.setUrlTooltip("Inspect " + v.getJavaDocument().getFile().getName());
+            String embeddedName = v.getJavaDocument().getPackageName() + "." + v.getJavaDocument().getWrappedFile().getName();
+            v.setUrl(embedAsXhtml(v.getJavaDocument().getWrappedFile(), embeddedName));
+            v.setUrlTooltip("Inspect " + v.getJavaDocument().getWrappedFile().getName());
         } else if (v.isFlag(ClassVertex.FLAG_EXTERNAL)) {
             v.setUrl("https://www.google.com/search?q=" + StringUtility.urlEncode(v.getSimpleName()));
             v.setUrlTooltip("Search for " + v.getSimpleName());

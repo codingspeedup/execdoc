@@ -2,7 +2,7 @@ package io.github.codingspeedup.execdoc.apps.bpmanager;
 
 import io.github.codingspeedup.execdoc.apps.folderdiff.FolderDiffGUI;
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
-import io.github.codingspeedup.execdoc.generators.GenCfg;
+import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
 import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
@@ -109,7 +109,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
     }
 
     private void updateUi() {
-        boolean initialized = getBlueprint().getMaster().getFile().exists();
+        boolean initialized = getBlueprint().getMaster().getWrappedFile().exists();
         selectButton.setEnabled(true);
         openButton.setEnabled(initialized);
         generateBlueprintButton.setEnabled(true);
@@ -127,8 +127,8 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
         fc.setDialogTitle("Open blueprint repository");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         Blueprint<?> bp = getBlueprint();
-        if (bp.getFile().exists()) {
-            fc.setCurrentDirectory(bp.getFile());
+        if (bp.getWrappedFile().exists()) {
+            fc.setCurrentDirectory(bp.getWrappedFile());
         }
         if (JFileChooser.APPROVE_OPTION == fc.showOpenDialog(this)) {
             pathField.setText(fc.getSelectedFile().getCanonicalPath());
@@ -151,7 +151,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
         }
         if (okGenerate) {
             Blueprint<?> bp = getBlueprint();
-            Folder start = new Folder(bp.getFile());
+            Folder start = new Folder(bp.getWrappedFile());
             start.deleteContent();
             bp.save();
         }
@@ -159,7 +159,7 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
     }
 
     private void open(ActionEvent ev) {
-        OsUtility.open(getBlueprint().getMaster().getFile());
+        OsUtility.open(getBlueprint().getMaster().getWrappedFile());
     }
 
     private void normalize(ActionEvent ev) {
@@ -171,12 +171,12 @@ public class BlueprintManagerGUI<T extends Blueprint<?>> extends JFrame {
     }
 
     private void compare(ActionEvent ev) {
-        new Thread(() -> new FolderDiffGUI(getBlueprint().getFile(), null, JFrame.DISPOSE_ON_CLOSE)).start();
+        new Thread(() -> new FolderDiffGUI(getBlueprint().getWrappedFile(), null, JFrame.DISPOSE_ON_CLOSE)).start();
     }
 
     private void explore(ActionEvent ev) {
         Blueprint<?> bp = getBlueprint();
-        TextFile kbPl = new TextFile(new File(bp.getFile(), "kb.pl"));
+        TextFile kbPl = new TextFile(new File(bp.getWrappedFile(), "kb.pl"));
         kbPl.writeStringToContent(bp.compileKb().listTheory());
         OsUtility.open(kbPl);
     }

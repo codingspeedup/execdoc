@@ -5,7 +5,9 @@ import io.github.codingspeedup.execdoc.toolbox.utilities.OsUtility;
 
 public interface AppCtxProvider {
 
-    String getDotPath();
+    default String getDotPath() {
+        return "";
+    }
 
     String getContextMarker();
 

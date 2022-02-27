@@ -14,19 +14,4 @@ public class StringUtilityTest {
         assertEquals(2, StringUtility.splitLines("Lorem\r\nipsum").length);
     }
 
-    @Test
-    public void toBasicL10nKey() {
-        assertEquals("1-lorem-ipsum", StringUtility.toBasicL10nKey("\t1 LorÈm ?  ipsum..\n."));
-    }
-
-    @Test
-    void simpleQuote() {
-        assertNull(StringUtility.simpleQuote(null));
-        assertEquals("''", StringUtility.simpleQuote(""));
-        assertEquals("' '", StringUtility.simpleQuote(" "));
-        assertEquals("'\n'", StringUtility.simpleQuote("\n"));
-        assertEquals("'abc'", StringUtility.simpleQuote("abc"));
-        assertThrows(UnsupportedOperationException.class, () -> StringUtility.simpleQuote("'"));
-    }
-
 }

@@ -214,7 +214,7 @@ public class FolderDiffGUI extends JFrame {
             report.saveAs(reportFile);
 
             if (openReportAtEndCheckBox.isSelected()) {
-                OsUtility.open(report.getFile());
+                OsUtility.open(report.getWrappedFile());
             }
 
             comparing = false;

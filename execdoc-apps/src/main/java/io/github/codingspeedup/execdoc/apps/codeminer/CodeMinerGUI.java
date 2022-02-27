@@ -217,7 +217,7 @@ public class CodeMinerGUI extends JFrame {
     @SneakyThrows
     private void openClipboard(File clipboardFile) {
         if (clipboardFile == null) {
-            clipboardFile = clipboard.getFile();
+            clipboardFile = clipboard.getWrappedFile();
         } else {
             if (!clipboardFile.exists() && !clipboardFile.getName().toLowerCase(Locale.ROOT).endsWith(".xlsx")) {
                 clipboardFile = new File(clipboardFile.getParentFile(), clipboardFile.getName() + ".xlsx");
@@ -225,7 +225,7 @@ public class CodeMinerGUI extends JFrame {
             clipboardFileField.setText(clipboardFile.getCanonicalPath());
         }
         clipboard = new CodeMinerClipboard(clipboardFile);
-        AppCtx.getInstance().setProperty(PROP_KEY_LAST_CLIPBOARD_PATH, clipboard.getFile().getCanonicalPath());
+        AppCtx.getInstance().setProperty(PROP_KEY_LAST_CLIPBOARD_PATH, clipboard.getWrappedFile().getCanonicalPath());
         updateUi(null);
     }
 

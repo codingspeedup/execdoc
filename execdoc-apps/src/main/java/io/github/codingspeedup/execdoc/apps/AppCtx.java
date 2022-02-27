@@ -54,7 +54,10 @@ public final class AppCtx {
         this.localCopyLogFolder = new Folder(envProvider.getLocalCopyLogFolder());
     }
 
-    public static void registerEnvironmentProvider(AppCtxProvider envProvider) {
+    public static void initialize(AppCtxProvider envProvider) {
+        if (AppCtx.envProvider != null) {
+            throw new UnsupportedOperationException("Application context is already initialized");
+        }
         AppCtx.envProvider = envProvider;
     }
 

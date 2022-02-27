@@ -14,6 +14,10 @@
     <version>2022-02-19.12-SNAPSHOT</version>
     <packaging>jar</packaging>
 
+    <name>execdoc-jhipster</name>
+    <description>JHipster based project generation</description>
+    <url>https://github.com/codingspeedup/execdoc</url>
+
     <properties>
     </properties>
 

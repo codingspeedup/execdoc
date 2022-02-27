@@ -15,7 +15,7 @@ public abstract class BinaryFileWrapper extends FileWrapper {
     }
 
     public BinaryFile getBinaryFile() {
-        return asBinaryFile(getFile());
+        return asBinaryFile(getWrappedFile());
     }
 
     @Override

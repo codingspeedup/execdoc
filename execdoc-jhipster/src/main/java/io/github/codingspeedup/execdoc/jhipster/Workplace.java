@@ -12,17 +12,12 @@ public class Workplace implements AppCtxProvider {
     private static final String MARKER = "jhipster-poc";
 
     public static void initialize() {
-        AppCtx.registerEnvironmentProvider(new Workplace());
+        AppCtx.initialize(new Workplace());
     }
 
     @Override
     public Folder getTempFolder() {
         return Folder.of(new File(OsUtility.getUserHomeFolder(), "temp/" + MARKER));
-    }
-
-    @Override
-    public String getDotPath() {
-        return "";
     }
 
     @Override

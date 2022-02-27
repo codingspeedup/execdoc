@@ -18,7 +18,7 @@ public class JdlGeneratorXp {
         System.out.println("\n----------\n\n");
         JdlGenerator codeGen = new JdlGenerator(bp.compileKb());
         String jdl = codeGen.getJdl();
-        new TextFile(new File(bp.getFile(), "generated.jdl")).writeStringToContent(jdl);
+        new TextFile(new File(bp.getWrappedFile(), "generated.jdl")).writeStringToContent(jdl);
         System.out.println(jdl);
     }
 

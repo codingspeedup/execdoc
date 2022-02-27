@@ -15,4 +15,6 @@ public interface JavaTypeSpec extends ResourceSpec {
 
     String getTypeSimpleName();
 
+    String getTypeLemma();
+
 }

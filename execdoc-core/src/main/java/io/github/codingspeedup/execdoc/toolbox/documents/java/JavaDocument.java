@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.apache.commons.compress.utils.FileNameUtils;
 
 import java.io.File;
 import java.util.Optional;
@@ -73,5 +74,11 @@ public class JavaDocument extends TextFileWrapper {
         }
         return null;
     }
+
+    public TypeDeclaration<?> getMainTypeDeclaration() {
+        String typeName = FileNameUtils.getBaseName(getWrappedFile().getName());
+        return getTypeDeclaration(new String[]{typeName});
+    }
+
 
 }

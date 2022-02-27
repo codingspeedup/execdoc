@@ -1,13 +1,15 @@
 package io.github.codingspeedup.execdoc.spring.generators.artifacts;
 
+import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
-import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RestMethodGeneratorTest {
 
@@ -27,13 +29,11 @@ class RestMethodGeneratorTest {
                 .packageName(springProject.getRestPackageName())
                 .typeLemma("Foo")
                 .methodLemma("bar")
-                .httpMethod(HttpRequestMethod.GET)
+                .httpMethod(HttpRequestMethod.POST)
                 .build();
         RestMethodGenerator generator = new RestMethodGenerator(springProject, restMethod);
-        for (TextFileWrapper sourceFile : generator.generateArtifacts()) {
-            System.out.println(sourceFile.getWrappedFile().getAbsolutePath());
-            System.out.println(sourceFile);
-        }
+        assertNotNull(generator);
+        System.out.println(GenUtility.toString(generator.generateArtifacts()));
     }
 
 }

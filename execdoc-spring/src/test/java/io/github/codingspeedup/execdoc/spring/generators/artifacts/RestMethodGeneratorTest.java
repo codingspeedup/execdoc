@@ -4,12 +4,12 @@ import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
-
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.List;
 
 class RestMethodGeneratorTest {
 
@@ -32,8 +32,9 @@ class RestMethodGeneratorTest {
                 .httpMethod(HttpRequestMethod.POST)
                 .build();
         RestMethodGenerator generator = new RestMethodGenerator(springProject, restMethod);
-        assertNotNull(generator);
-        System.out.println(GenUtility.toString(generator.generateArtifacts()));
+        List<TextFileWrapper> artifacts = generator.generateArtifacts();
+        System.out.println(GenUtility.toString(artifacts));
+        // artifacts.forEach(a -> a.save());
     }
 
 }

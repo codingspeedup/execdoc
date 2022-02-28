@@ -52,13 +52,46 @@ public class RestMethodGenerator implements Serializable {
             addControllerMethod(controllerJava, requestDtoJava, responseDtoJava);
             JavaDocument controllerTestJava = maybeGenerateControllerTestClass();
             artifacts.add(controllerTestJava);
+            addTestMethod(controllerTestJava);
         }
         return artifacts;
     }
 
+    private void addTestMethod(JavaDocument controllerTestJava) {
+        CompilationUnit cUnit = controllerTestJava.getCompilationUnit();
+        ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration) controllerTestJava.getMainTypeDeclaration();
+
+        MethodDeclaration methodDeclaration = ciDeclaration.addMethod("test" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, methodSpec.getMethodName()));
+        methodDeclaration.addAnnotation("Test");
+        BlockStmt methodBody = methodDeclaration.getBody().orElseThrow();
+
+        StringBuilder callStatement = new StringBuilder("controller.").append(methodSpec.getMethodName()).append("(");
+
+        if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
+            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeSimpleName()));
+            methodBody.addStatement(methodSpec.getDtoInputTypeSimpleName() + " restRequest = new " + methodSpec.getDtoInputTypeSimpleName() + "();");
+            callStatement.append("restRequest");
+        }
+
+        callStatement.append(");");
+
+        if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
+            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeSimpleName()));
+            callStatement.insert(0, " restResponse = ");
+            callStatement.insert(0, methodSpec.getDtoOutputTypeSimpleName());
+        }
+
+        methodBody.addStatement(callStatement.toString());
+
+        if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
+            cUnit.addImport("org.junit.jupiter.api.Assertions.assertNotNull", true, false);
+            methodBody.addStatement("assertNotNull(restResponse);");
+        }
+    }
+
     private JavaDocument maybeGenerateControllerTestClass() {
         String testSimpleName = methodSpec.getTypeSimpleName() + "ITest";
-        File controllerTestFile = GenUtility.fileOf(projectSpec.getSrcTestJava(), methodSpec.getPackageName(), methodSpec.getTypeSimpleName() + ".java");
+        File controllerTestFile = GenUtility.fileOf(projectSpec.getSrcTestJava(), methodSpec.getPackageName(), testSimpleName + ".java");
         JavaDocument controllerTestJava = new JavaDocument(controllerTestFile);
         if (!controllerTestFile.exists()) {
             CompilationUnit cUnit = controllerTestJava.getCompilationUnit();
@@ -75,33 +108,6 @@ public class RestMethodGenerator implements Serializable {
             ciDeclaration.addAnnotation("SpringBootTest");
 
             ciDeclaration.addField(methodSpec.getTypeSimpleName(), "controller").addAnnotation("Autowired");
-
-            MethodDeclaration methodDeclaration = ciDeclaration.addMethod("test" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, methodSpec.getMethodName()));
-            methodDeclaration.addAnnotation("Test");
-            BlockStmt methodBody = methodDeclaration.getBody().orElseThrow();
-
-            StringBuilder callStatement = new StringBuilder("controller.").append(methodSpec.getMethodName()).append("(");
-
-            if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
-                cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeSimpleName()));
-                methodBody.addStatement(methodSpec.getDtoInputTypeSimpleName() + " restRequest = new " + methodSpec.getDtoInputTypeSimpleName() + "();");
-                callStatement.append("restRequest");
-            }
-
-            callStatement.append(");");
-
-            if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
-                cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeSimpleName()));
-                callStatement.insert(0, " restResponse = ");
-                callStatement.insert(0, methodSpec.getDtoOutputTypeSimpleName());
-            }
-
-            methodBody.addStatement(callStatement.toString());
-
-            if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
-                cUnit.addImport("org.junit.jupiter.api.Assertions.assertNotNull", true, false);
-                methodBody.addStatement("assertNotNull(restResponse);");
-            }
         }
         return controllerTestJava;
     }

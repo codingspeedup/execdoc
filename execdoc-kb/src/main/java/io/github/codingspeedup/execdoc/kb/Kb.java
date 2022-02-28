@@ -1,9 +1,9 @@
 package io.github.codingspeedup.execdoc.kb;
 
-import com.devskiller.friendly_id.FriendlyId;
 import io.github.codingspeedup.execdoc.kb.vocabulary.KbElement;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.kb.vocabulary.relations.KbRelation;
+import io.github.codingspeedup.execdoc.toolbox.utilities.UuidUtility;
 import it.unibo.tuprolog.core.*;
 import it.unibo.tuprolog.solve.Solver;
 import it.unibo.tuprolog.solve.classic.ClassicSolverFactory;
@@ -32,6 +32,19 @@ public abstract class Kb {
     private static final Var Z2 = Var.of("Z2");
     private static final Var Z3 = Var.of("Z3");
 
+    private static final Var[] MM = new Var[] {
+            Var.of("M0"),
+            Var.of("M1"),
+            Var.of("M2"),
+            Var.of("M3"),
+            Var.of("M4"),
+            Var.of("M5"),
+            Var.of("M6"),
+            Var.of("M7"),
+            Var.of("M8"),
+            Var.of("M9"),
+    };
+
     private static final Method LIST_ADD;
     private static final Method SET_ADD;
     private static final Method MAP_PUT;
@@ -46,22 +59,21 @@ public abstract class Kb {
         }
     }
 
-    public static String ensureKbId(KbElement element) {
-        if (StringUtils.isBlank(element.getKbId())) {
-            element.setKbId(FriendlyId.toFriendlyId(UUID.randomUUID()));
-        }
-        return element.getKbId();
-    }
-
     @Getter
     private final Theory theory = Theory.empty().toMutableTheory();
     private final Set<String> learnedPredicates = new HashSet<>();
     private final KbTermBuilder termBuilder;
     private Solver solver;
-
     public Kb(KbTermBuilder termBuilder) {
         this.termBuilder = termBuilder;
         learnedPredicates.add(KbNames.getFunctor(KbConcept.class));
+    }
+
+    public static String ensureKbId(KbElement element) {
+        if (StringUtils.isBlank(element.getKbId())) {
+            element.setKbId(UuidUtility.nextFriendlyUuid());
+        }
+        return element.getKbId();
     }
 
     public static int toIntOrZero(Number value) {
@@ -310,7 +322,7 @@ public abstract class Kb {
     private <R extends KbRelation> R solveRelation(Map<String, KbElement> discovered, Class<R> relationType, String kbId) {
         Object[] args = new Object[1 + KbRelation.getArity(relationType)];
         args[0] = Atom.of(kbId);
-        IntStream.range(1, args.length).forEach(i -> args[i] = Var.of("M" + i));
+        IntStream.range(1, args.length).forEach(i -> args[i] = MM[i]);
         Pair<Struct, List<Var>> structVar = termBuilder.structOf(true, relationType, args);
         Struct goal = structVar.getLeft();
         String goalKey = goal.toString();

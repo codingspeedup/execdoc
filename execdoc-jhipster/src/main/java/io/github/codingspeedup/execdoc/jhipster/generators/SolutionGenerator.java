@@ -2,6 +2,7 @@ package io.github.codingspeedup.execdoc.jhipster.generators;
 
 import io.github.codingspeedup.execdoc.jhipster.blueprint.JHipsterBlueprint;
 import io.github.codingspeedup.execdoc.kb.Kb;
+
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
 import io.github.codingspeedup.execdoc.toolbox.processes.OsProcess;

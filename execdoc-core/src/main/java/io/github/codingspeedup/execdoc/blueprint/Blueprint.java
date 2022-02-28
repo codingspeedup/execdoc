@@ -51,8 +51,6 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
         return sqlData;
     }
 
-    public abstract void generate(GenCfg bpGenCfg);
-
     @Override
     protected void saveToWrappedFile() {
         getMaster().save();

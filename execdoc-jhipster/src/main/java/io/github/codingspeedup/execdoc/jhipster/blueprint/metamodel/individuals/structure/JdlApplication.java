@@ -1,6 +1,7 @@
 package io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure;
 
-import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.JdlNames;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.SpringNames;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.sheets.AppSheet;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
@@ -18,11 +19,11 @@ import java.util.Set;
 @KbFunctor
 public class JdlApplication implements CSubsystem {
 
-    @KbFunctor(value = JdlNames.CONFIG_FUNCTOR, T1 = String.class, T2 = JdlValue.class)
+    @KbFunctor(value = SpringNames.CONFIG_FUNCTOR, T1 = String.class, T2 = JdlValue.class)
     private final Map<String, JdlValue> config = new HashMap<>();
 
     @Getter
-    @KbFunctor(value = JdlNames.ENTITY_FUNCTOR, T1 = String.class)
+    @KbFunctor(value = SpringNames.ENTITY_FUNCTOR, T1 = String.class)
     private final Set<String> entities = new HashSet<>();
 
     @Getter

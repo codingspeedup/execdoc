@@ -1,19 +1,16 @@
-package io.github.codingspeedup.execdoc.jhipster.blueprint;
+package io.github.codingspeedup.execdoc.spring.blueprint;
 
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.L10nSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.SystemSheet;
-import io.github.codingspeedup.execdoc.jhipster.blueprint.sheets.AppSheet;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.*;
 
 import java.io.File;
 
-/**
- * https://www.jhipster.tech/jdl/intro
- */
-public class JHipsterMaster extends BlueprintMaster {
 
-    public JHipsterMaster(File file) {
+public class SpringMaster extends BlueprintMaster {
+
+    public SpringMaster(File file) {
         super(file);
     }
 
@@ -21,7 +18,6 @@ public class JHipsterMaster extends BlueprintMaster {
     protected void registerSheets() {
         registerSheet(UtilitySheet.class);
         registerSheet(SystemSheet.class);
-        registerSheet(AppSheet.class);
         registerSheet(L10nSheet.class);
         registerSheet(DtoSheet.class);
         registerSheet(ControllerMethodsSheet.class);

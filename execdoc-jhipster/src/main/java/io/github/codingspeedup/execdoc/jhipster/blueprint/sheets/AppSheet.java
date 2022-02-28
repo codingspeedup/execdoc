@@ -4,10 +4,11 @@ import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
-import io.github.codingspeedup.execdoc.kb.Kb;
-import io.github.codingspeedup.execdoc.jhipster.blueprint.JHipsterSheet;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
-import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
+import io.github.codingspeedup.execdoc.kb.Kb;
+import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.JdlValue;
+import io.github.codingspeedup.execdoc.spring.blueprint.sheets.UtilitySheet;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -21,7 +22,7 @@ import java.util.List;
 /**
  * https://www.jhipster.tech/jdl/applications
  */
-public class AppSheet extends JHipsterSheet {
+public class AppSheet extends SpringSheet {
 
     public static final String NAME_MARKER = "APP" + BlueprintMaster.INSTANTIABLE_SHEET_MARKER;
     public static final String TOC_CHAPTER = "Global";

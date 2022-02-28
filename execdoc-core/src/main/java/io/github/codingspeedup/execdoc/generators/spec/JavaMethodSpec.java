@@ -8,11 +8,11 @@ public interface JavaMethodSpec extends JavaTypeSpec {
         throw new UnsupportedOperationException();
     }
 
-    default String getDtoInputTypeSimpleName() {
+    default String getDtoInputTypeName() {
         throw new UnsupportedOperationException();
     }
 
-    default String getDtoOutputTypeSimpleName() {
+    default String getDtoOutputTypeName() {
         throw new UnsupportedOperationException();
     }
 

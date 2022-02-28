@@ -29,12 +29,14 @@ class RestMethodGeneratorTest {
                 .packageName(springProject.getRestPackageName())
                 .typeLemma("Foo")
                 .methodLemma("bar")
-                .httpMethod(HttpRequestMethod.POST)
+                .httpMethod(HttpRequestMethod.GET)
                 .build();
-        RestMethodGenerator generator = new RestMethodGenerator(springProject, restMethod);
-        List<TextFileWrapper> artifacts = generator.generateArtifacts();
-        System.out.println(GenUtility.toString(artifacts));
-        // artifacts.forEach(a -> a.save());
+        RestMethodGenerator generator = new RestMethodGenerator(springProject);
+        generator.generateArtifacts(restMethod);
+        for (TextFileWrapper artifact : generator.getArtifacts().values()) {
+            System.out.println(GenUtility.toString(List.of(artifact)));
+            artifact.save();
+        }
     }
 
 }

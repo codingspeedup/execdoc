@@ -11,7 +11,7 @@ import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.co
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlEntity;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlField;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.JdlValue;
+import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.sheets.AppSheet;

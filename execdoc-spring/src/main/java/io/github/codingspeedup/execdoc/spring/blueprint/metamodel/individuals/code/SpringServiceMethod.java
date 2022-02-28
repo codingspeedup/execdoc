@@ -6,9 +6,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlControllerMethod extends JdlComponentMethod {
+public class SpringServiceMethod extends SpringComponentMethod {
 
-    public JdlControllerMethod(Cell cell) {
+    public SpringServiceMethod(Cell cell) {
         super(cell);
     }
 

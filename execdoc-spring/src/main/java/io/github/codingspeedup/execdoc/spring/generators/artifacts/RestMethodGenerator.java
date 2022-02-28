@@ -3,6 +3,7 @@ package io.github.codingspeedup.execdoc.spring.generators.artifacts;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -11,53 +12,45 @@ import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProjectSpec;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
-import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
+import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.github.javaparser.ast.Modifier.Keyword;
 
 public class RestMethodGenerator implements Serializable {
 
     private final SpringBootProjectSpec projectSpec;
-    private final SpringRestMethodSpec methodSpec;
 
-    public RestMethodGenerator(SpringBootProjectSpec projectSpec, SpringRestMethodSpec methodSpec) {
+    @Getter
+    private final Map<String, JavaDocument> artifacts = new LinkedHashMap<>();
+
+    public RestMethodGenerator(SpringBootProjectSpec projectSpec) {
         this.projectSpec = projectSpec;
-        this.methodSpec = methodSpec;
     }
 
-    public List<TextFileWrapper> generateArtifacts() {
-        List<TextFileWrapper> artifacts = new ArrayList<>();
-        JavaDocument controllerJava = maybeGenerateControllerClass();
+    public void generateArtifacts(SpringRestMethodSpec methodSpec) {
+        JavaDocument controllerJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()), key -> maybeGenerateControllerClass(key, methodSpec));
         List<MethodDeclaration> methodDeclarations = controllerJava.getCompilationUnit()
-                .getClassByName(methodSpec.getTypeSimpleName()).orElseThrow(() -> new UnsupportedOperationException("Controller class not found " + methodSpec.getTypeSimpleName()))
+                .getClassByName(methodSpec.getTypeName()).orElseThrow(() -> new UnsupportedOperationException("Controller class not found " + methodSpec.getTypeName()))
                 .getMethodsByName(methodSpec.getMethodName());
         if (CollectionUtils.isEmpty(methodDeclarations)) {
-            artifacts.add(controllerJava);
-            JavaDocument requestDtoJava = maybeGenerateRequestDtoClass();
-            if (requestDtoJava != null) {
-                artifacts.add(requestDtoJava);
-            }
-            JavaDocument responseDtoJava = maybeGenerateResponseDtoClass();
-            if (responseDtoJava != null) {
-                artifacts.add(responseDtoJava);
-            }
-            addControllerMethod(controllerJava, requestDtoJava, responseDtoJava);
-            JavaDocument controllerTestJava = maybeGenerateControllerTestClass();
-            artifacts.add(controllerTestJava);
-            addTestMethod(controllerTestJava);
+            JavaDocument requestDtoJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()), key -> maybeGenerateRequestDtoClass(key, methodSpec));
+            JavaDocument responseDtoJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()), key -> maybeGenerateResponseDtoClass(key, methodSpec));
+            addControllerMethod(controllerJava, methodSpec, requestDtoJava, responseDtoJava);
+            JavaDocument controllerTestJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName() + "ITest"), key -> maybeGenerateControllerTestClass(key, methodSpec));
+            addTestMethod(controllerTestJava, methodSpec);
         }
-        return artifacts;
     }
 
-    private void addTestMethod(JavaDocument controllerTestJava) {
+    private void addTestMethod(JavaDocument controllerTestJava, SpringRestMethodSpec methodSpec) {
         CompilationUnit cUnit = controllerTestJava.getCompilationUnit();
         ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration) controllerTestJava.getMainTypeDeclaration();
 
@@ -68,17 +61,17 @@ public class RestMethodGenerator implements Serializable {
         StringBuilder callStatement = new StringBuilder("controller.").append(methodSpec.getMethodName()).append("(");
 
         if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
-            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeSimpleName()));
-            methodBody.addStatement(methodSpec.getDtoInputTypeSimpleName() + " restRequest = new " + methodSpec.getDtoInputTypeSimpleName() + "();");
+            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()));
+            methodBody.addStatement(methodSpec.getDtoInputTypeName() + " restRequest = new " + methodSpec.getDtoInputTypeName() + "();");
             callStatement.append("restRequest");
         }
 
         callStatement.append(");");
 
         if (BooleanUtils.isTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
-            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeSimpleName()));
+            cUnit.addImport(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()));
             callStatement.insert(0, " restResponse = ");
-            callStatement.insert(0, methodSpec.getDtoOutputTypeSimpleName());
+            callStatement.insert(0, methodSpec.getDtoOutputTypeName());
         }
 
         methodBody.addStatement(callStatement.toString());
@@ -89,13 +82,13 @@ public class RestMethodGenerator implements Serializable {
         }
     }
 
-    private JavaDocument maybeGenerateControllerTestClass() {
-        String testSimpleName = methodSpec.getTypeSimpleName() + "ITest";
-        File controllerTestFile = GenUtility.fileOf(projectSpec.getSrcTestJava(), methodSpec.getPackageName(), testSimpleName + ".java");
+    private JavaDocument maybeGenerateControllerTestClass(String typeFullName, SpringRestMethodSpec methodSpec) {
+        String[] packageType = GenUtility.splitTypeFullName(typeFullName);
+        File controllerTestFile = GenUtility.fileOf(projectSpec.getSrcTestJava(), packageType[0], packageType[1] + ".java");
         JavaDocument controllerTestJava = new JavaDocument(controllerTestFile);
         if (!controllerTestFile.exists()) {
             CompilationUnit cUnit = controllerTestJava.getCompilationUnit();
-            cUnit.setPackageDeclaration(methodSpec.getPackageName());
+            cUnit.setPackageDeclaration(packageType[0]);
 
             cUnit.addImport("org.junit.jupiter.api.Test");
             cUnit.addImport("org.junit.jupiter.api.extension.ExtendWith");
@@ -103,16 +96,16 @@ public class RestMethodGenerator implements Serializable {
             cUnit.addImport("org.springframework.boot.test.context.SpringBootTest");
             cUnit.addImport("org.springframework.test.context.junit.jupiter.SpringExtension");
 
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(testSimpleName);
+            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1]);
             ciDeclaration.addSingleMemberAnnotation("ExtendWith", "SpringExtension.class");
             ciDeclaration.addAnnotation("SpringBootTest");
 
-            ciDeclaration.addField(methodSpec.getTypeSimpleName(), "controller").addAnnotation("Autowired");
+            ciDeclaration.addField(methodSpec.getTypeName(), "controller").addAnnotation("Autowired");
         }
         return controllerTestJava;
     }
 
-    private void addControllerMethod(JavaDocument controllerJava, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
+    private void addControllerMethod(JavaDocument controllerJava, SpringRestMethodSpec methodSpec, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
         String mappingName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, methodSpec.getHttpRequestMethod().name()) + "Mapping";
         String restUri = "URI_" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, methodSpec.getMethodName());
         String methodUri = "METHOD_" + restUri;
@@ -135,8 +128,11 @@ public class RestMethodGenerator implements Serializable {
         if (requestDtoJava != null) {
             String requestDtoName = requestDtoJava.getMainTypeDeclaration().getNameAsString();
             controllerUnit.addImport("org.springframework.web.bind.annotation.RequestBody");
+            controllerUnit.addImport("org.springframework.validation.annotation.Validated");
             controllerUnit.addImport(GenUtility.joinPackageName(requestDtoJava.getPackageName(), requestDtoName));
-            methodDeclaration.addAndGetParameter(requestDtoName, "restRequest").addAnnotation("RequestBody");
+            Parameter requestBodyParameter = methodDeclaration.addAndGetParameter(requestDtoName, "restRequest");
+            requestBodyParameter.addAnnotation("RequestBody");
+            requestBodyParameter.addAnnotation("Validated");
         }
 
         if (responseDtoJava != null) {
@@ -152,53 +148,40 @@ public class RestMethodGenerator implements Serializable {
         }
     }
 
-    private JavaDocument maybeGenerateRequestDtoClass() {
+    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
             return null;
         }
-        File requestDtoFile = GenUtility.fileOf(projectSpec.getSrcMainJava(), methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeSimpleName() + ".java");
-        JavaDocument requestDtoJava = new JavaDocument(requestDtoFile);
-        if (!requestDtoFile.exists()) {
-            CompilationUnit cUnit = requestDtoJava.getCompilationUnit();
-            cUnit.setPackageDeclaration(methodSpec.getDtoPackageName());
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(methodSpec.getDtoInputTypeSimpleName(), Keyword.PUBLIC);
-            GenUtility.makeSerializable(ciDeclaration);
-            GenUtility.addLombokGettersAndSetters(ciDeclaration);
-        }
-        return requestDtoJava;
+        return GenUtility.generateDto(projectSpec.getSrcMainJava(), typeFullName);
     }
 
-    private JavaDocument maybeGenerateResponseDtoClass() {
+    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
             return null;
         }
-        File requestDtoFile = GenUtility.fileOf(projectSpec.getSrcMainJava(), methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeSimpleName() + ".java");
-        JavaDocument requestDtoJava = new JavaDocument(requestDtoFile);
-        if (!requestDtoFile.exists()) {
-            CompilationUnit cUnit = requestDtoJava.getCompilationUnit();
-            cUnit.setPackageDeclaration(methodSpec.getDtoPackageName());
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(methodSpec.getDtoOutputTypeSimpleName(), Keyword.PUBLIC);
-            GenUtility.makeSerializable(ciDeclaration);
-            GenUtility.addLombokGettersAndSetters(ciDeclaration);
-        }
-        return requestDtoJava;
+        return GenUtility.generateDto(projectSpec.getSrcMainJava(), typeFullName);
     }
 
-    private JavaDocument maybeGenerateControllerClass() {
-        File controllerFile = GenUtility.fileOf(projectSpec.getSrcMainJava(), methodSpec.getPackageName(), methodSpec.getTypeSimpleName() + ".java");
+    private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethodSpec methodSpec) {
+        String[] packageType = GenUtility.splitTypeFullName(typeFullName);
+        File controllerFile = GenUtility.fileOf(projectSpec.getSrcMainJava(), packageType[0], packageType[1] + ".java");
         JavaDocument controllerJava = new JavaDocument(controllerFile);
         if (!controllerFile.exists()) {
             CompilationUnit cUnit = controllerJava.getCompilationUnit();
-            cUnit.setPackageDeclaration(methodSpec.getPackageName());
+            cUnit.setPackageDeclaration(packageType[0]);
 
+            cUnit.addImport("lombok.RequiredArgsConstructor");
             cUnit.addImport("lombok.extern.slf4j.Slf4j");
             cUnit.addImport("org.springframework.web.bind.annotation.RequestMapping");
             cUnit.addImport("org.springframework.web.bind.annotation.RestController");
 
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(methodSpec.getTypeSimpleName(), Keyword.PUBLIC);
+            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Keyword.PUBLIC);
             ciDeclaration.addAnnotation("RestController");
-            ciDeclaration.addSingleMemberAnnotation("RequestMapping", methodSpec.getTypeSimpleName() + ".ROOT_URI");
+            ciDeclaration.addSingleMemberAnnotation("RequestMapping", packageType[1] + ".ROOT_URI");
+            ciDeclaration.addAnnotation("RequiredArgsConstructor");
             ciDeclaration.addAnnotation("Slf4j");
+
+            GenUtility.addCreationJavadoc(ciDeclaration);
 
             String rootUri = "/" + projectSpec.getRestApiRoot() + "/" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodSpec.getTypeLemma());
             ciDeclaration.addFieldWithInitializer(String.class, "ROOT_URI", new StringLiteralExpr(rootUri), Keyword.STATIC, Keyword.FINAL);

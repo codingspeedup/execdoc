@@ -11,13 +11,13 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlService extends JdlComponent {
+public class SpringService extends SpringComponent {
 
     @Getter
-    @KbFunctor(value = BpNames.CODE_ELEMENT_FUNCTOR, T1 = JdlServiceMethod.class)
-    private final List<JdlServiceMethod> codeElement = new ArrayList<>();
+    @KbFunctor(value = BpNames.CODE_ELEMENT_FUNCTOR, T1 = SpringServiceMethod.class)
+    private final List<SpringServiceMethod> codeElement = new ArrayList<>();
 
-    public JdlService(Cell cell) {
+    public SpringService(Cell cell) {
         super(cell);
     }
 

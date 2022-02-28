@@ -1,7 +1,6 @@
 package io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure;
 
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.SpringNames;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.sheets.AppSheet;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;

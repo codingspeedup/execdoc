@@ -14,7 +14,7 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public abstract class JdlComponent extends BpConceptCell implements CClassUnit, IsOwned {
+public abstract class SpringComponent extends BpConceptCell implements CClassUnit, IsOwned {
 
     @Getter
     @Setter
@@ -25,7 +25,7 @@ public abstract class JdlComponent extends BpConceptCell implements CClassUnit, 
     @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
-    public JdlComponent(Cell cell) {
+    public SpringComponent(Cell cell) {
         super(cell);
     }
 

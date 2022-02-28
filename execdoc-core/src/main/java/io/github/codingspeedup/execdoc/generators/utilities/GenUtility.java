@@ -4,12 +4,16 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.expr.LongLiteralExpr;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
+import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
+import io.github.codingspeedup.execdoc.toolbox.files.Folder;
+import io.github.codingspeedup.execdoc.toolbox.utilities.DateTimeUtility;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.IntStream;
@@ -31,7 +35,6 @@ public class GenUtility {
         }
         return label;
     }
-
 
     public static String simpleQuote(String string) {
         if (string == null) {
@@ -86,20 +89,43 @@ public class GenUtility {
         return sb.toString();
     }
 
-    public static void makeSerializable(ClassOrInterfaceDeclaration ciDeclaration) {
-        ciDeclaration.addImplementedType(Serializable.class);
-        ciDeclaration.addFieldWithInitializer(long.class, "serialVersionUID", new LongLiteralExpr("1L"),
-                Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
+    public static void addCreationJavadoc(ClassOrInterfaceDeclaration ciDeclaration) {
+        ciDeclaration.setJavadocComment("Created on " + DateTimeUtility.toIsoDateString(LocalDate.now()));
     }
 
-    public static void addLombokGettersAndSetters(ClassOrInterfaceDeclaration ciDeclaration) {
-        CompilationUnit cUnit = (CompilationUnit) ciDeclaration.getParentNode().orElseThrow();
-        cUnit.addImport("lombok.Getter");
-        cUnit.addImport("lombok.NoArgsConstructor");
-        cUnit.addImport("lombok.Setter");
-        ciDeclaration.addAnnotation("NoArgsConstructor");
-        ciDeclaration.addAnnotation("Getter");
-        ciDeclaration.addAnnotation("Setter");
+    public static String[] splitTypeFullName(String typeFullName) {
+        int lastDotIndex = typeFullName.lastIndexOf(".");
+        if (lastDotIndex < 0) {
+            return new String[]{"", typeFullName};
+        }
+        return new String[]{typeFullName.substring(0, lastDotIndex), typeFullName.substring(lastDotIndex + 1)};
+    }
+
+    public static JavaDocument generateDto(Folder folder, String typeFullName) {
+        String[] packageType = splitTypeFullName(typeFullName);
+        File requestDtoFile = GenUtility.fileOf(folder, packageType[0], packageType[1] + ".java");
+        JavaDocument dtoJava = new JavaDocument(requestDtoFile);
+        if (!requestDtoFile.exists()) {
+            CompilationUnit cUnit = dtoJava.getCompilationUnit();
+            cUnit.setPackageDeclaration(packageType[0]);
+
+            cUnit.addImport("lombok.AllArgsConstructor");
+            cUnit.addImport("lombok.Builder");
+            cUnit.addImport("lombok.Data");
+            cUnit.addImport("lombok.NoArgsConstructor");
+
+            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Keyword.PUBLIC);
+            ciDeclaration.addAnnotation("NoArgsConstructor");
+            ciDeclaration.addAnnotation("AllArgsConstructor");
+            ciDeclaration.addAnnotation("Builder");
+            ciDeclaration.addAnnotation("Data");
+
+            ciDeclaration.addImplementedType(Serializable.class);
+            ciDeclaration.addFieldWithInitializer(long.class, "serialVersionUID", new LongLiteralExpr("1L"),
+                    Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
+            ciDeclaration.addField(String.class, "value", Keyword.PRIVATE);
+        }
+        return dtoJava;
     }
 
 }

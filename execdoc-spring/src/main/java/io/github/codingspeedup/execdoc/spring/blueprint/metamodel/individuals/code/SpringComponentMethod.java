@@ -11,14 +11,14 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public abstract class JdlComponentMethod extends BpConceptCell implements CMethodUnit {
+public abstract class SpringComponentMethod extends BpConceptCell implements CMethodUnit {
 
     @Getter
     @Setter
     @KbFunctor(BpNames.NAME_FUNCTOR)
     private String name;
 
-    public JdlComponentMethod(Cell cell) {
+    public SpringComponentMethod(Cell cell) {
         super(cell);
     }
 

@@ -17,13 +17,13 @@ public interface SpringRestMethodSpec extends SpringComponentMethodSpec {
     }
 
     @Override
-    default String getDtoInputTypeSimpleName() {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, getMethodName()) + "RestRequest";
+    default String getDtoInputTypeName() {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, getMethodName()) + "Request";
     }
 
     @Override
-    default String getDtoOutputTypeSimpleName() {
-        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, getMethodName()) + "RestResponse";
+    default String getDtoOutputTypeName() {
+        return CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, getMethodName()) + "Response";
     }
 
 }

@@ -7,7 +7,7 @@ import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.JdlValue;
+import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.UtilitySheet;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;

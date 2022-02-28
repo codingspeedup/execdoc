@@ -24,7 +24,7 @@ public class SpringRestMethod implements SpringRestMethodSpec {
     }
 
     @Override
-    public String getTypeSimpleName() {
+    public String getTypeName() {
         return typeLemma + "Resource";
     }
 

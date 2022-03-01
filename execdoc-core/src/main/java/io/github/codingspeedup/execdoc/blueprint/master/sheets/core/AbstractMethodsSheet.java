@@ -23,8 +23,8 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
 
     public static final String ANCHOR_NAME = CellMarkers.ANCHOR_MARKER + "ClassName / methodName";
 
-    private final Class<C> componentClass;
-    private final Class<M> methodClass;
+    protected final Class<C> componentClass;
+    protected final Class<M> methodClass;
 
     protected AbstractMethodsSheet(BlueprintMaster bp, Sheet sheet, Class<C> componentClass, Class<M> methodClass) {
         super(bp, sheet);

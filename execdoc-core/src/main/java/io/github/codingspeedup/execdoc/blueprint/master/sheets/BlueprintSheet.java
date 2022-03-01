@@ -113,7 +113,7 @@ public abstract class BlueprintSheet {
         return Optional.empty();
     }
 
-    protected void setCellComment(Cell cell, CellComment cellComment) {
+    protected CellComment setCellComment(Cell cell, CellComment cellComment) {
         if (cellComment == null) {
             cell.setCellComment(null);
         } else {
@@ -131,6 +131,7 @@ public abstract class BlueprintSheet {
             RichTextString rts = factory.createRichTextString(cellComment.toString());
             comment.setString(rts);
         }
+        return cellComment;
     }
 
     public void autoSizeColumns(Object... specs) {

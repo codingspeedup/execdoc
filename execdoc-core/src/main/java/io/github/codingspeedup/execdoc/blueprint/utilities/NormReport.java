@@ -32,10 +32,11 @@ public class NormReport {
         issues.forEach(issue -> {
             sb.append(issue.isError() ? "E" : " ").append(" ");
             Cell cell = issue.getCell();
-            if (cell == null) {
-                sb.append(String.format("%-4s %-15s %s%n",
-                        XlsxUtil.toCellName(cell),
+            if (cell != null) {
+                sb.append(String.format("\\%-15s/  %s.%-3s >-  %s%n",
                         cell.getSheet().getSheetName(),
+                        XlsxUtil.columnIndexToName(cell.getColumnIndex()),
+                        XlsxUtil.rowIndexToName(cell.getRowIndex()),
                         issue.getMessage()));
             } else {
                 sb.append(issue.getMessage()).append("\n");

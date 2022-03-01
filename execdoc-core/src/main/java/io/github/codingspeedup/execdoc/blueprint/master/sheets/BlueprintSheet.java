@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellComment;
@@ -34,7 +35,7 @@ public abstract class BlueprintSheet {
 
     public abstract int initialize();
 
-    public abstract void normalize();
+    public abstract void normalize(NormReport normReport);
 
     public abstract void expand(Kb kb);
 

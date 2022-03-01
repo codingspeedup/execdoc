@@ -1,6 +1,7 @@
 package io.github.codingspeedup.execdoc.spring.blueprint.sheets;
 
 import com.google.common.base.CaseFormat;
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnum;
 import io.github.codingspeedup.execdoc.kb.Kb;
@@ -126,7 +127,7 @@ public class EntitySheet extends SpringSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         Cell tableCell = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Row row = getSheet().getRow(rowIdx);

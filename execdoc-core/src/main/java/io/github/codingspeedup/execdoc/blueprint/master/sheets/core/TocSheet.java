@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
@@ -51,7 +52,7 @@ public class TocSheet extends BlueprintSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         clearSheet();
         int rowIdx = START_ROW_IDX;
 

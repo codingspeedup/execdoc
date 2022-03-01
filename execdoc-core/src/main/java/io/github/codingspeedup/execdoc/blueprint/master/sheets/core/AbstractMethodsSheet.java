@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
@@ -47,7 +48,7 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         autoSizeColumns(getAnchors().getColumn(ANCHOR_NAME));
     }
 

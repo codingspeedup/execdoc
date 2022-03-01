@@ -4,6 +4,7 @@ import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
@@ -222,7 +223,7 @@ public class AppSheet extends SpringSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         int nameColIdx = getAnchors().getColumn(ANCHOR_OPTION_NAME);
         int valueColIdx = getAnchors().getColumn(ANCHOR_OPTION_VALUE);
         for (Row row : getSheet()) {

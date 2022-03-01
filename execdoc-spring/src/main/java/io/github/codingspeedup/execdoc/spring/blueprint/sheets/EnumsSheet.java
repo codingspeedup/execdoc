@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.spring.blueprint.sheets;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnum;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnumEntry;
 import io.github.codingspeedup.execdoc.kb.Kb;
@@ -43,7 +44,7 @@ public class EnumsSheet extends SpringSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         Cell enumCell = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));

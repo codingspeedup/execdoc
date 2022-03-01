@@ -4,15 +4,15 @@ import lombok.Getter;
 
 public enum HttpRequestMethod {
 
+    CONNECT(false, false, false, true, true),
+    DELETE(false, true, false, false, true),
     GET(true, true, true, false, true),
     HEAD(true, true, true, false, false),
+    OPTIONS(true, true, false, null, true),
+    PATCH(false, false, false, true, true),
     POST(false, false, false, true, true),
     PUT(false, true, false, true, true),
-    DELETE(false, true, false, false, true),
-    CONNECT(false, false, false, true, true),
-    OPTIONS(true, true, false, null, true),
     TRACE(true, true, false, true, true),
-    PATCH(false, false, false, true, true),
 
     ;
 

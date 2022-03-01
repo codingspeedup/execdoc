@@ -3,6 +3,7 @@ package io.github.codingspeedup.execdoc.apps.bpmanager;
 import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.apps.folderdiff.FolderDiffGUI;
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import io.github.codingspeedup.execdoc.toolbox.files.TextFile;
 import io.github.codingspeedup.execdoc.toolbox.processes.JavaProcess;
@@ -176,9 +177,15 @@ public class BlueprintManagerGUI<B extends Blueprint<?>> extends JFrame {
     private void normalize(ActionEvent ev) {
         beginOperation("Normalizing blueprint...");
         Blueprint<?> bp = getBlueprint();
-        bp.normalize();
-        bp.save();
-        endOperation("Done normalizing blueprint");
+        NormReport report = bp.normalize();
+        System.out.println(report);
+        int errorCount = report.getErrorCount();
+        if (errorCount > 0) {
+            endOperation("Done normalizing blueprint - " + errorCount + " error(s) / " + report.getIssueCount() + " issue(s)");
+        } else {
+            bp.save();
+            endOperation("Done normalizing blueprint - " + report.getIssueCount() + " issue(s)");
+        }
     }
 
     private void compare(ActionEvent ev) {

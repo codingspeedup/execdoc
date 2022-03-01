@@ -1,10 +1,10 @@
 package io.github.codingspeedup.execdoc.blueprint;
 
-import io.github.codingspeedup.execdoc.blueprint.metamodel.BpKb;
-import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
-import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpKb;
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.bootstrap.sql.XlsxBase;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.toolbox.documents.FolderWrapper;
 import lombok.SneakyThrows;
 
@@ -26,8 +26,8 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
         this.masterClass = masterClass;
     }
 
-    public void normalize() {
-        getMaster().normalize();
+    public NormReport normalize() {
+        return getMaster().normalize();
     }
 
     public Kb compileKb() {

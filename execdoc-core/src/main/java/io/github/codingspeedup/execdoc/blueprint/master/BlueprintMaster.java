@@ -1,11 +1,12 @@
 package io.github.codingspeedup.execdoc.blueprint.master;
 
-import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellStyles;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.SheetNameComparator;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.SystemSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.TocSheet;
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
+import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxDocument;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -63,7 +64,8 @@ public abstract class BlueprintMaster extends XlsxDocument {
 
     protected abstract void registerSheets();
 
-    public void normalize() {
+    public NormReport normalize() {
+        NormReport normReport = new NormReport();
         if (getWorkbook().getSheet(TocSheet.NAME_MARKER) == null) {
             getWorkbook().createSheet(TocSheet.NAME_MARKER);
         }
@@ -75,12 +77,13 @@ public abstract class BlueprintMaster extends XlsxDocument {
         wrapSheets();
         for (Map.Entry<String, BlueprintSheet> entry : modelSheets.entrySet()) {
             BlueprintSheet blueprintSheet = entry.getValue();
-            blueprintSheet.normalize();
+            blueprintSheet.normalize(normReport);
             int blueprintSheetIndex = getWorkbook().getSheetIndex(blueprintSheet.getSheet());
             getWorkbook().setSheetHidden(blueprintSheetIndex, blueprintSheet.isHidden());
         }
         XSSFFormulaEvaluator.evaluateAllFormulaCells(getWorkbook());
         getWorkbook().setActiveSheet(getSheetIndex(TocSheet.NAME_MARKER));
+        return normReport;
     }
 
     public <T extends BlueprintSheet> T getSheet(Class<T> sheetClass) {

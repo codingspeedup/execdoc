@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.spring.blueprint.sheets;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
@@ -55,7 +56,7 @@ public class DtoSheet extends SpringSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
     }
 
 //    private void addFacts(Theory theory) {

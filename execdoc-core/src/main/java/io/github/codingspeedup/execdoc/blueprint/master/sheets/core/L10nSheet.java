@@ -1,5 +1,6 @@
 package io.github.codingspeedup.execdoc.blueprint.master.sheets.core;
 
+import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.ui.L10NLabel;
@@ -7,7 +8,6 @@ import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.BlueprintSheet;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
-import io.github.codingspeedup.execdoc.toolbox.utilities.StringUtility;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -50,7 +50,7 @@ public class L10nSheet extends BlueprintSheet {
     }
 
     @Override
-    public void normalize() {
+    public void normalize(NormReport normReport) {
         int keyColIdx = getAnchors().getColumn(ANCHOR_KEY);
         List<Integer> colsIdxs = getAnchors().anchorSet().stream()
                 .filter(key -> !ANCHOR_KEY.equals(key))

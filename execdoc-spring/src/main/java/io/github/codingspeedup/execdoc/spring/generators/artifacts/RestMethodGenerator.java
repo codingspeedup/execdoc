@@ -12,6 +12,7 @@ import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProjectSpec;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
+import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import lombok.Getter;
 import org.apache.commons.collections4.CollectionUtils;
@@ -30,22 +31,27 @@ public class RestMethodGenerator implements Serializable {
     private final SpringBootProjectSpec projectSpec;
 
     @Getter
-    private final Map<String, JavaDocument> artifacts = new LinkedHashMap<>();
+    private final Map<String, TextFileWrapper> artifacts;
 
     public RestMethodGenerator(SpringBootProjectSpec projectSpec) {
+        this(projectSpec, null);
+    }
+
+    public RestMethodGenerator(SpringBootProjectSpec projectSpec, Map<String, TextFileWrapper> artifacts) {
         this.projectSpec = projectSpec;
+        this.artifacts = artifacts == null ? new LinkedHashMap<>() : artifacts;
     }
 
     public void generateArtifacts(SpringRestMethodSpec methodSpec) {
-        JavaDocument controllerJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()), key -> maybeGenerateControllerClass(key, methodSpec));
+        JavaDocument controllerJava = (JavaDocument) artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()), key -> maybeGenerateControllerClass(key, methodSpec));
         List<MethodDeclaration> methodDeclarations = controllerJava.getCompilationUnit()
                 .getClassByName(methodSpec.getTypeName()).orElseThrow(() -> new UnsupportedOperationException("Controller class not found " + methodSpec.getTypeName()))
                 .getMethodsByName(methodSpec.getMethodName());
         if (CollectionUtils.isEmpty(methodDeclarations)) {
-            JavaDocument requestDtoJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()), key -> maybeGenerateRequestDtoClass(key, methodSpec));
-            JavaDocument responseDtoJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()), key -> maybeGenerateResponseDtoClass(key, methodSpec));
+            JavaDocument requestDtoJava = (JavaDocument) artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()), key -> maybeGenerateRequestDtoClass(key, methodSpec));
+            JavaDocument responseDtoJava = (JavaDocument) artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()), key -> maybeGenerateResponseDtoClass(key, methodSpec));
             addControllerMethod(controllerJava, methodSpec, requestDtoJava, responseDtoJava);
-            JavaDocument controllerTestJava = artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName() + "ITest"), key -> maybeGenerateControllerTestClass(key, methodSpec));
+            JavaDocument controllerTestJava = (JavaDocument) artifacts.computeIfAbsent(GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName() + "ITest"), key -> maybeGenerateControllerTestClass(key, methodSpec));
             addTestMethod(controllerTestJava, methodSpec);
         }
     }

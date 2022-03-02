@@ -4,7 +4,7 @@ import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.apps.bpmanager.BlueprintManagerGUI;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.JHipsterBlueprint;
 import io.github.codingspeedup.execdoc.jhipster.generators.JHipsterGenCfg;
-import io.github.codingspeedup.execdoc.jhipster.generators.SolutionGenerator;
+import io.github.codingspeedup.execdoc.jhipster.generators.JHipsterGenerator;
 import io.github.codingspeedup.execdoc.toolbox.files.FileNode;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 
@@ -24,7 +24,7 @@ public class JHipsterBlueprintManager {
         genCfg.setForce(true);
 
         new BlueprintManagerGUI<>(JHipsterBlueprint.class, getLocation())
-                .addListener(blueprint -> new SolutionGenerator(blueprint, genCfg).generateApp());
+                .addListener(blueprint -> new JHipsterGenerator(blueprint, genCfg).generateApp());
     }
 
 }

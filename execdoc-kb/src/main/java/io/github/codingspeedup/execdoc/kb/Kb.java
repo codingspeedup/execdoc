@@ -25,12 +25,13 @@ import java.util.stream.IntStream;
 
 public abstract class Kb {
 
-    private static final Var X = Var.of("X");
-    private static final Var Y = Var.of("Y");
-    private static final Var Z = Var.of("Z");
-    private static final Var Z1 = Var.of("Z1");
-    private static final Var Z2 = Var.of("Z2");
-    private static final Var Z3 = Var.of("Z3");
+    public static final Var X = Var.of("X");
+    public static final Var Y = Var.of("Y");
+    public static final Var Z = Var.of("Z");
+
+    public static final Var Z1 = Var.of("Z1");
+    public static final Var Z2 = Var.of("Z2");
+    public static final Var Z3 = Var.of("Z3");
 
     private static final Var[] MM = new Var[] {
             Var.of("M0"),

@@ -7,6 +7,8 @@ public interface GenCfg {
 
     File getDestinationFolder();
 
-    boolean isForce();
+    default boolean isDryRun() {
+        return true;
+    }
 
 }

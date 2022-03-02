@@ -12,6 +12,8 @@ import java.io.File;
 
 public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper {
 
+    public static final String EMBEDDED_FOLDER_NAME = "blueprint";
+
     private final Class<M> masterClass;
     private final File repository;
 
@@ -31,12 +33,16 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
 
     private static File identifyBlueprintFolder(File repository) {
         if (repository.exists()) {
-            File blueprintFolder = new File(repository, "blueprint");
+            File blueprintFolder = new File(repository, EMBEDDED_FOLDER_NAME);
             if (blueprintFolder.exists()) {
                 return blueprintFolder;
             }
         }
         return repository;
+    }
+
+    public boolean isEmbedded() {
+        return getMaster().getWrappedFile().getParentFile().getName().equals(EMBEDDED_FOLDER_NAME);
     }
 
     public NormReport normalize() {

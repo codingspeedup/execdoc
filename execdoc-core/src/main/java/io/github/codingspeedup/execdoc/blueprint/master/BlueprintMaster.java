@@ -27,6 +27,7 @@ import java.util.Map;
 public abstract class BlueprintMaster extends XlsxDocument {
 
     public static final String INSTANTIABLE_SHEET_MARKER = "\u27f6";
+    public static final String DEFAULT_SHEET_NAME = "default";
 
     @Getter
     private final Map<String, Class<? extends BlueprintSheet>> sheetRegistry = new LinkedHashMap<>();

@@ -9,5 +9,6 @@ public class SpringNames {
     public static final String PATTERN_FUNCTOR = "bpPattern";
     public static final String REQUIRED_FUNCTOR = "bpRequired";
     public static final String UNIQUE_FUNCTOR = "bpUnique";
+    public static final String PACKAGE_NAME_FUNCTOR = "bpPackageName";
 
 }

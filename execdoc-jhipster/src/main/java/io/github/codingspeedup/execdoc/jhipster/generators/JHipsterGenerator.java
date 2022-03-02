@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
-public class SolutionGenerator {
+public class JHipsterGenerator {
 
-    public static final Logger LOGGER = LoggerFactory.getLogger(SolutionGenerator.class);
+    public static final Logger LOGGER = LoggerFactory.getLogger(JHipsterGenerator.class);
 
     private final JHipsterBlueprint bp;
     private final Kb kb;
@@ -26,7 +26,7 @@ public class SolutionGenerator {
     private final OsProcess os = new OsProcess();
 
     @SneakyThrows
-    public SolutionGenerator(JHipsterBlueprint bp, JHipsterGenCfg genCfg) {
+    public JHipsterGenerator(JHipsterBlueprint bp, JHipsterGenCfg genCfg) {
         this.bp = bp;
         this.kb = bp.compileKb();
         this.genCfg = genCfg;

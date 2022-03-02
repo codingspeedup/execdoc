@@ -14,6 +14,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,18 @@ public class ControllerMethodsSheet extends AbstractMethodsSheet<SpringControlle
 
     public ControllerMethodsSheet(BlueprintMaster bp, Sheet sheet) {
         super(bp, sheet, SpringController.class, SpringControllerMethod.class);
+    }
+
+    public static Set<String> findHttpMethods(Map<String, String> annotations) {
+        Set<String> httpMethods = annotations.keySet().stream().filter(aName -> {
+            try {
+                HttpRequestMethod.valueOf(aName);
+                return true;
+            } catch (RuntimeException rEx) {
+                return false;
+            }
+        }).collect(Collectors.toSet());
+        return httpMethods;
     }
 
     @SneakyThrows
@@ -51,14 +64,7 @@ public class ControllerMethodsSheet extends AbstractMethodsSheet<SpringControlle
                 if (comment == null) {
                     comment = setCellComment(nameCell, new CellComment());
                 }
-                Set<String> httpMethods = comment.getAnnotations().keySet().stream().filter(aName -> {
-                    try {
-                        HttpRequestMethod.valueOf(aName);
-                        return true;
-                    } catch (RuntimeException rEx) {
-                        return false;
-                    }
-                }).collect(Collectors.toSet());
+                Set<String> httpMethods = findHttpMethods(comment.getAnnotations());
                 if (httpMethods.isEmpty()) {
                     normReport.addInfo(nameCell, "No HTTP method specified");
                 } else if (httpMethods.size() >= 2) {

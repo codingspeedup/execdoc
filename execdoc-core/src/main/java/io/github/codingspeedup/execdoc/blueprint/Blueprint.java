@@ -13,6 +13,8 @@ import java.io.File;
 public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper {
 
     private final Class<M> masterClass;
+    private final File repository;
+
     private M master;
     private XlsxBase sqlData;
 
@@ -22,8 +24,19 @@ public abstract class Blueprint<M extends BlueprintMaster> extends FolderWrapper
     }
 
     protected Blueprint(Class<M> masterClass, File repository) {
-        super(repository);
+        super(identifyBlueprintFolder(repository));
         this.masterClass = masterClass;
+        this.repository = repository;
+    }
+
+    private static File identifyBlueprintFolder(File repository) {
+        if (repository.exists()) {
+            File blueprintFolder = new File(repository, "blueprint");
+            if (blueprintFolder.exists()) {
+                return blueprintFolder;
+            }
+        }
+        return repository;
     }
 
     public NormReport normalize() {

@@ -276,7 +276,8 @@ public abstract class Kb {
                     } else if (value instanceof List) {
                         List<?> valueAsList = (List<?>) value;
                         for (int i = 0; i < valueAsList.size(); ++i) {
-                            learn(predicate, entityKbId, i, valueAsList.get(i));
+                            Object item = valueAsList.get(i);
+                            learn(predicate, entityKbId, i, item);
                         }
                     } else if (value instanceof Map) {
                         Map<?, ?> valueAsMap = (Map<?, ?>) value;

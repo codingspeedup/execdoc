@@ -78,6 +78,7 @@ public abstract class AbstractMethodsSheet<C extends CClassUnit, M extends CMeth
             } else {
                 M methodUnit = methodClass.getConstructor(Cell.class).newInstance(nameCell);
                 ((List) classUnit.getCodeElement()).add(methodUnit);
+                kb.learn(methodUnit);
             }
         }
         kb.learn(classUnit);

@@ -12,6 +12,7 @@ import io.github.codingspeedup.execdoc.spring.generators.artifacts.RestMethodGen
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 
 import java.util.LinkedHashMap;
@@ -20,26 +21,23 @@ import java.util.Set;
 
 public class SpringBootGenerator {
 
-    private final Kb kb;
     private final SpringBootGenCfg genCfg;
+    private final Kb kb;
 
     private final Map<String, TextFileWrapper> artifacts = new LinkedHashMap<>();
 
-    public SpringBootGenerator(SpringBlueprint bp, SpringBootGenCfg genCfg) {
+    public SpringBootGenerator(SpringBootGenCfg genCfg, SpringBlueprint bp) {
         this.genCfg = genCfg;
         this.kb = bp.compileKb();
     }
 
     public Map<String, TextFileWrapper> generateArtifacts() {
         SprintSoftwareSystem ss = kb.solveConcept(SprintSoftwareSystem.class);
-
         SpringBootProject springProject = SpringBootProject.builder()
                 .rootFolder(genCfg.getDestinationFolder())
                 .rootPackage(ss.getPackageName())
                 .build();
-
         generateRestControllers(springProject);
-
         return artifacts;
     }
 
@@ -53,8 +51,8 @@ public class SpringBootGenerator {
                 subPackageName = null;
             }
             for (SpringControllerMethod method : controller.getCodeElement()) {
-                SpringRestMethod restMethod = SpringRestMethod.builder()
-                        .packageName(GenUtility.joinPackageName(springProject.getRestPackageName()))
+                SpringRestMethodSpec restMethod = SpringRestMethod.builder()
+                        .packageName(GenUtility.joinPackageName(springProject.getRestPackageName(), subPackageName))
                         .typeLemma(controller.getName())
                         .methodLemma(method.getName())
                         .httpMethod(HttpRequestMethod.valueOf(ControllerMethodsSheet.findHttpMethods(method.getAnnotations()).iterator().next()))

@@ -130,27 +130,41 @@ public class RestMethodGenerator implements Serializable {
         MethodDeclaration methodDeclaration = controllerDeclaration.addMethod(methodSpec.getMethodName(), Keyword.PUBLIC);
         controllerUnit.addImport("org.springframework.web.bind.annotation." + mappingName);
         methodDeclaration.addSingleMemberAnnotation(mappingName, methodUri);
+        BlockStmt methodBody = methodDeclaration.getBody().orElseThrow();
 
         if (requestDtoJava != null) {
-            String requestDtoName = requestDtoJava.getMainTypeDeclaration().getNameAsString();
             controllerUnit.addImport("org.springframework.web.bind.annotation.RequestBody");
             controllerUnit.addImport("org.springframework.validation.annotation.Validated");
-            controllerUnit.addImport(GenUtility.joinPackageName(requestDtoJava.getPackageName(), requestDtoName));
-            Parameter requestBodyParameter = methodDeclaration.addAndGetParameter(requestDtoName, "restRequest");
+            String requestBodyTypeName = requestDtoJava.getMainTypeDeclaration().getNameAsString();
+            controllerUnit.addImport(GenUtility.joinPackageName(requestDtoJava.getPackageName(), requestBodyTypeName));
+            Parameter requestBodyParameter = methodDeclaration.addAndGetParameter(requestBodyTypeName, "restRequest");
             requestBodyParameter.addAnnotation("RequestBody");
             requestBodyParameter.addAnnotation("Validated");
         }
 
+        controllerUnit.addImport("org.springframework.http.HttpStatus");
+        controllerUnit.addImport("org.springframework.http.ResponseEntity");
+        String responseStatus;
+        switch (methodSpec.getHttpRequestMethod()) {
+            case POST:
+                responseStatus = "CREATED";
+                break;
+            case DELETE:
+            case PATCH:
+                responseStatus = "NO_CONTENT";
+                break;
+            default:
+                responseStatus = "OK";
+        }
         if (responseDtoJava != null) {
-            String responseDtoName = responseDtoJava.getMainTypeDeclaration().getNameAsString();
-            controllerUnit.addImport("org.springframework.web.bind.annotation.ResponseBody");
-            controllerUnit.addImport(GenUtility.joinPackageName(responseDtoJava.getPackageName(), responseDtoName));
-            methodDeclaration.addAnnotation("ResponseBody");
-            methodDeclaration.setType(responseDtoName);
-
-            BlockStmt methodBody = methodDeclaration.getBody().orElseThrow();
-            methodBody.addStatement(responseDtoName + " restResponse = new " + responseDtoName + "();");
-            methodBody.addStatement("return restResponse;");
+            String responseBodyTypeName = responseDtoJava.getMainTypeDeclaration().getNameAsString();
+            controllerUnit.addImport(GenUtility.joinPackageName(responseDtoJava.getPackageName(), responseBodyTypeName));
+            methodDeclaration.setType("ResponseEntity<" + responseBodyTypeName + ">");
+            methodBody.addStatement(responseBodyTypeName + " restResponse = new " + responseBodyTypeName + "();");
+            methodBody.addStatement("return new ResponseEntity<>(restResponse, HttpStatus." + responseStatus + ");");
+        } else {
+            methodDeclaration.setType("ResponseEntity<?>");
+            methodBody.addStatement("return new ResponseEntity<>(HttpStatus." + responseStatus + ");");
         }
     }
 
@@ -164,6 +178,11 @@ public class RestMethodGenerator implements Serializable {
     private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
             return null;
+        }
+        switch (methodSpec.getHttpRequestMethod()) {
+            case DELETE:
+            case PATCH:
+                return null;
         }
         return GenUtility.generateDto(projectSpec.getSrcMainJava(), typeFullName);
     }

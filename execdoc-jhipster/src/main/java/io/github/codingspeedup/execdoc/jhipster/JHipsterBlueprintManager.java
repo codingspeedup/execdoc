@@ -24,7 +24,7 @@ public class JHipsterBlueprintManager {
         genCfg.setForce(true);
 
         new BlueprintManagerGUI<>(JHipsterBlueprint.class, getLocation())
-                .addListener(blueprint -> new JHipsterGenerator(blueprint, genCfg).generateApp());
+                .addListener((blueprint) -> new JHipsterGenerator(blueprint, genCfg).generateApp());
     }
 
 }

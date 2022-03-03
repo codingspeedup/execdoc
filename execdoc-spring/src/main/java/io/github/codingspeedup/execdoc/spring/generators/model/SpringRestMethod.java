@@ -25,7 +25,7 @@ public class SpringRestMethod implements SpringRestMethodSpec {
 
     @Override
     public String getTypeName() {
-        return typeLemma + "Resource";
+        return typeLemma + "Controller";
     }
 
     @Override

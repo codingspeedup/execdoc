@@ -7,6 +7,10 @@ public interface GenCfg {
 
     File getDestinationFolder();
 
+    default boolean isForceRun() {
+        return false;
+    }
+
     default boolean isDryRun() {
         return true;
     }

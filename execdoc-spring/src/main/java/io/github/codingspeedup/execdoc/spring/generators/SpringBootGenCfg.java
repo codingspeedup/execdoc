@@ -19,6 +19,10 @@ public class SpringBootGenCfg implements GenCfg, Serializable {
 
     @Getter
     @Setter
+    private boolean force = false;
+
+    @Getter
+    @Setter
     private boolean dryRun = true;
 
 }

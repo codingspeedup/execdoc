@@ -8,7 +8,7 @@ import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.co
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.SpringControllerMethod;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.SprintSoftwareSystem;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.ControllerMethodsSheet;
-import io.github.codingspeedup.execdoc.spring.generators.artifacts.RestMethodGenerator;
+import io.github.codingspeedup.execdoc.spring.generators.engine.SpringRestMethodGenerator;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
@@ -42,7 +42,7 @@ public class SpringBootGenerator {
     }
 
     private void generateRestControllers(SpringBootProject springProject) {
-        RestMethodGenerator restGenerator = new RestMethodGenerator(springProject, artifacts);
+        SpringRestMethodGenerator restGenerator = new SpringRestMethodGenerator(genCfg, springProject, artifacts);
         Set<String> controllerIds = kb.solveConcepts(SpringController.class);
         for (String controllerId : controllerIds) {
             SpringController controller = kb.solveConcept(SpringController.class, controllerId);

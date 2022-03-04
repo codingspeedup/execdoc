@@ -1,6 +1,7 @@
-package io.github.codingspeedup.execdoc.spring.generators.artifacts;
+package io.github.codingspeedup.execdoc.spring.generators.engine;
 
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
+import io.github.codingspeedup.execdoc.spring.generators.SpringBootGenCfg;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
 import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.List;
 
-class RestMethodGeneratorTest {
+class SpringRestMethodGeneratorTest {
 
     private SpringBootProject springProject;
 
@@ -31,11 +32,10 @@ class RestMethodGeneratorTest {
                 .methodLemma("bar")
                 .httpMethod(HttpRequestMethod.GET)
                 .build();
-        RestMethodGenerator generator = new RestMethodGenerator(springProject);
+        SpringRestMethodGenerator generator = new SpringRestMethodGenerator(new SpringBootGenCfg(), springProject);
         generator.generateArtifacts(restMethod);
         for (TextFileWrapper artifact : generator.getArtifacts().values()) {
             System.out.println(GenUtility.toString(List.of(artifact)));
-            artifact.save();
         }
     }
 

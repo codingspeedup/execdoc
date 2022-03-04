@@ -4,8 +4,9 @@ import io.github.codingspeedup.execdoc.spring.generators.SpringBootGenCfg;
 import org.apache.commons.lang3.SerializationUtils;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class SpringGeneratorConfigGUI extends JDialog {
 
@@ -17,7 +18,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
     private JButton buttonCancel;
     private JCheckBox restMethodsBox;
     private JCheckBox dryRunBox;
-
+    private JCheckBox forceBox;
 
     public SpringGeneratorConfigGUI(SpringBootGenCfg genCfg) {
         this.genCfg = genCfg;
@@ -29,6 +30,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
 
         restMethodsBox.setSelected(genCfg.isRestMethods());
         dryRunBox.setSelected(genCfg.isDryRun());
+        forceBox.setSelected(genCfg.isForce());
 
         buttonOK.addActionListener(e -> onOK());
 
@@ -67,6 +69,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
         dialogResult = JOptionPane.OK_OPTION;
         genCfg.setRestMethods(restMethodsBox.isSelected());
         genCfg.setDryRun(dryRunBox.isSelected());
+        genCfg.setForce(forceBox.isSelected());
         dispose();
     }
 

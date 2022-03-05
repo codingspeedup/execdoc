@@ -1,6 +1,5 @@
 package io.github.codingspeedup.execdoc.spring.generators.model;
 
-import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
 import lombok.Builder;
 

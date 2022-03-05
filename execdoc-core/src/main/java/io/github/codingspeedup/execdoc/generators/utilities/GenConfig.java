@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.generators.utilities;
 import java.io.File;
 
 
-public interface GenCfg {
+public interface GenConfig {
 
     File getDestinationFolder();
 

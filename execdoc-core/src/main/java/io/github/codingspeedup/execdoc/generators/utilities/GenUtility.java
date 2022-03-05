@@ -1,8 +1,8 @@
 package io.github.codingspeedup.execdoc.generators.utilities;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.expr.LongLiteralExpr;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
@@ -10,15 +10,13 @@ import io.github.codingspeedup.execdoc.toolbox.utilities.DateTimeUtility;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.io.File;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.IntStream;
-
-import static com.github.javaparser.ast.Modifier.Keyword;
 
 public class GenUtility {
 
@@ -101,31 +99,23 @@ public class GenUtility {
         return new String[]{typeFullName.substring(0, lastDotIndex), typeFullName.substring(lastDotIndex + 1)};
     }
 
-    public static JavaDocument generateDto(Folder folder, String typeFullName) {
+    public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaType(Folder srcFolder, String typeFullName, boolean override) {
         String[] packageType = splitTypeFullName(typeFullName);
-        File requestDtoFile = GenUtility.fileOf(folder, packageType[0], packageType[1] + ".java");
-        JavaDocument dtoJava = new JavaDocument(requestDtoFile);
-        if (!requestDtoFile.exists()) {
-            CompilationUnit cUnit = dtoJava.getCompilationUnit();
-            cUnit.setPackageDeclaration(packageType[0]);
-
-            cUnit.addImport("lombok.AllArgsConstructor");
-            cUnit.addImport("lombok.Builder");
-            cUnit.addImport("lombok.Data");
-            cUnit.addImport("lombok.NoArgsConstructor");
-
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Keyword.PUBLIC);
-            ciDeclaration.addAnnotation("NoArgsConstructor");
-            ciDeclaration.addAnnotation("AllArgsConstructor");
-            ciDeclaration.addAnnotation("Builder");
-            ciDeclaration.addAnnotation("Data");
-
-            ciDeclaration.addImplementedType(Serializable.class);
-            ciDeclaration.addFieldWithInitializer(long.class, "serialVersionUID", new LongLiteralExpr("1L"),
-                    Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
-            ciDeclaration.addField(String.class, "value", Keyword.PRIVATE);
+        File javaFile = fileOf(srcFolder, packageType[0], packageType[1] + ".java");
+        JavaDocument javaDocument = new JavaDocument(javaFile);
+        CompilationUnit cUnit = null;
+        if (!javaFile.exists()) {
+            cUnit = javaDocument.getCompilationUnit();
+        } else if (override) {
+            javaDocument.setCompilationUnit(new CompilationUnit());
+            cUnit = javaDocument.getCompilationUnit();
         }
-        return dtoJava;
+        if (cUnit != null) {
+            cUnit.setPackageDeclaration(packageType[0]);
+            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Modifier.Keyword.PUBLIC);
+            addCreationJavadoc(ciDeclaration);
+        }
+        return Pair.of(javaDocument, cUnit);
     }
 
 }

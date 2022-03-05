@@ -20,13 +20,13 @@ public class JHipsterGenerator {
 
     private final JHipsterBlueprint bp;
     private final Kb kb;
-    private final JHipsterGenCfg genCfg;
+    private final JHipsterGenConfig genCfg;
     private final Folder appFolder;
     private final TextFile defaultJdl;
     private final OsProcess os = new OsProcess();
 
     @SneakyThrows
-    public JHipsterGenerator(JHipsterBlueprint bp, JHipsterGenCfg genCfg) {
+    public JHipsterGenerator(JHipsterBlueprint bp, JHipsterGenConfig genCfg) {
         this.bp = bp;
         this.kb = bp.compileKb();
         this.genCfg = genCfg;

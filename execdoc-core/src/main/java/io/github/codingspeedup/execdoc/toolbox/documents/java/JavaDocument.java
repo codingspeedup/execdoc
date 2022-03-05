@@ -50,7 +50,11 @@ public class JavaDocument extends TextFileWrapper {
         return compilationUnit;
     }
 
-    @Override
+    public void setCompilationUnit(CompilationUnit compilationUnit) {
+        this.compilationUnit = compilationUnit;
+    }
+
+        @Override
     public String toString() {
         if (compilationUnit == null) {
             return null;
@@ -79,6 +83,5 @@ public class JavaDocument extends TextFileWrapper {
         String typeName = FileNameUtils.getBaseName(getWrappedFile().getName());
         return getTypeDeclaration(new String[]{typeName});
     }
-
 
 }

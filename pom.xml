@@ -39,6 +39,7 @@
         <json.version>20211205</json.version>
         <junit.version>5.8.2</junit.version>
         <lombok.version>1.18.22</lombok.version>
+        <mockito.version>4.3.1</mockito.version>
         <openhtmltopdf.version>1.0.10</openhtmltopdf.version>
         <plantuml.version>1.2021.10</plantuml.version>
         <poi.version>5.0.0</poi.version>
@@ -73,6 +74,18 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-inline</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 

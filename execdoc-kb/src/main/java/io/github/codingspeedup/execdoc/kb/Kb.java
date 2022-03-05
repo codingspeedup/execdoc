@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public abstract class Kb {
+public abstract class Kb implements KbQuery {
 
     public static final Var X = Var.of("X");
     public static final Var Y = Var.of("Y");
@@ -142,10 +142,12 @@ public abstract class Kb {
         return kbId;
     }
 
+    @Override
     public Set<String> findFunctors(String ofAtom) {
         return findFunctors(ofAtom, 0);
     }
 
+    @Override
     public Set<String> findFunctors(String ofAtom, int index) {
         Set<String> functors = new HashSet<>();
         for (Clause clause : theory.getClauses()) {
@@ -162,38 +164,45 @@ public abstract class Kb {
         return functors;
     }
 
-    public KbResult solve(boolean solveList, Struct goal) {
+    @Override
+    public KbResult solve(boolean asList, Struct goal) {
         if (solver == null) {
             solver = ClassicSolverFactory.INSTANCE.mutableSolverOf(theory);
         }
-        if (solveList) {
+        if (asList) {
             return new KbResult(solver.solveList(goal));
         }
         return new KbResult(solver.solveOnce(goal));
     }
 
-    public KbResult solve(boolean solveList, Object... goal) {
-        return solve(solveList, termBuilder.parseStruct(goal));
+    @Override
+    public KbResult solve(boolean asList, Object... goal) {
+        return solve(asList, termBuilder.parseStruct(goal));
     }
 
+    @Override
     public KbResult solveList(Object functor, Object... args) {
         return solve(true, functor, args);
     }
 
+    @Override
     public KbResult solveOnce(Object functor, Object... args) {
         return solve(false, functor, args);
     }
 
+    @Override
     public <E extends KbConcept> Set<String> solveConcepts(Class<E> entityType) {
         String functor = learnTypeHierarchy(entityType);
         KbResult sr = solveList(functor, X);
         return sr.getSubstitutions().stream().map(s -> KbResult.asString(s[0])).collect(Collectors.toSet());
     }
 
+    @Override
     public <E extends KbConcept> E solveConcept(Class<E> entityType, String kbId) {
         return solveConcept(new HashMap<>(), entityType, kbId);
     }
 
+    @Override
     public <E extends KbConcept> E solveConcept(Class<E> entityType) {
         Set<String> ids = solveConcepts(entityType);
         if (ids.size() != 1) {
@@ -202,6 +211,7 @@ public abstract class Kb {
         return solveConcept(new HashMap<>(), entityType, ids.iterator().next());
     }
 
+    @Override
     public <R extends KbRelation> Set<Triple<String, String, String>> solveRelation(Class<R> relationType) {
         Object[] args = new Object[1 + KbRelation.getArity(relationType)];
         args[0] = X;
@@ -210,13 +220,14 @@ public abstract class Kb {
         return solutions.getSubstitutions().stream().map(s -> Triple.of(KbResult.asString(s[0]), KbResult.asString(s[1]), KbResult.asString(s[2]))).collect(Collectors.toSet());
     }
 
+    @Override
     public <R extends KbRelation> R solveRelation(Class<R> relationType, String kbId) {
         return solveRelation(new HashMap<>(), relationType, kbId);
     }
 
-    private KbResult solve(boolean solveList, Object functor, Object... args) {
+    private KbResult solve(boolean asList, Object functor, Object... args) {
         Pair<Struct, List<Var>> structVar = termBuilder.structOf(true, functor, args);
-        return new KbResult(solve(solveList, structVar.getLeft()), structVar.getRight());
+        return new KbResult(solve(asList, structVar.getLeft()), structVar.getRight());
     }
 
     private String learnTypeHierarchy(Class<?> childType) {

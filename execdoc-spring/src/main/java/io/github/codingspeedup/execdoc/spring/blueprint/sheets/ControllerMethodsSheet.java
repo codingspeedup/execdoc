@@ -6,7 +6,7 @@ import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.AbstractMeth
 import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.SpringController;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.SpringControllerMethod;
-import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.model.HttpRequestMethod;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +28,7 @@ public class ControllerMethodsSheet extends AbstractMethodsSheet<SpringControlle
     }
 
     public static Set<String> findHttpMethods(Map<String, String> annotations) {
-        Set<String> httpMethods = annotations.keySet().stream().filter(aName -> {
+        return annotations.keySet().stream().filter(aName -> {
             try {
                 HttpRequestMethod.valueOf(aName);
                 return true;
@@ -36,7 +36,6 @@ public class ControllerMethodsSheet extends AbstractMethodsSheet<SpringControlle
                 return false;
             }
         }).collect(Collectors.toSet());
-        return httpMethods;
     }
 
     @SneakyThrows

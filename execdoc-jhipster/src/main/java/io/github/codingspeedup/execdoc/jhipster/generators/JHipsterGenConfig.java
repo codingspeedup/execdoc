@@ -1,12 +1,12 @@
 package io.github.codingspeedup.execdoc.jhipster.generators;
 
-import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
+import io.github.codingspeedup.execdoc.generators.utilities.GenConfig;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
 
-public class JHipsterGenCfg implements GenCfg {
+public class JHipsterGenConfig implements GenConfig {
 
     @Getter
     @Setter

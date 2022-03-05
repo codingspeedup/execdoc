@@ -1,13 +1,13 @@
 package io.github.codingspeedup.execdoc.spring.generators;
 
-import io.github.codingspeedup.execdoc.generators.utilities.GenCfg;
+import io.github.codingspeedup.execdoc.generators.utilities.GenConfig;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.File;
 import java.io.Serializable;
 
-public class SpringBootGenCfg implements GenCfg, Serializable {
+public class SpringGenConfig implements GenConfig, Serializable {
 
     @Getter
     @Setter

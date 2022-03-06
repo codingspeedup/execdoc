@@ -1,15 +1,15 @@
 package io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data;
 
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.SpringNames;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnum;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpEnum;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbResult;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CItemUnit;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.BpFieldType;
 import it.unibo.tuprolog.core.Term;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlField extends BpConceptCell implements CItemUnit {
+public class BpField extends BpConceptCell implements CItemUnit {
 
     @Getter
     @Setter
@@ -31,7 +31,7 @@ public class JdlField extends BpConceptCell implements CItemUnit {
 
     @Getter
     @Setter
-    private JdlFieldType type;
+    private BpFieldType type;
 
     @Getter
     @Setter
@@ -63,7 +63,7 @@ public class JdlField extends BpConceptCell implements CItemUnit {
     @KbFunctor(SpringNames.UNIQUE_FUNCTOR)
     private Boolean unique;
 
-    public JdlField(Cell cell) {
+    public BpField(Cell cell) {
         super(cell);
     }
 
@@ -82,10 +82,10 @@ public class JdlField extends BpConceptCell implements CItemUnit {
         List<Term[]> substitutions = result.getSubstitutions();
         if (CollectionUtils.isNotEmpty(substitutions)) {
             String typeId = KbResult.asString(substitutions.get(0)[0]);
-            if (typeId.startsWith(JdlType.PREFIX)) {
-                type = new JdlType(typeId.substring(JdlType.PREFIX.length()));
+            if (typeId.startsWith(BpType.PREFIX)) {
+                type = new BpType(typeId.substring(BpType.PREFIX.length()));
             } else {
-                type = kb.solveConcept(JdlEnum.class, typeId);
+                type = kb.solveConcept(BpEnum.class, typeId);
             }
         }
     }

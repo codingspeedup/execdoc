@@ -12,24 +12,24 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public abstract class JdlEntityRelation extends RData {
+public abstract class BpEntityRelation extends RData {
 
     @SuppressWarnings({"unchecked"})
-    public static final Class<? extends JdlEntityRelation>[] ENTITY_RELATIONSHIPS = new Class[]{
-            JdlManyToOne.class,
-            JdlOneToOne.class,
-            JdlOneToMany.class,
-            JdlManyToMany.class,
+    public static final Class<? extends BpEntityRelation>[] ENTITY_RELATIONSHIPS = new Class[]{
+            BpManyToOne.class,
+            BpOneToOne.class,
+            BpOneToMany.class,
+            BpManyToMany.class,
     };
 
-    public JdlEntityRelation(Cell cell, Cell from, Cell to) {
+    public BpEntityRelation(Cell cell, Cell from, Cell to) {
         super(cell, from, to);
     }
 
     @SneakyThrows
-    public static JdlEntityRelation from(SemanticTriple triple) {
+    public static BpEntityRelation from(SemanticTriple triple) {
         String predicateName = triple.getPredicateName();
-        for (Class<? extends JdlEntityRelation> relationshipType : ENTITY_RELATIONSHIPS) {
+        for (Class<? extends BpEntityRelation> relationshipType : ENTITY_RELATIONSHIPS) {
             if (KbNames.getFunctor(relationshipType).equals(predicateName)) {
                 Cell relationship = triple.getPredicate();
                 Cell from = XlsxUtil.backtraceCellBySimpleFormulaReference(triple.getSubject().get(triple.getSubject().size() - 1));

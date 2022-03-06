@@ -1,10 +1,9 @@
 package io.github.codingspeedup.execdoc.spring.generators;
 
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.SprintSoftwareSystem;
-import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProjectSpec;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.SpringSoftwareSystem;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringBootProjectImpl;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProject;
 import lombok.Getter;
-import lombok.NonNull;
 
 public class SpringGenCtx {
 
@@ -15,16 +14,16 @@ public class SpringGenCtx {
     private final SpringKb kb;
 
     @Getter(lazy = true)
-    private final SpringBootProjectSpec projectSpec = buildProjectSpec();
+    private final SpringBootProject projectSpec = buildProjectSpec();
 
     public SpringGenCtx(SpringGenConfig config, SpringKb kb) {
         this.config = config;
         this.kb = kb;
     }
 
-    private SpringBootProjectSpec buildProjectSpec() {
-        SprintSoftwareSystem ss = kb.solveConcept(SprintSoftwareSystem.class);
-        return SpringBootProject.builder()
+    private SpringBootProject buildProjectSpec() {
+        SpringSoftwareSystem ss = kb.solveConcept(SpringSoftwareSystem.class);
+        return SpringBootProjectImpl.builder()
                 .rootFolder(config.getDestinationFolder())
                 .rootPackage(ss.getPackageName())
                 .build();

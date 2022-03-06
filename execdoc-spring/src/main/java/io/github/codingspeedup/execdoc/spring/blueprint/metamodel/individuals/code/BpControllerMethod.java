@@ -6,9 +6,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor
-public class SpringControllerMethod extends SpringComponentMethod {
+public class BpControllerMethod extends BpComponentMethod {
 
-    public SpringControllerMethod(Cell cell) {
+    public BpControllerMethod(Cell cell) {
         super(cell);
     }
 

@@ -5,16 +5,16 @@ import lombok.NoArgsConstructor;
 import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
-@KbFunctor("manyToOne")
-public class JdlManyToOne extends JdlEntityRelation {
+@KbFunctor("oneToOne")
+public class BpOneToOne extends BpEntityRelation {
 
-    public JdlManyToOne(Cell cell, Cell from, Cell to) {
+    public BpOneToOne(Cell cell, Cell from, Cell to) {
         super(cell, from, to);
     }
 
     @Override
     public String getJdlName() {
-        return "ManyToOne";
+        return "OneToOne";
     }
 
 }

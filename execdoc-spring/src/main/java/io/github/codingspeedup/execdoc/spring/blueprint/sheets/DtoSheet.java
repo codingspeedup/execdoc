@@ -6,7 +6,7 @@ import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlDto;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpDto;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
@@ -125,7 +125,7 @@ public class DtoSheet extends SpringSheet {
     @Override
     public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
-        JdlDto dtoUnit = null;
+        BpDto dtoUnit = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             String nameString = XlsxUtil.getCellValue(nameCell, String.class);
@@ -136,7 +136,7 @@ public class DtoSheet extends SpringSheet {
             }
 
             if (dtoUnit == null) {
-                dtoUnit = new JdlDto(nameCell);
+                dtoUnit = new BpDto(nameCell);
                 dtoUnit.setOwner(owner);
             }
         }

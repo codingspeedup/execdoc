@@ -7,7 +7,7 @@ import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CEnumeratedType;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.BpFieldType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,11 +18,11 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class JdlEnum extends BpConceptCell implements CEnumeratedType, IsOwned, JdlFieldType {
+public class BpEnum extends BpConceptCell implements CEnumeratedType, IsOwned, BpFieldType {
 
     @Getter
-    @KbFunctor(value = BpNames.VALUE_FUNCTOR, T1 = JdlEnumEntry.class)
-    private final List<JdlEnumEntry> value = new ArrayList<>();
+    @KbFunctor(value = BpNames.VALUE_FUNCTOR, T1 = BpEnumEntry.class)
+    private final List<BpEnumEntry> value = new ArrayList<>();
 
     @Getter
     @Setter
@@ -33,11 +33,11 @@ public class JdlEnum extends BpConceptCell implements CEnumeratedType, IsOwned, 
     @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
-    public JdlEnum(Cell cell) {
+    public BpEnum(Cell cell) {
         super(cell);
     }
 
-    public JdlEnum(String name) {
+    public BpEnum(String name) {
         this.name = name;
     }
 

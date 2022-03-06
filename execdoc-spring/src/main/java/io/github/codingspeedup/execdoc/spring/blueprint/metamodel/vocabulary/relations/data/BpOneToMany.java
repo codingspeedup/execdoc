@@ -6,9 +6,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 @NoArgsConstructor
 @KbFunctor("oneToMany")
-public class JdlOneToMany extends JdlEntityRelation {
+public class BpOneToMany extends BpEntityRelation {
 
-    public JdlOneToMany(Cell cell, Cell from, Cell to) {
+    public BpOneToMany(Cell cell, Cell from, Cell to) {
         super(cell, from, to);
     }
 

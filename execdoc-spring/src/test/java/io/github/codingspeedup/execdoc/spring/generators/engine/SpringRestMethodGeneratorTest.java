@@ -2,9 +2,9 @@ package io.github.codingspeedup.execdoc.spring.generators.engine;
 
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
-import io.github.codingspeedup.execdoc.spring.generators.model.HttpRequestMethod;
-import io.github.codingspeedup.execdoc.spring.generators.model.SpringBootProject;
-import io.github.codingspeedup.execdoc.spring.generators.model.SpringRestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringBootProjectImpl;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringRestMethodImpl;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,12 +25,12 @@ class SpringRestMethodGeneratorTest {
 
     @Test
     void generateArtifacts() {
-        when(genCtx.getProjectSpec()).thenReturn(SpringBootProject.builder()
+        when(genCtx.getProjectSpec()).thenReturn(SpringBootProjectImpl.builder()
                 .rootFolder(new File("/Users/iulian/temp/execdoc/demo"))
                 .rootPackage("com.example.demo")
                 .build());
-        SpringRestMethod restMethod = SpringRestMethod.builder()
-                .packageName(genCtx.getProjectSpec().getRestPackageName())
+        SpringRestMethodImpl restMethod = SpringRestMethodImpl.builder()
+                .packageName(genCtx.getProjectSpec().getRestControllerPackageName())
                 .typeLemma("Foo")
                 .methodLemma("bar")
                 .httpMethod(HttpRequestMethod.GET)

@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.spring.blueprint.sheets;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnum;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpEnum;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
 import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
@@ -26,11 +26,11 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellAddress;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlType;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlEntity;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlField;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.BpFieldType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpEntity;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpEntityRelation;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpField;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -56,7 +56,7 @@ public class EntitySheet extends SpringSheet {
     public static final String ATTRIBUTE_CLASS_NAME = "class-name";
     public static final String ATTRIBUTE_MEMBER_NAME = "member-name";
 
-    public static final Set<String> ENTITY_RELATIONSHIPS = Stream.of(JdlEntityRelation.ENTITY_RELATIONSHIPS).map(KbNames::getFunctor).collect(Collectors.toSet());
+    public static final Set<String> ENTITY_RELATIONSHIPS = Stream.of(BpEntityRelation.ENTITY_RELATIONSHIPS).map(KbNames::getFunctor).collect(Collectors.toSet());
 
     public static final String OPT_ANGULAR_SUFFIX = "angularSuffix";
     public static final String OPT_CLIENT_ROOT_FOLDER = "clientRootFolder";
@@ -183,34 +183,34 @@ public class EntitySheet extends SpringSheet {
     public void expand(Kb kb) {
         BpSheet owner = new BpSheet(getSheet());
 
-        JdlEntity jdlEntity = null;
+        BpEntity bpEntity = null;
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             if (XlsxUtil.isBlank(nameCell)) {
-                kb.learn(jdlEntity);
-                jdlEntity = null;
+                kb.learn(bpEntity);
+                bpEntity = null;
                 continue;
             }
 
             Row row = getSheet().getRow(rowIdx);
 
-            if (jdlEntity == null) {
-                jdlEntity = new JdlEntity(nameCell);
-                jdlEntity.setOwner(owner);
+            if (bpEntity == null) {
+                bpEntity = new BpEntity(nameCell);
+                bpEntity.setOwner(owner);
             } else {
-                JdlField jdlField = new JdlField(nameCell);
-                jdlField.setType(toJdlFieldType(row.getCell(getAnchors().getColumn(ANCHOR_TYPE))));
-                jdlField.setPrimaryKey(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_KEY)), Boolean.class));
-                jdlField.setRequired(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_REQUIRED)), Boolean.class));
-                jdlField.setMin(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_MIN)), BigDecimal.class));
-                jdlField.setMax(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_MAX)), BigDecimal.class));
-                jdlField.setExt(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_PATTERN)), String.class));
-                jdlField.setUnique(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_UNIQUE)), Boolean.class));
-                jdlEntity.getItemUnit().add(jdlField);
+                BpField bpField = new BpField(nameCell);
+                bpField.setType(toJdlFieldType(row.getCell(getAnchors().getColumn(ANCHOR_TYPE))));
+                bpField.setPrimaryKey(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_KEY)), Boolean.class));
+                bpField.setRequired(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_REQUIRED)), Boolean.class));
+                bpField.setMin(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_MIN)), BigDecimal.class));
+                bpField.setMax(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_MAX)), BigDecimal.class));
+                bpField.setExt(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_PATTERN)), String.class));
+                bpField.setUnique(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_UNIQUE)), Boolean.class));
+                bpEntity.getItemUnit().add(bpField);
             }
 
         }
-        kb.learn(jdlEntity);
+        kb.learn(bpEntity);
         for (int rowIdx = getAnchors().getLastAnchorRow() + 1; rowIdx <= getSheet().getLastRowNum(); ++rowIdx) {
             Cell nameCell = getCell(rowIdx, getAnchors().getColumn(ANCHOR_NAME));
             if (XlsxUtil.isNotBlank(nameCell)) {
@@ -220,22 +220,22 @@ public class EntitySheet extends SpringSheet {
                     if (CollectionUtils.isEmpty(triple.getSubject())) {
                         triple.setSubject(nameCell);
                     }
-                    kb.learn(JdlEntityRelation.from(triple));
+                    kb.learn(BpEntityRelation.from(triple));
                 }
             }
         }
     }
 
-    private JdlFieldType toJdlFieldType(Cell typeCell) {
+    private BpFieldType toJdlFieldType(Cell typeCell) {
         String typeName = XlsxUtil.getCellValue(typeCell, String.class);
         if (StringUtils.isNotBlank(typeName)) {
-            if (ArrayUtils.contains(JdlType.NAMES, typeName)) {
-                return new JdlType(typeName);
+            if (ArrayUtils.contains(BpType.NAMES, typeName)) {
+                return new BpType(typeName);
             }
             Cell refTypeCell = XlsxUtil.backtraceCellBySimpleFormulaReference(typeCell);
             SpringSheet sheet = (SpringSheet) getMaster().getSheet(refTypeCell);
             if (sheet instanceof EnumsSheet && sheet.isOwnerUnit(refTypeCell.getRowIndex(), refTypeCell.getColumnIndex())) {
-                return new JdlEnum(refTypeCell);
+                return new BpEnum(refTypeCell);
             }
         }
         return null;

@@ -11,15 +11,14 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
-import io.github.codingspeedup.execdoc.spring.generators.model.HttpRequestMethod;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
+import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethod;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.io.Serializable;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
@@ -27,7 +26,7 @@ import java.util.Map;
 
 import static com.github.javaparser.ast.Modifier.Keyword;
 
-public class SpringRestMethodGenerator implements Serializable {
+public class SpringRestMethodGenerator {
 
     private final SpringGenCtx genCtx;
     private final Map<String, TextFileWrapper> artifacts;
@@ -41,7 +40,7 @@ public class SpringRestMethodGenerator implements Serializable {
         this.artifacts = artifacts == null ? new LinkedHashMap<>() : artifacts;
     }
 
-    private static String getDefaultResponseStatus(HttpRequestMethod httpMethod) {
+    public static String getDefaultResponseStatus(HttpRequestMethod httpMethod) {
         switch (httpMethod) {
             case POST:
                 return "CREATED";
@@ -57,7 +56,7 @@ public class SpringRestMethodGenerator implements Serializable {
         return "URI_" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, methodName);
     }
 
-    public Map<String, TextFileWrapper> generateArtifacts(SpringRestMethodSpec methodSpec) {
+    public Map<String, TextFileWrapper> generateArtifacts(SpringRestMethod methodSpec) {
         JavaDocument controllerJava = (JavaDocument) artifacts.computeIfAbsent(
                 GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()),
                 key -> maybeGenerateControllerClass(key, methodSpec));
@@ -78,14 +77,14 @@ public class SpringRestMethodGenerator implements Serializable {
             addTestMethod(controllerTestJava, methodSpec, controllerJava, requestDtoJava, responseDtoJava);
 
             JavaDocument controllerITestJava = (JavaDocument) artifacts.computeIfAbsent(
-                    GenUtility.joinPackageName(genCtx.getProjectSpec().getIntegrationTestsPackageName(), methodSpec.getTypeName() + "IntegrationTest"),
+                    GenUtility.joinPackageName(genCtx.getProjectSpec().getRestIntegrationTestsPackageName(), methodSpec.getTypeName() + "IntegrationTest"),
                     key -> maybeGenerateControllerITestClass(key, controllerJava));
             addITestMethod(controllerITestJava, methodSpec, requestDtoJava, responseDtoJava);
         }
         return artifacts;
     }
 
-    private void addITestMethod(JavaDocument controllerITestJava, SpringRestMethodSpec methodSpec, JavaDocument requestJava, JavaDocument responseJava) {
+    private void addITestMethod(JavaDocument controllerITestJava, SpringRestMethod methodSpec, JavaDocument requestJava, JavaDocument responseJava) {
         CompilationUnit testUnit = controllerITestJava.getCompilationUnit();
         testUnit.addImport("org.springframework.http.HttpStatus");
         testUnit.addImport("org.springframework.http.ResponseEntity");
@@ -123,7 +122,7 @@ public class SpringRestMethodGenerator implements Serializable {
         }
     }
 
-    private void addTestMethod(JavaDocument controllerTestJava, SpringRestMethodSpec methodSpec, JavaDocument controllerJava, JavaDocument requestJava, JavaDocument responseJava) {
+    private void addTestMethod(JavaDocument controllerTestJava, SpringRestMethod methodSpec, JavaDocument controllerJava, JavaDocument requestJava, JavaDocument responseJava) {
         CompilationUnit testUnit = controllerTestJava.getCompilationUnit();
 
         ClassOrInterfaceDeclaration testTypeDeclaration = (ClassOrInterfaceDeclaration) controllerTestJava.getMainTypeDeclaration();
@@ -152,7 +151,7 @@ public class SpringRestMethodGenerator implements Serializable {
         methodBody.addStatement(callStatement.toString());
     }
 
-    private void addControllerMethod(JavaDocument controllerJava, SpringRestMethodSpec methodSpec, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
+    private void addControllerMethod(JavaDocument controllerJava, SpringRestMethod methodSpec, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
         String mappingName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, methodSpec.getHttpRequestMethod().name()) + "Mapping";
         String restUri = getRestUri(methodSpec.getMethodName());
         String methodUri = "METHOD_" + restUri;
@@ -242,7 +241,7 @@ public class SpringRestMethodGenerator implements Serializable {
         return docUnit.getLeft();
     }
 
-    private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethodSpec methodSpec) {
+    private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethod methodSpec) {
         Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaType(
                 genCtx.getProjectSpec().getSrcMainJava(), typeFullName, genCtx.getConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
@@ -258,20 +257,20 @@ public class SpringRestMethodGenerator implements Serializable {
             ciDeclaration.addAnnotation("RequiredArgsConstructor");
             ciDeclaration.addAnnotation("Slf4j");
 
-            String rootUri = "/" + genCtx.getProjectSpec().getRestApiRoot() + "/" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodSpec.getTypeLemma());
+            String rootUri = "/" + genCtx.getProjectSpec().getRestApiUriRoot() + "/" + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_HYPHEN, methodSpec.getTypeLemma());
             ciDeclaration.addFieldWithInitializer(String.class, "ROOT_URI", new StringLiteralExpr(rootUri), Keyword.STATIC, Keyword.FINAL);
         }
         return docUnit.getLeft();
     }
 
-    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
+    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethod methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
             return null;
         }
         return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
-    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
+    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethod methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
             return null;
         }

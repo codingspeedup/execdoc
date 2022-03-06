@@ -1,26 +1,20 @@
-package io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data;
+package io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code;
 
-import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.KbFunctor;
-import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
-import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.data.CRelationalTable;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpConceptCell;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.individuals.BpSheet;
+import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.IsOwned;
+import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CClassUnit;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.poi.ss.usermodel.Cell;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @NoArgsConstructor
 @KbFunctor
-public class JdlEntity extends BpConceptCell implements CRelationalTable {
-
-    @Getter
-    @KbFunctor(value = BpNames.ITEM_UNIT_FUNCTOR, T1 = JdlField.class)
-    private final List<JdlField> itemUnit = new ArrayList<>();
+public abstract class BpComponent extends BpConceptCell implements CClassUnit, IsOwned {
 
     @Getter
     @Setter
@@ -31,7 +25,7 @@ public class JdlEntity extends BpConceptCell implements CRelationalTable {
     @KbFunctor(BpNames.OWNER_FUNCTOR)
     private BpSheet owner;
 
-    public JdlEntity(Cell cell) {
+    public BpComponent(Cell cell) {
         super(cell);
     }
 

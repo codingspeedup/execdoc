@@ -4,5 +4,5 @@ import io.github.codingspeedup.execdoc.kb.KbFunctor;
 import io.github.codingspeedup.execdoc.blueprint.metamodel.vocabulary.concepts.code.CDatatype;
 
 @KbFunctor
-public interface JdlFieldType extends CDatatype {
+public interface BpFieldType extends CDatatype {
 }

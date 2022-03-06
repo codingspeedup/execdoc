@@ -1,11 +1,12 @@
-package io.github.codingspeedup.execdoc.spring.generators.model;
+package io.github.codingspeedup.execdoc.spring.generators.spec.impl;
 
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
+import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethod;
 import lombok.Builder;
 
 
 @Builder
-public class SpringRestMethod implements SpringRestMethodSpec {
+public class SpringRestMethodImpl implements SpringRestMethod {
 
     private String packageName;
     private String typeLemma;

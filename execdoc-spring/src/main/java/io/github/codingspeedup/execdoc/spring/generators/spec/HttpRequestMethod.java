@@ -1,4 +1,4 @@
-package io.github.codingspeedup.execdoc.spring.generators.model;
+package io.github.codingspeedup.execdoc.spring.generators.spec;
 
 import lombok.Getter;
 

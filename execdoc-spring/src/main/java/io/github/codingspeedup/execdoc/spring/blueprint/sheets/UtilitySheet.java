@@ -6,8 +6,8 @@ import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringSheet;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlType;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpEntityRelation;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import io.github.codingspeedup.execdoc.toolbox.utilities.NamingUtility;
 import org.apache.poi.ss.usermodel.Name;
@@ -156,12 +156,12 @@ public class UtilitySheet extends SpringSheet {
         createNamedDomain(rowIdx, colIdx, ENTITY_BINARY_VALUE, values);
 
         colIdx += 2;
-        values = Arrays.stream(JdlType.NAMES).collect(Collectors.toList());
+        values = Arrays.stream(BpType.NAMES).collect(Collectors.toList());
         values.add(0, "");
         createNamedDomain(rowIdx, colIdx, ENTITY_PREDEFINED_TYPES, values);
 
         colIdx += 2;
-        values = Stream.of(JdlEntityRelation.ENTITY_RELATIONSHIPS).map(cls -> CellMarkers.PREDICATE_MARKER + KbNames.getFunctor(cls)).collect(Collectors.toList());
+        values = Stream.of(BpEntityRelation.ENTITY_RELATIONSHIPS).map(cls -> CellMarkers.PREDICATE_MARKER + KbNames.getFunctor(cls)).collect(Collectors.toList());
         values.add(0, "");
         createNamedDomain(rowIdx, colIdx, ENTITY_RELATIONSHIPS, values);
 

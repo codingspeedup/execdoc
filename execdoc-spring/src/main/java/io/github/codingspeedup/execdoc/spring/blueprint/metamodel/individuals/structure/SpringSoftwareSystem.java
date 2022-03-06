@@ -8,14 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @KbFunctor
-public class SprintSoftwareSystem extends BasicSoftwareSystem {
+public class SpringSoftwareSystem extends BasicSoftwareSystem {
 
     @Getter
     @Setter
     @KbFunctor(SpringNames.PACKAGE_NAME_FUNCTOR)
     private String packageName;
 
-    public SprintSoftwareSystem() {
+    public SpringSoftwareSystem() {
         setKbId(UuidUtility.nextUuid());
     }
 

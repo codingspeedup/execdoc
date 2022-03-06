@@ -11,13 +11,13 @@ import java.util.List;
 
 @NoArgsConstructor
 @KbFunctor
-public class SpringController extends SpringComponent {
+public class BpController extends BpComponent {
 
     @Getter
-    @KbFunctor(value = BpNames.CODE_ELEMENT_FUNCTOR, T1 = SpringControllerMethod.class)
-    private final List<SpringControllerMethod> codeElement = new ArrayList<>();
+    @KbFunctor(value = BpNames.CODE_ELEMENT_FUNCTOR, T1 = BpControllerMethod.class)
+    private final List<BpControllerMethod> codeElement = new ArrayList<>();
 
-    public SpringController(Cell cell) {
+    public BpController(Cell cell) {
         super(cell);
     }
 

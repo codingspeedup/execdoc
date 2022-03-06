@@ -1,11 +1,11 @@
 package io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code;
 
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.BpFieldType;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class JdlType implements JdlFieldType {
+public class BpType implements BpFieldType {
 
     public static final String[] NAMES = {
             "String",
@@ -32,7 +32,7 @@ public class JdlType implements JdlFieldType {
     @Setter
     private String kbId;
 
-    public JdlType(String name) {
+    public BpType(String name) {
         if (ArrayUtils.contains(NAMES, name)) {
             setName(name);
         }

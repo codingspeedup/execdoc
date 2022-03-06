@@ -1,11 +1,15 @@
 package io.github.codingspeedup.execdoc.generators.spec;
 
+import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
+
+import java.util.Locale;
+
 public interface JavaMethodSpec extends JavaTypeSpec {
 
     String getMethodName();
 
     default String getDtoPackageName() {
-        throw new UnsupportedOperationException();
+        return GenUtility.joinPackageName(getPackageName(), "dto", getTypeLemma().toLowerCase(Locale.ROOT));
     }
 
     default String getDtoInputTypeName() {
@@ -15,5 +19,7 @@ public interface JavaMethodSpec extends JavaTypeSpec {
     default String getDtoOutputTypeName() {
         throw new UnsupportedOperationException();
     }
+
+
 
 }

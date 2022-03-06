@@ -5,15 +5,15 @@ import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.kb.Kb;
 import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.kb.KbResult;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlDto;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnum;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.JdlEnumEntry;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlEntity;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.JdlField;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpDto;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpEnum;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpEnumEntry;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpEntity;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpField;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlApplication;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.metamodel.individuals.structure.JdlValue;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.JdlFieldType;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.JdlEntityRelation;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.concepts.code.BpFieldType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpEntityRelation;
 import io.github.codingspeedup.execdoc.jhipster.blueprint.sheets.AppSheet;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.EntitySheet;
 import io.github.codingspeedup.execdoc.toolbox.utilities.NumberUtility;
@@ -127,16 +127,16 @@ public class JdlGenerator {
     }
 
     private void appendEnums(StringBuilder jdl) {
-        Set<String> ids = kb.solveConcepts(JdlEnum.class);
+        Set<String> ids = kb.solveConcepts(BpEnum.class);
         for (String id : ids) {
-            JdlEnum jdlEnum = kb.solveConcept(JdlEnum.class, id);
-            appendComment(jdl, jdlEnum.getDocString(), false);
-            jdl.append("\nenum ").append(jdlEnum.getName()).append(" {");
-            for (JdlEnumEntry jdlEnumEntry : jdlEnum.getValue()) {
-                // appendComment(jdl, jdlEnumEntry.getDocString(), true);
-                jdl.append("\n").append(INDENT).append(jdlEnumEntry.getName());
-                if (StringUtils.isNotBlank(jdlEnumEntry.getExt())) {
-                    jdl.append(" (\"").append(jdlEnumEntry.getExt()).append("\")");
+            BpEnum bpEnum = kb.solveConcept(BpEnum.class, id);
+            appendComment(jdl, bpEnum.getDocString(), false);
+            jdl.append("\nenum ").append(bpEnum.getName()).append(" {");
+            for (BpEnumEntry bpEnumEntry : bpEnum.getValue()) {
+                // appendComment(jdl, bpEnumEntry.getDocString(), true);
+                jdl.append("\n").append(INDENT).append(bpEnumEntry.getName());
+                if (StringUtils.isNotBlank(bpEnumEntry.getExt())) {
+                    jdl.append(" (\"").append(bpEnumEntry.getExt()).append("\")");
                 }
                 jdl.append(",");
             }
@@ -145,33 +145,33 @@ public class JdlGenerator {
     }
 
     private void appendEntities(StringBuilder jdl) {
-        Set<String> ids = kb.solveConcepts(JdlEntity.class);
+        Set<String> ids = kb.solveConcepts(BpEntity.class);
         for (String id : ids) {
-            JdlEntity jdlEntity = kb.solveConcept(JdlEntity.class, id);
-            appendComment(jdl, jdlEntity.getDocString(), false);
-            appendEntityAnnotations(jdl, jdlEntity.getAnnotations(), false);
+            BpEntity bpEntity = kb.solveConcept(BpEntity.class, id);
+            appendComment(jdl, bpEntity.getDocString(), false);
+            appendEntityAnnotations(jdl, bpEntity.getAnnotations(), false);
 
             KbResult dtoResult = kb.solve(false,
-                    GenUtility.simpleQuote(KbNames.getFunctor(JdlDto.class)), "(X),",
-                    BpNames.NAME_FUNCTOR, "(X, ", GenUtility.simpleQuote(jdlEntity.getName()), ")");
+                    GenUtility.simpleQuote(KbNames.getFunctor(BpDto.class)), "(X),",
+                    BpNames.NAME_FUNCTOR, "(X, ", GenUtility.simpleQuote(bpEntity.getName()), ")");
             if (!dtoResult.getYes().isEmpty()) {
                 jdl.append("\n@dto(mapstruct)");
             }
 
-            jdl.append("\nentity ").append(jdlEntity.getAttributes().get(EntitySheet.ATTRIBUTE_CLASS_NAME)).append(" (").append(jdlEntity.getName()).append(") {");
-            for (JdlField jdlField : jdlEntity.getItemUnit()) {
-                JdlFieldType jdlFieldType = jdlField.getType();
-                if (jdlFieldType != null) {
-                    appendComment(jdl, jdlField.getDocString(), true);
-                    if (BooleanUtils.toBoolean(jdlField.getPrimaryKey())) {
+            jdl.append("\nentity ").append(bpEntity.getAttributes().get(EntitySheet.ATTRIBUTE_CLASS_NAME)).append(" (").append(bpEntity.getName()).append(") {");
+            for (BpField bpField : bpEntity.getItemUnit()) {
+                BpFieldType bpFieldType = bpField.getType();
+                if (bpFieldType != null) {
+                    appendComment(jdl, bpField.getDocString(), true);
+                    if (BooleanUtils.toBoolean(bpField.getPrimaryKey())) {
                         jdl.append("\n").append(INDENT).append("@id");
                     }
-                    jdl.append("\n").append(INDENT).append("@fieldNameAsDatabaseColumn(").append(jdlField.getName()).append(")");
-                    jdl.append("\n").append(INDENT).append(jdlField.getAttributes().get(EntitySheet.ATTRIBUTE_MEMBER_NAME)).append(" ");
-                    appendTypeAndValidation(jdl, jdlField, jdlFieldType);
+                    jdl.append("\n").append(INDENT).append("@fieldNameAsDatabaseColumn(").append(bpField.getName()).append(")");
+                    jdl.append("\n").append(INDENT).append(bpField.getAttributes().get(EntitySheet.ATTRIBUTE_MEMBER_NAME)).append(" ");
+                    appendTypeAndValidation(jdl, bpField, bpFieldType);
                     jdl.append(",");
                 } else {
-                    LOGGER.warn("Unspecified type for field " + jdlField.getKbId());
+                    LOGGER.warn("Unspecified type for field " + bpField.getKbId());
                 }
             }
             closeBlock(jdl);
@@ -179,13 +179,13 @@ public class JdlGenerator {
     }
 
     private void appendRelationships(StringBuilder jdl) {
-        for (Triple<String, String, String> relId : kb.solveRelation(JdlEntityRelation.class)) {
+        for (Triple<String, String, String> relId : kb.solveRelation(BpEntityRelation.class)) {
             for (String relName : kb.findFunctors(relId.getLeft())) {
-                for (Class<? extends JdlEntityRelation> relType : JdlEntityRelation.ENTITY_RELATIONSHIPS) {
+                for (Class<? extends BpEntityRelation> relType : BpEntityRelation.ENTITY_RELATIONSHIPS) {
                     if (relName.equals(KbNames.getFunctor(relType))) {
-                        JdlEntityRelation rel = kb.solveRelation(relType, relId.getLeft());
-                        Pair<JdlEntity, JdlField> from = solveRelationshipEntity(rel.getFrom());
-                        Pair<JdlEntity, JdlField> to = solveRelationshipEntity(rel.getTo());
+                        BpEntityRelation rel = kb.solveRelation(relType, relId.getLeft());
+                        Pair<BpEntity, BpField> from = solveRelationshipEntity(rel.getFrom());
+                        Pair<BpEntity, BpField> to = solveRelationshipEntity(rel.getTo());
                         appendRelationship(jdl, rel, from, to);
                     }
                 }
@@ -249,15 +249,15 @@ public class JdlGenerator {
         }
     }
 
-    private void appendTypeAndValidation(StringBuilder jdl, JdlField jdlField, JdlFieldType jdlFieldType) {
-        String typeName = jdlFieldType.getName();
+    private void appendTypeAndValidation(StringBuilder jdl, BpField bpField, BpFieldType bpFieldType) {
+        String typeName = bpFieldType.getName();
         jdl.append(typeName);
-        if (BooleanUtils.toBoolean(jdlField.getRequired())) {
+        if (BooleanUtils.toBoolean(bpField.getRequired())) {
             jdl.append(" required");
         }
-        String max = NumberUtility.toStringOrNull(jdlField.getMax());
-        String min = NumberUtility.toStringOrNull(jdlField.getMin());
-        String pattern = jdlField.getExt();
+        String max = NumberUtility.toStringOrNull(bpField.getMax());
+        String min = NumberUtility.toStringOrNull(bpField.getMin());
+        String pattern = bpField.getExt();
         switch (typeName) {
             case "String":
                 if (StringUtils.isNotBlank(min)) {
@@ -293,26 +293,26 @@ public class JdlGenerator {
                 }
                 break;
         }
-        if (BooleanUtils.toBoolean(jdlField.getUnique())) {
+        if (BooleanUtils.toBoolean(bpField.getUnique())) {
             jdl.append(" unique");
         }
     }
 
-    private Pair<JdlEntity, JdlField> solveRelationshipEntity(String kbId) {
-        JdlEntity entity = null;
-        JdlField field = null;
+    private Pair<BpEntity, BpField> solveRelationshipEntity(String kbId) {
+        BpEntity entity = null;
+        BpField field = null;
         Set<String> functors = kb.findFunctors(kbId);
-        if (functors.contains(KbNames.getFunctor(JdlEntity.class))) {
-            entity = kb.solveConcept(JdlEntity.class, kbId);
-        } else if (functors.contains(KbNames.getFunctor(JdlField.class))) {
-            field = kb.solveConcept(JdlField.class, kbId);
+        if (functors.contains(KbNames.getFunctor(BpEntity.class))) {
+            entity = kb.solveConcept(BpEntity.class, kbId);
+        } else if (functors.contains(KbNames.getFunctor(BpField.class))) {
+            field = kb.solveConcept(BpField.class, kbId);
             List<Term[]> subst = kb.solveOnce(BpNames.ITEM_UNIT_FUNCTOR, X, Var.anonymous(), kbId).getSubstitutions();
-            entity = kb.solveConcept(JdlEntity.class, KbResult.asString(subst.get(0)[0]));
+            entity = kb.solveConcept(BpEntity.class, KbResult.asString(subst.get(0)[0]));
         }
         return Pair.of(entity, field);
     }
 
-    private void appendRelationship(StringBuilder jdl, JdlEntityRelation rel, Pair<JdlEntity, JdlField> from, Pair<JdlEntity, JdlField> to) {
+    private void appendRelationship(StringBuilder jdl, BpEntityRelation rel, Pair<BpEntity, BpField> from, Pair<BpEntity, BpField> to) {
         jdl.append("\nrelationship ").append(rel.getJdlName()).append(" {");
         jdl.append("\n").append(INDENT);
         jdl.append(from.getLeft().getAttributes().get(EntitySheet.ATTRIBUTE_CLASS_NAME));

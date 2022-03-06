@@ -4,7 +4,7 @@ import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.blueprint.master.cells.CellMarkers;
 import io.github.codingspeedup.execdoc.blueprint.master.sheets.core.SystemSheet;
 import io.github.codingspeedup.execdoc.kb.Kb;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.SprintSoftwareSystem;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.structure.SpringSoftwareSystem;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class SpringSystemSheet extends SystemSheet {
@@ -32,7 +32,7 @@ public class SpringSystemSheet extends SystemSheet {
 
     @Override
     public void expand(Kb kb) {
-        SprintSoftwareSystem ss = new SprintSoftwareSystem();
+        SpringSoftwareSystem ss = new SpringSoftwareSystem();
         ss.setName(getSystemName());
         ss.setPackageName(getPackageName());
         kb.learn(ss);

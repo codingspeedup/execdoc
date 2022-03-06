@@ -63,23 +63,24 @@ public class SpringRestMethodGenerator {
         ClassOrInterfaceDeclaration controllerDeclaration = (ClassOrInterfaceDeclaration) controllerJava.getMainTypeDeclaration();
         List<MethodDeclaration> methodDeclarations = controllerDeclaration.getMethodsByName(methodSpec.getMethodName());
         if (CollectionUtils.isEmpty(methodDeclarations)) {
-            JavaDocument requestDtoJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument inputDtoJava = (JavaDocument) artifacts.computeIfAbsent(
                     GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()),
                     key -> maybeGenerateRequestDtoClass(key, methodSpec));
-            JavaDocument responseDtoJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument outputDtoJava = (JavaDocument) artifacts.computeIfAbsent(
                     GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()),
                     key -> maybeGenerateResponseDtoClass(key, methodSpec));
-            addControllerMethod(controllerJava, methodSpec, requestDtoJava, responseDtoJava);
+
+            addControllerMethod(controllerJava, methodSpec, inputDtoJava, outputDtoJava);
 
             JavaDocument controllerTestJava = (JavaDocument) artifacts.computeIfAbsent(
                     GenUtility.joinPackageName(controllerJava.getPackageName(), methodSpec.getTypeName() + "Test"),
                     key -> maybeGenerateControllerTestClass(key, controllerJava));
-            addTestMethod(controllerTestJava, methodSpec, controllerJava, requestDtoJava, responseDtoJava);
+            addTestMethod(controllerTestJava, methodSpec, controllerJava, inputDtoJava, outputDtoJava);
 
             JavaDocument controllerITestJava = (JavaDocument) artifacts.computeIfAbsent(
                     GenUtility.joinPackageName(genCtx.getProjectSpec().getRestIntegrationTestsPackageName(), methodSpec.getTypeName() + "IntegrationTest"),
                     key -> maybeGenerateControllerITestClass(key, controllerJava));
-            addITestMethod(controllerITestJava, methodSpec, requestDtoJava, responseDtoJava);
+            addITestMethod(controllerITestJava, methodSpec, inputDtoJava, outputDtoJava);
         }
         return artifacts;
     }
@@ -188,7 +189,7 @@ public class SpringRestMethodGenerator {
             String responseBodyTypeName = responseDtoJava.getMainTypeDeclaration().getNameAsString();
             controllerUnit.addImport(GenUtility.joinPackageName(responseDtoJava.getPackageName(), responseBodyTypeName));
             methodDeclaration.setType("ResponseEntity<" + responseBodyTypeName + ">");
-            methodBody.addStatement(responseBodyTypeName + " restResponse = new " + responseBodyTypeName + "();");
+            methodBody.addStatement(responseBodyTypeName + " restResponse = " + responseBodyTypeName + ".builder().build();");
             methodBody.addStatement("return new ResponseEntity<>(restResponse, HttpStatus." + getDefaultResponseStatus(methodSpec.getHttpRequestMethod()) + ");");
         } else {
             methodDeclaration.setType("ResponseEntity<?>");
@@ -197,7 +198,7 @@ public class SpringRestMethodGenerator {
     }
 
     private JavaDocument maybeGenerateControllerITestClass(String typeFullName, JavaDocument controllerJava) {
-        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaType(
+        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
                 genCtx.getProjectSpec().getSrcTestJava(), typeFullName, genCtx.getConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
@@ -218,7 +219,7 @@ public class SpringRestMethodGenerator {
     }
 
     private TextFileWrapper maybeGenerateControllerTestClass(String typeFullName, JavaDocument controllerJava) {
-        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaType(
+        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
                 genCtx.getProjectSpec().getSrcTestJava(), typeFullName, genCtx.getConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
@@ -241,8 +242,27 @@ public class SpringRestMethodGenerator {
         return docUnit.getLeft();
     }
 
+    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethod methodSpec) {
+        if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
+            return null;
+        }
+        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
+    }
+
+    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethod methodSpec) {
+        if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
+            return null;
+        }
+        switch (methodSpec.getHttpRequestMethod()) {
+            case DELETE:
+            case PATCH:
+                return null;
+        }
+        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
+    }
+
     private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethod methodSpec) {
-        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaType(
+        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
                 genCtx.getProjectSpec().getSrcMainJava(), typeFullName, genCtx.getConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
@@ -261,25 +281,6 @@ public class SpringRestMethodGenerator {
             ciDeclaration.addFieldWithInitializer(String.class, "ROOT_URI", new StringLiteralExpr(rootUri), Keyword.STATIC, Keyword.FINAL);
         }
         return docUnit.getLeft();
-    }
-
-    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethod methodSpec) {
-        if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
-            return null;
-        }
-        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
-    }
-
-    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethod methodSpec) {
-        if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
-            return null;
-        }
-        switch (methodSpec.getHttpRequestMethod()) {
-            case DELETE:
-            case PATCH:
-                return null;
-        }
-        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
 }

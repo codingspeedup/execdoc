@@ -99,7 +99,15 @@ public class GenUtility {
         return new String[]{typeFullName.substring(0, lastDotIndex), typeFullName.substring(lastDotIndex + 1)};
     }
 
-    public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaType(Folder srcFolder, String typeFullName, boolean override) {
+    public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaClass(Folder srcFolder, String typeFullName, boolean override) {
+        return maybeCreateJavaClass(false, srcFolder, typeFullName, override);
+    }
+
+    public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaInterface(Folder srcFolder, String typeFullName, boolean override) {
+        return maybeCreateJavaClass(true, srcFolder, typeFullName, override);
+    }
+
+    private static Pair<JavaDocument, CompilationUnit> maybeCreateJavaClass(boolean makeInterface, Folder srcFolder, String typeFullName, boolean override) {
         String[] packageType = splitTypeFullName(typeFullName);
         File javaFile = fileOf(srcFolder, packageType[0], packageType[1] + ".java");
         JavaDocument javaDocument = new JavaDocument(javaFile);
@@ -112,7 +120,9 @@ public class GenUtility {
         }
         if (cUnit != null) {
             cUnit.setPackageDeclaration(packageType[0]);
-            ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Modifier.Keyword.PUBLIC);
+            ClassOrInterfaceDeclaration ciDeclaration = makeInterface
+                    ? cUnit.addInterface(packageType[1], Modifier.Keyword.PUBLIC)
+                    : cUnit.addClass(packageType[1], Modifier.Keyword.PUBLIC);
             addCreationJavadoc(ciDeclaration);
         }
         return Pair.of(javaDocument, cUnit);

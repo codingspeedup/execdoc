@@ -22,9 +22,14 @@ public class SpringBlueprintManager {
     public static void main(String[] args) {
         Workplace.initialize();
         File initialLocation = Folder.extend(AppCtx.getInstance().getTempFolder(), "demo");
-
         new BlueprintManagerGUI<>(SpringBlueprint.class, initialLocation).addListener((blueprint) -> {
-            SpringGenConfig genConfig = SpringGeneratorConfigGUI.showDialog(new SpringGenConfig());
+            SpringGenConfig genConfig = new SpringGenConfig();
+            genConfig.setRestMethods(false);
+            genConfig.setServiceMethods(true);
+            genConfig.setDryRun(true);
+            genConfig.setForce(true);
+
+            genConfig = SpringGeneratorConfigGUI.showDialog(genConfig);
             if (genConfig != null) {
                 if (blueprint.isEmbedded()) {
                     genConfig.setDestinationFolder(blueprint.getWrappedFile().getParentFile());

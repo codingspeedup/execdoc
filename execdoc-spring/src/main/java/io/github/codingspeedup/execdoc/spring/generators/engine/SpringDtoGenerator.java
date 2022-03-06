@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class SpringDtoGenerator {
 
     public static JavaDocument generateRestDto(SpringGenCtx genCtx, Folder folder, String typeFullName) {
-        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaType(
+        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
                 folder, typeFullName, genCtx.getConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {

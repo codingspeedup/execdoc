@@ -5,13 +5,17 @@ import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringBlueprint;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpController;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpControllerMethod;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpService;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpServiceMethod;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.ControllerMethodsSheet;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenConfig;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.SpringKb;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
-import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringRestMethodImpl;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringServiceMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringRestMethodImpl;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringServiceMethodImpl;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 
 import java.util.LinkedHashMap;
@@ -31,7 +35,30 @@ public class SpringBootGenerator {
         if (genCtx.getConfig().isRestMethods()) {
             generateRestMethods();
         }
+        if (genCtx.getConfig().isServiceMethods()) {
+            generateServiceMethods();
+        }
         return artifacts;
+    }
+
+    private void generateServiceMethods() {
+        SpringServiceMethodGenerator serviceGenerator = new SpringServiceMethodGenerator(genCtx, artifacts);
+        Set<String> serviceIds = genCtx.getKb().solveConcepts(BpService.class);
+        for (String serviceId : serviceIds) {
+            BpService service = genCtx.getKb().solveConcept(BpService.class, serviceId);
+            String subPackageName = service.getOwner().getName().getRight();
+            if (BlueprintMaster.DEFAULT_SHEET_NAME.equals(subPackageName)) {
+                subPackageName = null;
+            }
+            for (BpServiceMethod method : service.getCodeElement()) {
+                SpringServiceMethod restMethod = SpringServiceMethodImpl.builder()
+                        .packageName(GenUtility.joinPackageName(genCtx.getProjectSpec().getServicesPackageName(), subPackageName))
+                        .typeLemma(service.getName())
+                        .methodLemma(method.getName())
+                        .build();
+                serviceGenerator.generateArtifacts(restMethod);
+            }
+        }
     }
 
     private void generateRestMethods() {

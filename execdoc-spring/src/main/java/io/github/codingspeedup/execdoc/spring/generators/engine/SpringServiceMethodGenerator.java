@@ -5,6 +5,7 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringServiceMethod;
@@ -52,9 +53,58 @@ public class SpringServiceMethodGenerator {
             addInterfaceMethod(interfaceJava, methodSpec, inputDtoJava, outputDtoJava);
             addImplementedMethod(serviceJava, methodSpec, inputDtoJava, outputDtoJava);
 
-
+            JavaDocument serviceTestJava = (JavaDocument) artifacts.computeIfAbsent(
+                    GenUtility.joinPackageName(serviceJava.getPackageName(), serviceJava.getMainTypeDeclaration().getNameAsString() + "Test"),
+                    key -> maybeGenerateControllerTestClass(key, serviceJava, interfaceJava));
+            addTestMethod(serviceTestJava, interfaceJava, methodSpec, inputDtoJava, outputDtoJava);
         }
         return artifacts;
+    }
+
+    private void addTestMethod(JavaDocument serviceTestJava, JavaDocument interfaceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
+        CompilationUnit testUnit = serviceTestJava.getCompilationUnit();
+        testUnit.addImport(GenUtility.joinPackageName(inputDtoJava.getPackageName(), inputDtoJava.getMainTypeDeclaration().getNameAsString()));
+        testUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
+
+        ClassOrInterfaceDeclaration testTypeDeclaration = (ClassOrInterfaceDeclaration) serviceTestJava.getMainTypeDeclaration();
+
+        MethodDeclaration methodDeclaration = testTypeDeclaration.addMethod("test" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_CAMEL, methodSpec.getMethodName()));
+        methodDeclaration.addAnnotation("Test");
+        BlockStmt methodBody = methodDeclaration.getBody().orElseThrow();
+
+        methodBody.addStatement(inputDtoJava.getMainTypeDeclaration().getNameAsString()
+                + " args = "
+                + inputDtoJava.getMainTypeDeclaration().getNameAsString()
+                + ".builder().build();");
+        methodBody.addStatement(outputDtoJava.getMainTypeDeclaration().getNameAsString()
+                + " result = "
+                + CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, interfaceJava.getMainTypeDeclaration().getNameAsString())
+                + "."
+                + methodSpec.getMethodName()
+                + "(args);");
+        methodBody.addStatement("assertNotNull(result);");
+    }
+
+    private TextFileWrapper maybeGenerateControllerTestClass(String typeFullName, JavaDocument serviceJava, JavaDocument interfaceJava) {
+        Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
+                genCtx.getProjectSpec().getSrcTestJava(), typeFullName, genCtx.getConfig().isForce());
+        CompilationUnit cUnit = docUnit.getRight();
+        if (cUnit != null) {
+            cUnit.addImport("org.junit.jupiter.api.Test");
+            cUnit.addImport("org.junit.jupiter.api.extension.ExtendWith");
+            cUnit.addImport("org.mockito.InjectMocks");
+            cUnit.addImport("org.mockito.junit.jupiter.MockitoExtension");
+            cUnit.addImport("org.junit.jupiter.api.Assertions.assertNotNull", true, false);
+
+            ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration) docUnit.getLeft().getMainTypeDeclaration();
+            ciDeclaration.addSingleMemberAnnotation("ExtendWith", "MockitoExtension.class");
+
+            ciDeclaration.addField(
+                            serviceJava.getMainTypeDeclaration().getNameAsString(),
+                            CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, interfaceJava.getMainTypeDeclaration().getNameAsString()))
+                    .addAnnotation("InjectMocks");
+        }
+        return docUnit.getLeft();
     }
 
     private void addImplementedMethod(JavaDocument serviceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
@@ -63,7 +113,7 @@ public class SpringServiceMethodGenerator {
         serviceUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
 
         ClassOrInterfaceDeclaration serviceDeclaration = (ClassOrInterfaceDeclaration) serviceJava.getMainTypeDeclaration();
-        MethodDeclaration methodDeclaration =  serviceDeclaration.addMethod(methodSpec.getMethodName(), Modifier.Keyword.PUBLIC);
+        MethodDeclaration methodDeclaration = serviceDeclaration.addMethod(methodSpec.getMethodName(), Modifier.Keyword.PUBLIC);
         methodDeclaration.addParameter(inputDtoJava.getMainTypeDeclaration().getNameAsString(), "args");
         methodDeclaration.setType(outputDtoJava.getMainTypeDeclaration().getNameAsString());
 
@@ -82,7 +132,7 @@ public class SpringServiceMethodGenerator {
         interfaceUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
 
         ClassOrInterfaceDeclaration interfaceDeclaration = (ClassOrInterfaceDeclaration) interfaceJava.getMainTypeDeclaration();
-        MethodDeclaration methodDeclaration =  interfaceDeclaration.addMethod(methodSpec.getMethodName());
+        MethodDeclaration methodDeclaration = interfaceDeclaration.addMethod(methodSpec.getMethodName());
         methodDeclaration.addParameter(inputDtoJava.getMainTypeDeclaration().getNameAsString(), "args");
         methodDeclaration.setType(outputDtoJava.getMainTypeDeclaration().getNameAsString());
         methodDeclaration.removeBody();

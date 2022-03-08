@@ -24,8 +24,9 @@ public class SpringBlueprintManager {
         File initialLocation = Folder.extend(AppCtx.getInstance().getTempFolder(), "demo");
         new BlueprintManagerGUI<>(SpringBlueprint.class, initialLocation).addListener((blueprint) -> {
             SpringGenConfig genConfig = new SpringGenConfig();
+            genConfig.setEnums(true);
             genConfig.setRestMethods(false);
-            genConfig.setServiceMethods(true);
+            genConfig.setServiceMethods(false);
             genConfig.setDryRun(true);
             genConfig.setForce(true);
 

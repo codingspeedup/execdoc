@@ -1,59 +1,67 @@
 package io.github.codingspeedup.execdoc.spring.generators.engine;
 
-import io.github.codingspeedup.execdoc.blueprint.master.BlueprintMaster;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.blueprint.SpringBlueprint;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpController;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpControllerMethod;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpService;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpServiceMethod;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.*;
 import io.github.codingspeedup.execdoc.spring.blueprint.sheets.ControllerMethodsSheet;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenConfig;
-import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
-import io.github.codingspeedup.execdoc.spring.generators.SpringKb;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEnumConstant;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethod;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringServiceMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringEnumConstantImpl;
 import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringRestMethodImpl;
 import io.github.codingspeedup.execdoc.spring.generators.spec.impl.SpringServiceMethodImpl;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class SpringBootGenerator {
-
-    private final SpringGenCtx genCtx;
-    private final Map<String, TextFileWrapper> artifacts = new LinkedHashMap<>();
+public class SpringBootGenerator extends AbstractSpringGenerator {
 
     public SpringBootGenerator(SpringGenConfig genCfg, SpringBlueprint bp) {
-        genCtx = new SpringGenCtx(genCfg, new SpringKb(bp.compileKb()));
+        super(genCfg, bp);
     }
 
     public Map<String, TextFileWrapper> generateArtifacts() {
-        if (genCtx.getConfig().isRestMethods()) {
+        if (getGenConfig().isEnums()) {
+            generateEnums();
+        }
+        if (getGenConfig().isRestMethods()) {
             generateRestMethods();
         }
-        if (genCtx.getConfig().isServiceMethods()) {
+        if (getGenConfig().isServiceMethods()) {
             generateServiceMethods();
         }
-        return artifacts;
+        return getArtifacts();
+    }
+
+    private void generateEnums() {
+        SpringEnumGenerator enumGenerator = new SpringEnumGenerator(getGenCtx(), getArtifacts());
+        Set<String> enumIds = getKb().solveConcepts(BpEnum.class);
+        for (String enumId : enumIds) {
+            BpEnum bpEnum = getKb().solveConcept(BpEnum.class, enumId);
+            for (BpEnumEntry entry : bpEnum.getValue()) {
+                SpringEnumConstant enumConstant = SpringEnumConstantImpl.builder()
+                        .packageName(GenUtility.joinPackageName(getProjectSpec().getFiniteDomainsPackageName(), getSubPackageName(bpEnum)))
+                        .typeLemma(bpEnum.getName())
+                        .constantName(entry.getName())
+                        .constantDescription(entry.getExt())
+                        .build();
+                enumGenerator.generateArtifacts(enumConstant);
+            }
+        }
     }
 
     private void generateServiceMethods() {
-        SpringServiceMethodGenerator serviceGenerator = new SpringServiceMethodGenerator(genCtx, artifacts);
-        Set<String> serviceIds = genCtx.getKb().solveConcepts(BpService.class);
+        SpringServiceMethodGenerator serviceGenerator = new SpringServiceMethodGenerator(getGenCtx(), getArtifacts());
+        Set<String> serviceIds = getKb().solveConcepts(BpService.class);
         for (String serviceId : serviceIds) {
-            BpService service = genCtx.getKb().solveConcept(BpService.class, serviceId);
-            String subPackageName = service.getOwner().getName().getRight();
-            if (BlueprintMaster.DEFAULT_SHEET_NAME.equals(subPackageName)) {
-                subPackageName = null;
-            }
-            for (BpServiceMethod method : service.getCodeElement()) {
+            BpService bpService = getKb().solveConcept(BpService.class, serviceId);
+            for (BpServiceMethod method : bpService.getCodeElement()) {
                 SpringServiceMethod restMethod = SpringServiceMethodImpl.builder()
-                        .packageName(GenUtility.joinPackageName(genCtx.getProjectSpec().getServicesPackageName(), subPackageName))
-                        .typeLemma(service.getName())
+                        .packageName(GenUtility.joinPackageName(getProjectSpec().getServicesPackageName(), getSubPackageName(bpService)))
+                        .typeLemma(bpService.getName())
                         .methodLemma(method.getName())
                         .build();
                 serviceGenerator.generateArtifacts(restMethod);
@@ -62,18 +70,14 @@ public class SpringBootGenerator {
     }
 
     private void generateRestMethods() {
-        SpringRestMethodGenerator restGenerator = new SpringRestMethodGenerator(genCtx, artifacts);
-        Set<String> controllerIds = genCtx.getKb().solveConcepts(BpController.class);
+        SpringRestMethodGenerator restGenerator = new SpringRestMethodGenerator(getGenCtx(), getArtifacts());
+        Set<String> controllerIds = getKb().solveConcepts(BpController.class);
         for (String controllerId : controllerIds) {
-            BpController controller = genCtx.getKb().solveConcept(BpController.class, controllerId);
-            String subPackageName = controller.getOwner().getName().getRight();
-            if (BlueprintMaster.DEFAULT_SHEET_NAME.equals(subPackageName)) {
-                subPackageName = null;
-            }
-            for (BpControllerMethod method : controller.getCodeElement()) {
+            BpController bpController = getKb().solveConcept(BpController.class, controllerId);
+            for (BpControllerMethod method : bpController.getCodeElement()) {
                 SpringRestMethod restMethod = SpringRestMethodImpl.builder()
-                        .packageName(GenUtility.joinPackageName(genCtx.getProjectSpec().getRestControllerPackageName(), subPackageName))
-                        .typeLemma(controller.getName())
+                        .packageName(GenUtility.joinPackageName(getProjectSpec().getRestControllerPackageName(), getSubPackageName(bpController)))
+                        .typeLemma(bpController.getName())
                         .methodLemma(method.getName())
                         .httpMethod(HttpRequestMethod.valueOf(ControllerMethodsSheet.findHttpMethods(method.getAnnotations()).iterator().next()))
                         .build();

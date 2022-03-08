@@ -3,6 +3,8 @@ package io.github.codingspeedup.execdoc.generators.utilities;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
@@ -87,8 +89,8 @@ public class GenUtility {
         return sb.toString();
     }
 
-    public static void addCreationJavadoc(ClassOrInterfaceDeclaration ciDeclaration) {
-        ciDeclaration.setJavadocComment("Created on " + DateTimeUtility.toIsoDateString(LocalDate.now()));
+    public static void addCreationJavadoc(TypeDeclaration<?> tDeclaration) {
+        tDeclaration.setJavadocComment("Created on " + DateTimeUtility.toIsoDateString(LocalDate.now()));
     }
 
     public static String[] splitTypeFullName(String typeFullName) {
@@ -100,14 +102,18 @@ public class GenUtility {
     }
 
     public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaClass(Folder srcFolder, String typeFullName, boolean override) {
-        return maybeCreateJavaClass(false, srcFolder, typeFullName, override);
+        return maybeCreateJavaClass(0, srcFolder, typeFullName, override);
     }
 
     public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaInterface(Folder srcFolder, String typeFullName, boolean override) {
-        return maybeCreateJavaClass(true, srcFolder, typeFullName, override);
+        return maybeCreateJavaClass(1, srcFolder, typeFullName, override);
     }
 
-    private static Pair<JavaDocument, CompilationUnit> maybeCreateJavaClass(boolean makeInterface, Folder srcFolder, String typeFullName, boolean override) {
+    public static Pair<JavaDocument, CompilationUnit> maybeCreateJavaEnum(Folder srcFolder, String typeFullName, boolean override) {
+        return maybeCreateJavaClass(2, srcFolder, typeFullName, override);
+    }
+
+    private static Pair<JavaDocument, CompilationUnit> maybeCreateJavaClass(int javaType, Folder srcFolder, String typeFullName, boolean override) {
         String[] packageType = splitTypeFullName(typeFullName);
         File javaFile = fileOf(srcFolder, packageType[0], packageType[1] + ".java");
         JavaDocument javaDocument = new JavaDocument(javaFile);
@@ -120,12 +126,26 @@ public class GenUtility {
         }
         if (cUnit != null) {
             cUnit.setPackageDeclaration(packageType[0]);
-            ClassOrInterfaceDeclaration ciDeclaration = makeInterface
-                    ? cUnit.addInterface(packageType[1], Modifier.Keyword.PUBLIC)
-                    : cUnit.addClass(packageType[1], Modifier.Keyword.PUBLIC);
-            addCreationJavadoc(ciDeclaration);
+            switch (javaType) {
+                case 0: {
+                    ClassOrInterfaceDeclaration ciDeclaration = cUnit.addClass(packageType[1], Modifier.Keyword.PUBLIC);
+                    addCreationJavadoc(ciDeclaration);
+                    break;
+                }
+                case 1: {
+                    ClassOrInterfaceDeclaration ciDeclaration = cUnit.addInterface(packageType[1], Modifier.Keyword.PUBLIC);
+                    addCreationJavadoc(ciDeclaration);
+                    break;
+                }
+                case 2: {
+                    EnumDeclaration eDeclaration = cUnit.addEnum(packageType[1], Modifier.Keyword.PUBLIC);
+                    addCreationJavadoc(eDeclaration);
+                    break;
+                }
+            }
         }
         return Pair.of(javaDocument, cUnit);
     }
+
 
 }

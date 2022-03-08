@@ -14,51 +14,46 @@ import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpringServiceMethodGenerator {
-
-    private final SpringGenCtx genCtx;
-    private final Map<String, TextFileWrapper> artifacts;
+public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
 
     public SpringServiceMethodGenerator(SpringGenCtx genCtx) {
-        this(genCtx, null);
+        super(genCtx);
     }
 
     public SpringServiceMethodGenerator(SpringGenCtx genCtx, Map<String, TextFileWrapper> artifacts) {
-        this.genCtx = genCtx;
-        this.artifacts = artifacts == null ? new LinkedHashMap<>() : artifacts;
+        super(genCtx, artifacts);
     }
 
     public Map<String, TextFileWrapper> generateArtifacts(SpringServiceMethod methodSpec) {
-        JavaDocument interfaceJava = (JavaDocument) artifacts.computeIfAbsent(
+        JavaDocument interfaceJava = (JavaDocument) getArtifacts().computeIfAbsent(
                 GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()),
                 key -> maybeGenerateServiceInterface(key));
         ClassOrInterfaceDeclaration interfaceDeclaration = (ClassOrInterfaceDeclaration) interfaceJava.getMainTypeDeclaration();
         List<MethodDeclaration> methodDeclarations = interfaceDeclaration.getMethodsByName(methodSpec.getMethodName());
         if (CollectionUtils.isEmpty(methodDeclarations)) {
-            JavaDocument serviceJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument serviceJava = (JavaDocument) getArtifacts().computeIfAbsent(
                     GenUtility.joinPackageName(methodSpec.getImplementationPackageName(), methodSpec.getImplementingTypeName()),
                     key -> maybeGenerateServiceImplementation(key, interfaceJava));
 
-            JavaDocument inputDtoJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument inputDtoJava = (JavaDocument) getArtifacts().computeIfAbsent(
                     GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoInputTypeName()),
                     key -> maybeGenerateArgumentsDtoClass(key));
-            JavaDocument outputDtoJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument outputDtoJava = (JavaDocument) getArtifacts().computeIfAbsent(
                     GenUtility.joinPackageName(methodSpec.getDtoPackageName(), methodSpec.getDtoOutputTypeName()),
                     key -> maybeGenerateResultDtoClass(key));
 
             addInterfaceMethod(interfaceJava, methodSpec, inputDtoJava, outputDtoJava);
             addImplementedMethod(serviceJava, methodSpec, inputDtoJava, outputDtoJava);
 
-            JavaDocument serviceTestJava = (JavaDocument) artifacts.computeIfAbsent(
+            JavaDocument serviceTestJava = (JavaDocument) getArtifacts().computeIfAbsent(
                     GenUtility.joinPackageName(serviceJava.getPackageName(), serviceJava.getMainTypeDeclaration().getNameAsString() + "Test"),
                     key -> maybeGenerateControllerTestClass(key, serviceJava, interfaceJava));
             addTestMethod(serviceTestJava, interfaceJava, methodSpec, inputDtoJava, outputDtoJava);
         }
-        return artifacts;
+        return getArtifacts();
     }
 
     private void addTestMethod(JavaDocument serviceTestJava, JavaDocument interfaceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
@@ -87,7 +82,7 @@ public class SpringServiceMethodGenerator {
 
     private TextFileWrapper maybeGenerateControllerTestClass(String typeFullName, JavaDocument serviceJava, JavaDocument interfaceJava) {
         Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
-                genCtx.getProjectSpec().getSrcTestJava(), typeFullName, genCtx.getConfig().isForce());
+                getProjectSpec().getSrcTestJava(), typeFullName, getGenConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
             cUnit.addImport("org.junit.jupiter.api.Test");
@@ -139,16 +134,16 @@ public class SpringServiceMethodGenerator {
     }
 
     private TextFileWrapper maybeGenerateResultDtoClass(String typeFullName) {
-        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
+        return SpringDtoGenerator.generateRestDto(getGenCtx(), getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
     private TextFileWrapper maybeGenerateArgumentsDtoClass(String typeFullName) {
-        return SpringDtoGenerator.generateRestDto(genCtx, genCtx.getProjectSpec().getSrcMainJava(), typeFullName);
+        return SpringDtoGenerator.generateRestDto(getGenCtx(), getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
     private TextFileWrapper maybeGenerateServiceImplementation(String typeFullName, JavaDocument interfaceJava) {
         Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
-                genCtx.getProjectSpec().getSrcMainJava(), typeFullName, genCtx.getConfig().isForce());
+                getProjectSpec().getSrcMainJava(), typeFullName, getGenConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
             cUnit.addImport("lombok.RequiredArgsConstructor");
@@ -165,7 +160,7 @@ public class SpringServiceMethodGenerator {
 
     private TextFileWrapper maybeGenerateServiceInterface(String typeFullName) {
         Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaInterface(
-                genCtx.getProjectSpec().getSrcMainJava(), typeFullName, genCtx.getConfig().isForce());
+                getProjectSpec().getSrcMainJava(), typeFullName, getGenConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
             docUnit.getLeft().getMainTypeDeclaration();

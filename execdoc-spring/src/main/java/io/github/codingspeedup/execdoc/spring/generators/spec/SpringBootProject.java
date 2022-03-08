@@ -25,4 +25,12 @@ public interface SpringBootProject extends MavenProjectSpec {
         return GenUtility.joinPackageName(getPackageName(), "services.impl");
     }
 
+    default String getDomainPackageName() {
+        return GenUtility.joinPackageName(getPackageName(), "domain");
+    }
+
+    default String getFiniteDomainsPackageName() {
+        return GenUtility.joinPackageName(getDomainPackageName(), "finite");
+    }
+
 }

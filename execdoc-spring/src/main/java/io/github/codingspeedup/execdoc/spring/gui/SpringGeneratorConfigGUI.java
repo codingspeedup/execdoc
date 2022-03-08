@@ -16,6 +16,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
+    private JCheckBox enumsBox;
     private JCheckBox restMethodsBox;
     private JCheckBox serviceMethodsBox;
     private JCheckBox dryRunBox;
@@ -29,6 +30,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
+        enumsBox.setSelected(genCfg.isEnums());
         restMethodsBox.setSelected(genCfg.isRestMethods());
         serviceMethodsBox.setSelected(genCfg.isServiceMethods());
         dryRunBox.setSelected(genCfg.isDryRun());
@@ -69,6 +71,7 @@ public class SpringGeneratorConfigGUI extends JDialog {
 
     private void onOK() {
         dialogResult = JOptionPane.OK_OPTION;
+        genCfg.setEnums(enumsBox.isSelected());
         genCfg.setRestMethods(restMethodsBox.isSelected());
         genCfg.setServiceMethods(serviceMethodsBox.isSelected());
         genCfg.setDryRun(dryRunBox.isSelected());

@@ -88,7 +88,6 @@ public class EnumsSheet extends SpringSheet {
                 enumType = null;
                 continue;
             }
-
             if (enumType == null) {
                 enumType = new BpEnum(nameCell);
                 enumType.setOwner(owner);
@@ -99,6 +98,7 @@ public class EnumsSheet extends SpringSheet {
                     enumConstant.setExt(label);
                 }
                 enumType.getValue().add(enumConstant);
+                kb.learn(enumConstant);
             }
         }
         kb.learn(enumType);

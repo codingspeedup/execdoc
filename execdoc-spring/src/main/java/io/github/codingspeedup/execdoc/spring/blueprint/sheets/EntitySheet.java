@@ -207,6 +207,7 @@ public class EntitySheet extends SpringSheet {
                 bpField.setExt(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_PATTERN)), String.class));
                 bpField.setUnique(XlsxUtil.getCellValue(row.getCell(getAnchors().getColumn(ANCHOR_UNIQUE)), Boolean.class));
                 bpEntity.getItemUnit().add(bpField);
+                kb.learn(bpField);
             }
 
         }

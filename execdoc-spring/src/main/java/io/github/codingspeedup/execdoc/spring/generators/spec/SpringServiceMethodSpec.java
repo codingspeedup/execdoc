@@ -6,7 +6,7 @@ import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 
 import java.util.Locale;
 
-public interface SpringServiceMethod extends JavaMethodSpec {
+public interface SpringServiceMethodSpec extends JavaMethodSpec {
 
     default String getImplementationPackageName() {
         return GenUtility.joinPackageName(getPackageName(), "impl");

@@ -19,6 +19,10 @@ public class SpringGenConfig implements GenConfig, Serializable {
 
     @Getter
     @Setter
+    private boolean entities = true;
+
+    @Getter
+    @Setter
     private boolean restMethods = true;
 
     @Getter

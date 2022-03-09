@@ -1,10 +1,10 @@
 package io.github.codingspeedup.execdoc.spring.generators.spec.impl;
 
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEnumConstant;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEnumConstantSpec;
 import lombok.Builder;
 
 @Builder
-public class SpringEnumConstantImpl implements SpringEnumConstant {
+public class SpringEnumConstantImpl implements SpringEnumConstantSpec {
 
     private String packageName;
     private String typeLemma;

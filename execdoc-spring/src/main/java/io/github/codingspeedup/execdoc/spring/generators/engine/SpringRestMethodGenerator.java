@@ -12,14 +12,13 @@ import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.spec.HttpRequestMethod;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringRestMethodSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -52,7 +51,7 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         return "URI_" + CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, methodName);
     }
 
-    public Map<String, TextFileWrapper> generateArtifacts(SpringRestMethod methodSpec) {
+    public Map<String, TextFileWrapper> generateArtifacts(SpringRestMethodSpec methodSpec) {
         JavaDocument controllerJava = (JavaDocument) getArtifacts().computeIfAbsent(
                 GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()),
                 key -> maybeGenerateControllerClass(key, methodSpec));
@@ -74,14 +73,14 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
             addTestMethod(controllerTestJava, methodSpec, controllerJava, inputDtoJava, outputDtoJava);
 
             JavaDocument controllerITestJava = (JavaDocument) getArtifacts().computeIfAbsent(
-                    GenUtility.joinPackageName(getProjectSpec().getRestIntegrationTestsPackageName(), methodSpec.getTypeName() + "IntegrationTest"),
+                    GenUtility.joinPackageName(getProjectSpec().getRestIntegrationTestsPackageName(), methodSpec.getTypeName() + "IT"),
                     key -> maybeGenerateControllerITestClass(key, controllerJava));
             addITestMethod(controllerITestJava, methodSpec, inputDtoJava, outputDtoJava);
         }
         return getArtifacts();
     }
 
-    private void addITestMethod(JavaDocument controllerITestJava, SpringRestMethod methodSpec, JavaDocument requestJava, JavaDocument responseJava) {
+    private void addITestMethod(JavaDocument controllerITestJava, SpringRestMethodSpec methodSpec, JavaDocument requestJava, JavaDocument responseJava) {
         CompilationUnit testUnit = controllerITestJava.getCompilationUnit();
         testUnit.addImport("org.springframework.http.HttpStatus");
         testUnit.addImport("org.springframework.http.ResponseEntity");
@@ -119,7 +118,7 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         }
     }
 
-    private void addTestMethod(JavaDocument controllerTestJava, SpringRestMethod methodSpec, JavaDocument controllerJava, JavaDocument requestJava, JavaDocument responseJava) {
+    private void addTestMethod(JavaDocument controllerTestJava, SpringRestMethodSpec methodSpec, JavaDocument controllerJava, JavaDocument requestJava, JavaDocument responseJava) {
         CompilationUnit testUnit = controllerTestJava.getCompilationUnit();
 
         ClassOrInterfaceDeclaration testTypeDeclaration = (ClassOrInterfaceDeclaration) controllerTestJava.getMainTypeDeclaration();
@@ -148,7 +147,7 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         methodBody.addStatement(callStatement.toString());
     }
 
-    private void addControllerMethod(JavaDocument controllerJava, SpringRestMethod methodSpec, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
+    private void addControllerMethod(JavaDocument controllerJava, SpringRestMethodSpec methodSpec, JavaDocument requestDtoJava, JavaDocument responseDtoJava) {
         String mappingName = CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, methodSpec.getHttpRequestMethod().name()) + "Mapping";
         String restUri = getRestUri(methodSpec.getMethodName());
         String methodUri = "METHOD_" + restUri;
@@ -238,14 +237,14 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         return docUnit.getLeft();
     }
 
-    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethod methodSpec) {
+    private JavaDocument maybeGenerateRequestDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasRequestBody())) {
             return null;
         }
         return SpringDtoGenerator.generateRestDto(getGenCtx(), getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
-    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethod methodSpec) {
+    private JavaDocument maybeGenerateResponseDtoClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         if (BooleanUtils.isNotTrue(methodSpec.getHttpRequestMethod().getHasResponseBody())) {
             return null;
         }
@@ -257,7 +256,7 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         return SpringDtoGenerator.generateRestDto(getGenCtx(), getProjectSpec().getSrcMainJava(), typeFullName);
     }
 
-    private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethod methodSpec) {
+    private JavaDocument maybeGenerateControllerClass(String typeFullName, SpringRestMethodSpec methodSpec) {
         Pair<JavaDocument, CompilationUnit> docUnit = GenUtility.maybeCreateJavaClass(
                 getProjectSpec().getSrcMainJava(), typeFullName, getGenConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();

@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.spring.generators.spec;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.spec.JavaMethodSpec;
 
-public interface SpringRestMethod extends JavaMethodSpec {
+public interface SpringRestMethodSpec extends JavaMethodSpec {
 
     /**
      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods

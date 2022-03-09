@@ -7,7 +7,7 @@ import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEnumConstant;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEnumConstantSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import org.apache.commons.lang3.tuple.Pair;
@@ -24,7 +24,7 @@ public class SpringEnumGenerator extends AbstractSpringGenerator {
         super(genCtx, artifacts);
     }
 
-    public void generateArtifacts(SpringEnumConstant entry) {
+    public void generateArtifacts(SpringEnumConstantSpec entry) {
         JavaDocument enumJava = (JavaDocument) getArtifacts().computeIfAbsent(
                 GenUtility.joinPackageName(entry.getPackageName(), entry.getTypeName()),
                 key -> maybeGenerateEnumClass(key));

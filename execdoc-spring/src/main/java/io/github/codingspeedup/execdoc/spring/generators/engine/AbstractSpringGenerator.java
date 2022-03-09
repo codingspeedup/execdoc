@@ -7,7 +7,7 @@ import io.github.codingspeedup.execdoc.spring.blueprint.SpringBlueprint;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenConfig;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.SpringKb;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProject;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringBootProjectSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import lombok.Getter;
 
@@ -43,7 +43,7 @@ public class AbstractSpringGenerator {
         return genCtx.getKb();
     }
 
-    public SpringBootProject getProjectSpec() {
+    public SpringBootProjectSpec getProjectSpec() {
         return genCtx.getProjectSpec();
     }
 

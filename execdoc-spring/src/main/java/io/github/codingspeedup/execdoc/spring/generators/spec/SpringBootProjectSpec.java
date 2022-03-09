@@ -3,7 +3,7 @@ package io.github.codingspeedup.execdoc.spring.generators.spec;
 import io.github.codingspeedup.execdoc.generators.spec.MavenProjectSpec;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 
-public interface SpringBootProject extends MavenProjectSpec {
+public interface SpringBootProjectSpec extends MavenProjectSpec {
 
     default String getRestApiUriRoot() {
         return "api";
@@ -21,12 +21,12 @@ public interface SpringBootProject extends MavenProjectSpec {
         return GenUtility.joinPackageName(getPackageName(), "services");
     }
 
-    default String getServicesImplPackageName() {
-        return GenUtility.joinPackageName(getPackageName(), "services.impl");
-    }
-
     default String getDomainPackageName() {
         return GenUtility.joinPackageName(getPackageName(), "domain");
+    }
+
+    default String getEntityPackageName() {
+        return GenUtility.joinPackageName(getPackageName(), "entities");
     }
 
     default String getFiniteDomainsPackageName() {

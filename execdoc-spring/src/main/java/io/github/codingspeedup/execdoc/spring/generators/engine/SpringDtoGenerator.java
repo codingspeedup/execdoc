@@ -40,12 +40,16 @@ public class SpringDtoGenerator extends AbstractSpringGenerator {
             ciDeclaration.addAnnotation("Builder");
             ciDeclaration.addAnnotation("Data");
 
-            ciDeclaration.addImplementedType(Serializable.class);
-            ciDeclaration.addFieldWithInitializer(long.class, "serialVersionUID", new LongLiteralExpr("1L"),
-                    Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
+            makeSerializable(ciDeclaration);
             ciDeclaration.addField(String.class, "someField", Modifier.Keyword.PRIVATE);
         }
         return docUnit.getLeft();
+    }
+
+    public static void makeSerializable(ClassOrInterfaceDeclaration ciDeclaration) {
+        ciDeclaration.addImplementedType(Serializable.class);
+        ciDeclaration.addFieldWithInitializer(long.class, "serialVersionUID", new LongLiteralExpr("1L"),
+                Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL);
     }
 
 }

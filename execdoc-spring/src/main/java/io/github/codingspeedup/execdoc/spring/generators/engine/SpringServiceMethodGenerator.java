@@ -8,7 +8,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
-import io.github.codingspeedup.execdoc.spring.generators.spec.SpringServiceMethod;
+import io.github.codingspeedup.execdoc.spring.generators.spec.SpringServiceMethodSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
 import org.apache.commons.collections4.CollectionUtils;
@@ -27,7 +27,7 @@ public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
         super(genCtx, artifacts);
     }
 
-    public Map<String, TextFileWrapper> generateArtifacts(SpringServiceMethod methodSpec) {
+    public Map<String, TextFileWrapper> generateArtifacts(SpringServiceMethodSpec methodSpec) {
         JavaDocument interfaceJava = (JavaDocument) getArtifacts().computeIfAbsent(
                 GenUtility.joinPackageName(methodSpec.getPackageName(), methodSpec.getTypeName()),
                 key -> maybeGenerateServiceInterface(key));
@@ -56,7 +56,7 @@ public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
         return getArtifacts();
     }
 
-    private void addTestMethod(JavaDocument serviceTestJava, JavaDocument interfaceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
+    private void addTestMethod(JavaDocument serviceTestJava, JavaDocument interfaceJava, SpringServiceMethodSpec methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
         CompilationUnit testUnit = serviceTestJava.getCompilationUnit();
         testUnit.addImport(GenUtility.joinPackageName(inputDtoJava.getPackageName(), inputDtoJava.getMainTypeDeclaration().getNameAsString()));
         testUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
@@ -102,7 +102,7 @@ public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
         return docUnit.getLeft();
     }
 
-    private void addImplementedMethod(JavaDocument serviceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
+    private void addImplementedMethod(JavaDocument serviceJava, SpringServiceMethodSpec methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
         CompilationUnit serviceUnit = serviceJava.getCompilationUnit();
         serviceUnit.addImport(GenUtility.joinPackageName(inputDtoJava.getPackageName(), inputDtoJava.getMainTypeDeclaration().getNameAsString()));
         serviceUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
@@ -121,7 +121,7 @@ public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
         methodBody.addStatement("return result;");
     }
 
-    private void addInterfaceMethod(JavaDocument interfaceJava, SpringServiceMethod methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
+    private void addInterfaceMethod(JavaDocument interfaceJava, SpringServiceMethodSpec methodSpec, JavaDocument inputDtoJava, JavaDocument outputDtoJava) {
         CompilationUnit interfaceUnit = interfaceJava.getCompilationUnit();
         interfaceUnit.addImport(GenUtility.joinPackageName(inputDtoJava.getPackageName(), inputDtoJava.getMainTypeDeclaration().getNameAsString()));
         interfaceUnit.addImport(GenUtility.joinPackageName(outputDtoJava.getPackageName(), outputDtoJava.getMainTypeDeclaration().getNameAsString()));
@@ -163,7 +163,10 @@ public class SpringServiceMethodGenerator extends AbstractSpringGenerator {
                 getProjectSpec().getSrcMainJava(), typeFullName, getGenConfig().isForce());
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
-            docUnit.getLeft().getMainTypeDeclaration();
+            cUnit.addImport("lombok.extern.slf4j.Slf4j");
+
+            ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration)docUnit.getLeft().getMainTypeDeclaration();
+            ciDeclaration.addAnnotation("Slf4j");
         }
         return docUnit.getLeft();
     }

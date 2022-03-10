@@ -53,7 +53,7 @@ public class SpringBootGenerator extends AbstractSpringGenerator {
                         .packageName(GenUtility.joinPackageName(getProjectSpec().getEntityPackageName(), getSubPackageName(entity)))
                         .typeLemma(entity.getAttributes().get(EntitySheet.ATTRIBUTE_CLASS_NAME))
                         .tableName(entity.getName())
-                        .fieldTypeHint(field.getType().getName())
+                        .fieldTypeHint(field.getType().getName() + ":" + field.getType().getClass().getName())
                         .fieldName(field.getAttributes().get(EntitySheet.ATTRIBUTE_MEMBER_NAME))
                         .columnName(field.getName().toUpperCase(Locale.ROOT))
                         .build();

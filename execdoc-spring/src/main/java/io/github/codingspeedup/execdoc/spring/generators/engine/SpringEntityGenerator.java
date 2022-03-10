@@ -4,17 +4,29 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEntityFieldSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
 import io.github.codingspeedup.execdoc.toolbox.documents.java.JavaDocument;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
+@Slf4j
 public class SpringEntityGenerator extends AbstractSpringGenerator {
 
     public SpringEntityGenerator(SpringGenCtx genCtx) {
@@ -30,7 +42,7 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
                 GenUtility.joinPackageName(fieldSpec.getPackageName(), fieldSpec.getTypeName()),
                 key -> maybeGenerateEntityClass(key, fieldSpec));
         ClassOrInterfaceDeclaration entityDeclaration = (ClassOrInterfaceDeclaration) entityJava.getMainTypeDeclaration();
-        FieldDeclaration fieldDeclaration = entityDeclaration.addField(fieldSpec.getFieldTypeHint(), fieldSpec.getFieldName(), Modifier.Keyword.PRIVATE);
+        FieldDeclaration fieldDeclaration = declareField(entityJava, entityDeclaration, fieldSpec);
         fieldDeclaration.addAnnotation("Id");
         if (fieldSpec.getFieldTypeHint().equalsIgnoreCase("long")) {
             String generator = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fieldSpec.getTypeName()) + "SeqGen";
@@ -39,12 +51,86 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
                     .addPair("generator", new StringLiteralExpr(generator));
             fieldDeclaration.addAndGetAnnotation("SequenceGenerator")
                     .addPair("name", new StringLiteralExpr(generator));
-            fieldDeclaration.addAndGetAnnotation("Column")
-                    .addPair("name", new StringLiteralExpr(fieldSpec.getColumnName()));
         }
+        fieldDeclaration.addAndGetAnnotation("Column")
+                .addPair("name", new StringLiteralExpr(fieldSpec.getColumnName()))
+                .addPair("nullable", "false");
     }
 
     public void generateNonKeyArtifacts(SpringEntityFieldSpec fieldSpec) {
+        JavaDocument entityJava = (JavaDocument) getArtifacts()
+                .get(GenUtility.joinPackageName(fieldSpec.getPackageName(), fieldSpec.getTypeName()));
+        ClassOrInterfaceDeclaration entityDeclaration = (ClassOrInterfaceDeclaration) entityJava.getMainTypeDeclaration();
+        Optional<FieldDeclaration> declaredField = entityDeclaration.getFieldByName(fieldSpec.getFieldName());
+        if (declaredField.isPresent()) {
+            log.warn("Filed {} is already declared", fieldSpec.getFieldName());
+            return;
+        }
+        FieldDeclaration fieldDeclaration = declareField(entityJava, entityDeclaration, fieldSpec);
+        NormalAnnotationExpr columnAnnotation = fieldDeclaration.addAndGetAnnotation("Column")
+                .addPair("name", new StringLiteralExpr(fieldSpec.getColumnName()));
+        if (fieldSpec.isRequired()) {
+            columnAnnotation.addPair("nullable", "false");
+        }
+    }
+
+    private FieldDeclaration declareField(JavaDocument entityJava, ClassOrInterfaceDeclaration entityDeclaration, SpringEntityFieldSpec fieldSpec) {
+        String[] fieldTypeHint = fieldSpec.getFieldTypeHint().split(":");
+        String fieldTypeName = fieldTypeHint[0];
+        String fieldTypeClass = fieldTypeHint.length == 1 ? null : fieldTypeHint[1];
+        boolean largeObject = false;
+        if (BpType.class.getName().equals(fieldTypeClass)) {
+            fieldTypeClass = null;
+            switch (fieldTypeName) {
+                case "String":
+                case "Long":
+                case "Integer":
+                case "Float":
+                case "Double":
+                case "Boolean":
+                    break;
+                case "BigDecimal":
+                    fieldTypeClass = BigDecimal.class.getName();
+                    break;
+                case "LocalDate":
+                    fieldTypeClass = LocalDate.class.getName();
+                    break;
+                case "ZonedDateTime":
+                    fieldTypeClass = ZonedDateTime.class.getName();
+                    break;
+                case "Instant":
+                    fieldTypeClass = Instant.class.getName();
+                    break;
+                case "Duration":
+                    fieldTypeClass = Duration.class.getName();
+                    break;
+                case "UUID":
+                    fieldTypeClass = UUID.class.getName();
+                    break;
+                case "Blob":
+                case "AnyBlob":
+                case "ImageBlob":
+                    fieldTypeName = "byte[]";
+                    largeObject = true;
+                    break;
+                case "TextBlob":
+                    fieldTypeName = "String";
+                    largeObject = true;
+                    break;
+                default:
+                    throw new UnsupportedOperationException("Undefined type hint '" + fieldSpec.getFieldTypeHint() + "'");
+            }
+        } else if (StringUtils.isNotBlank(fieldTypeClass)) {
+            throw new UnsupportedOperationException("Unrecognized type hint '" + fieldSpec.getFieldTypeHint() + "'");
+        }
+        if (StringUtils.isNotBlank(fieldTypeClass)) {
+            entityJava.getCompilationUnit().addImport(fieldTypeClass);
+        }
+        FieldDeclaration fieldDeclaration = entityDeclaration.addField(fieldTypeName, fieldSpec.getFieldName(), Modifier.Keyword.PRIVATE);
+        if (largeObject) {
+            fieldDeclaration.addAnnotation("Lob");
+        }
+        return fieldDeclaration;
     }
 
     private TextFileWrapper maybeGenerateEntityClass(String typeFullName, SpringEntityFieldSpec fieldSpec) {
@@ -55,9 +141,9 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
             cUnit.addImport("javax.persistence", false, true);
             cUnit.addImport("lombok.AllArgsConstructor");
             cUnit.addImport("lombok.Builder");
-            cUnit.addImport("lombok.Data");
+            cUnit.addImport("lombok.Getter");
+            cUnit.addImport("lombok.Setter");
             cUnit.addImport("lombok.NoArgsConstructor");
-            cUnit.addImport("lombok.extern.slf4j.Slf4j");
 
             ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration) docUnit.getLeft().getMainTypeDeclaration();
             SpringDtoGenerator.makeSerializable(ciDeclaration);
@@ -67,7 +153,8 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
             ciDeclaration.addAnnotation("NoArgsConstructor");
             ciDeclaration.addAnnotation("AllArgsConstructor");
             ciDeclaration.addAnnotation("Builder");
-            ciDeclaration.addAnnotation("Data");
+            ciDeclaration.addAnnotation("Getter");
+            ciDeclaration.addAnnotation("Setter");
         }
         return docUnit.getLeft();
     }

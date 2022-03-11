@@ -1,13 +1,21 @@
 package io.github.codingspeedup.execdoc.spring.generators;
 
+import io.github.codingspeedup.execdoc.blueprint.metamodel.BpNames;
 import io.github.codingspeedup.execdoc.kb.Kb;
+import io.github.codingspeedup.execdoc.kb.KbNames;
 import io.github.codingspeedup.execdoc.kb.KbQuery;
 import io.github.codingspeedup.execdoc.kb.KbResult;
 import io.github.codingspeedup.execdoc.kb.vocabulary.concepts.KbConcept;
 import io.github.codingspeedup.execdoc.kb.vocabulary.relations.KbRelation;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpEntity;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.data.BpField;
 import it.unibo.tuprolog.core.Struct;
+import it.unibo.tuprolog.core.Term;
+import it.unibo.tuprolog.core.Var;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
+import java.util.List;
 import java.util.Set;
 
 public class SpringKb implements KbQuery {
@@ -71,6 +79,20 @@ public class SpringKb implements KbQuery {
     @Override
     public <R extends KbRelation> R solveRelation(Class<R> relationType, String kbId) {
         return kb.solveRelation(relationType, kbId);
+    }
+
+    public Pair<BpEntity, BpField> solveRelationshipEntity(String kbId) {
+        BpEntity entity = null;
+        BpField field = null;
+        Set<String> functors = kb.findFunctors(kbId);
+        if (functors.contains(KbNames.getFunctor(BpEntity.class))) {
+            entity = kb.solveConcept(BpEntity.class, kbId);
+        } else if (functors.contains(KbNames.getFunctor(BpField.class))) {
+            field = kb.solveConcept(BpField.class, kbId);
+            List<Term[]> subst = kb.solveOnce(BpNames.ITEM_UNIT_FUNCTOR, Kb.X, Var.anonymous(), kbId).getSubstitutions();
+            entity = kb.solveConcept(BpEntity.class, KbResult.asString(subst.get(0)[0]));
+        }
+        return Pair.of(entity, field);
     }
 
 }

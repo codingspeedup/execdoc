@@ -13,14 +13,14 @@ import java.io.File;
 public class JHipsterBlueprintManager {
 
     public static Folder getLocation() {
-        return new Folder(FileNode.extend(AppCtx.getInstance().getTempFolder(), "execdoc"));
+        return new Folder(FileNode.extend(AppCtx.getInstance().getTempFolder(), "xp"));
     }
 
     public static void main(String[] args) {
         Workplace.initialize();
 
         JHipsterGenConfig genCfg = new JHipsterGenConfig();
-        genCfg.setDestinationFolder(new File(AppCtx.getInstance().getTempFolder(), "project"));
+        genCfg.setDestinationFolder(new File(AppCtx.getInstance().getTempFolder(), "xp-project"));
         genCfg.setForce(true);
 
         new BlueprintManagerGUI<>(JHipsterBlueprint.class, getLocation())

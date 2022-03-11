@@ -9,6 +9,8 @@ import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpEntityRelation;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpManyToOne;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEntityFieldSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
@@ -24,6 +26,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -71,6 +74,39 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
                 .addPair("name", new StringLiteralExpr(fieldSpec.getColumnName()));
         if (fieldSpec.isRequired()) {
             columnAnnotation.addPair("nullable", "false");
+        }
+    }
+
+    public void addRelationship(Class<? extends BpEntityRelation> relType, SpringEntityFieldSpec fromField, SpringEntityFieldSpec toField) {
+        JavaDocument fromJava = (JavaDocument) getArtifacts().get(GenUtility.joinPackageName(fromField.getPackageName(), fromField.getTypeName()));
+        CompilationUnit fromUnit = fromJava.getCompilationUnit();
+        ClassOrInterfaceDeclaration fromEntityDeclaration = (ClassOrInterfaceDeclaration) fromJava.getMainTypeDeclaration();
+        Optional<FieldDeclaration> declaredField = fromEntityDeclaration.getFieldByName(fromField.getFieldName());
+        if (declaredField.isPresent()) {
+            log.warn("Filed {} is already declared", fromField.getFieldName());
+            return;
+        }
+
+        JavaDocument toJava = (JavaDocument) getArtifacts().get(GenUtility.joinPackageName(toField.getPackageName(), toField.getTypeName()));
+        CompilationUnit toUnit = toJava.getCompilationUnit();
+        ClassOrInterfaceDeclaration toEntityDeclaration = (ClassOrInterfaceDeclaration) toJava.getMainTypeDeclaration();
+
+        if (relType.equals(BpManyToOne.class)) {
+            if (!fromField.getPackageName().equals(toField.getPackageName())) {
+                fromUnit.addImport(GenUtility.joinPackageName(toField.getPackageName(), toField.getTypeName()));
+                toUnit.addImport(GenUtility.joinPackageName(fromField.getPackageName(), fromField.getTypeName()));
+            }
+            toUnit.addImport(Set.class);
+            FieldDeclaration fromFieldDeclaration = fromEntityDeclaration.addField(toField.getTypeName(), fromField.getFieldName(), Modifier.Keyword.PRIVATE);
+            fromFieldDeclaration.addAndGetAnnotation("ManyToOne");
+            fromFieldDeclaration.addAndGetAnnotation("JoinColumn")
+                    .addPair("name", new StringLiteralExpr(fromField.getColumnName()));
+            FieldDeclaration toFieldDeclaration = toEntityDeclaration.addField(
+                    "Set<" + fromField.getTypeName() + ">",
+                    CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fromField.getTypeName()) + "s",
+                    Modifier.Keyword.PRIVATE);
+            toFieldDeclaration.addAndGetAnnotation("OneToMany")
+                    .addPair("mappedBy", new StringLiteralExpr(fromField.getFieldName()));
         }
     }
 

@@ -198,13 +198,11 @@ public class SpringRestMethodGenerator extends AbstractSpringGenerator {
         CompilationUnit cUnit = docUnit.getRight();
         if (cUnit != null) {
             cUnit.addImport("org.junit.jupiter.api.Test");
-            cUnit.addImport("org.junit.jupiter.api.extension.ExtendWith");
             cUnit.addImport("org.springframework.beans.factory.annotation.Autowired");
             cUnit.addImport("org.springframework.boot.test.context.SpringBootTest");
             cUnit.addImport("org.springframework.test.context.junit.jupiter.SpringExtension");
 
             ClassOrInterfaceDeclaration ciDeclaration = (ClassOrInterfaceDeclaration) docUnit.getLeft().getMainTypeDeclaration();
-            ciDeclaration.addSingleMemberAnnotation("ExtendWith", "SpringExtension.class");
             ciDeclaration.addAnnotation("SpringBootTest");
 
             cUnit.addImport(GenUtility.joinPackageName(controllerJava.getPackageName(), controllerJava.getMainTypeDeclaration().getNameAsString()));

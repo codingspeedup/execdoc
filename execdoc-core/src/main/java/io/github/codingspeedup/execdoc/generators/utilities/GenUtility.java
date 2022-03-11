@@ -90,7 +90,7 @@ public class GenUtility {
     }
 
     public static void addCreationJavadoc(TypeDeclaration<?> tDeclaration) {
-        tDeclaration.setJavadocComment("Generated on " + DateTimeUtility.toIsoDateString(LocalDate.now()));
+        tDeclaration.setJavadocComment("Created on " + DateTimeUtility.toIsoDateString(LocalDate.now()));
     }
 
     public static String[] splitTypeFullName(String typeFullName) {

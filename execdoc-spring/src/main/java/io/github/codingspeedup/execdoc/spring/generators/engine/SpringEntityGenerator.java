@@ -10,9 +10,7 @@ import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.google.common.base.CaseFormat;
 import io.github.codingspeedup.execdoc.generators.utilities.GenUtility;
 import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.individuals.code.BpType;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpEntityRelation;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpManyToMany;
-import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.BpManyToOne;
+import io.github.codingspeedup.execdoc.spring.blueprint.metamodel.vocabulary.relations.data.*;
 import io.github.codingspeedup.execdoc.spring.generators.SpringGenCtx;
 import io.github.codingspeedup.execdoc.spring.generators.spec.SpringEntityFieldSpec;
 import io.github.codingspeedup.execdoc.toolbox.documents.TextFileWrapper;
@@ -96,9 +94,70 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
 
         if (relType.equals(BpManyToOne.class)) {
             addManyToOneRelationship(fromJava, fromField, toJava, toField);
+        } else if (relType.equals(BpOneToOne.class)) {
+            addOneToOneRelationship(fromJava, fromField, toJava, toField);
+        } else if (relType.equals(BpOneToMany.class)) {
+            addOneToManyRelationship(fromJava, fromField, toJava, toField);
         } else if (relType.equals(BpManyToMany.class)) {
             addManyToManyRelationship(fromJava, fromField, toJava, toField);
         }
+    }
+
+
+    private void addManyToOneRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
+        ClassOrInterfaceDeclaration fromEntityDeclaration = (ClassOrInterfaceDeclaration) fromJava.getMainTypeDeclaration();
+        FieldDeclaration fromFieldDeclaration = fromEntityDeclaration.addField(
+                toField.getTypeName(),
+                fromField.getFieldName(),
+                Modifier.Keyword.PRIVATE);
+        fromFieldDeclaration.addAnnotation("Getter");
+        fromFieldDeclaration.addAndGetAnnotation("ManyToOne");
+        fromFieldDeclaration.addAndGetAnnotation("JoinColumn")
+                .addPair("name", new StringLiteralExpr(fromField.getColumnName()));
+
+        CompilationUnit toUnit = toJava.getCompilationUnit();
+        toUnit.addImport(Set.class);
+        toUnit.addImport(HashSet.class);
+
+        ClassOrInterfaceDeclaration toEntityDeclaration = (ClassOrInterfaceDeclaration) toJava.getMainTypeDeclaration();
+        String toFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fromField.getTypeName()) + "s";
+        FieldDeclaration toFieldDeclaration = toEntityDeclaration.addFieldWithInitializer(
+                "Set<" + fromField.getTypeName() + ">",
+                toFieldName,
+                JavaDocument.PARSER.parseExpression("new HashSet<>()").getResult().orElse(new NullLiteralExpr()),
+                Modifier.Keyword.PRIVATE);
+        toFieldDeclaration.addAnnotation("Getter");
+        toFieldDeclaration.addAndGetAnnotation("OneToMany")
+                .addPair("mappedBy", new StringLiteralExpr(fromField.getFieldName()));
+    }
+
+
+    private void addOneToOneRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
+        ClassOrInterfaceDeclaration fromEntityDeclaration = (ClassOrInterfaceDeclaration) fromJava.getMainTypeDeclaration();
+        FieldDeclaration fromFieldDeclaration = fromEntityDeclaration.addField(
+                toField.getTypeName(),
+                fromField.getFieldName(),
+                Modifier.Keyword.PRIVATE);
+        fromFieldDeclaration.addAnnotation("Getter");
+        fromFieldDeclaration.addAnnotation("Setter");
+        fromFieldDeclaration.addAndGetAnnotation("OneToOne");
+        fromFieldDeclaration.addAndGetAnnotation("JoinColumn")
+                .addPair("name", new StringLiteralExpr(fromField.getColumnName()))
+                .addPair("unique", "true");
+
+        ClassOrInterfaceDeclaration toEntityDeclaration = (ClassOrInterfaceDeclaration) toJava.getMainTypeDeclaration();
+        String toFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fromField.getTypeName());
+        FieldDeclaration toFieldDeclaration = toEntityDeclaration.addField(
+                fromField.getTypeName(),
+                toFieldName,
+                Modifier.Keyword.PRIVATE);
+        toFieldDeclaration.addAnnotation("Getter");
+        toFieldDeclaration.addAnnotation("Setter");
+        toFieldDeclaration.addAndGetAnnotation("OneToOne")
+                .addPair("mappedBy", new StringLiteralExpr(fromField.getFieldName()));
+    }
+
+    private void addOneToManyRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
     }
 
     private void addManyToManyRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
@@ -135,32 +194,6 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
                 .addPair("mappedBy", new StringLiteralExpr(fromField.getFieldName()));
     }
 
-    private void addManyToOneRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
-        ClassOrInterfaceDeclaration fromEntityDeclaration = (ClassOrInterfaceDeclaration) fromJava.getMainTypeDeclaration();
-        FieldDeclaration fromFieldDeclaration = fromEntityDeclaration.addField(
-                toField.getTypeName(),
-                fromField.getFieldName(),
-                Modifier.Keyword.PRIVATE);
-        fromFieldDeclaration.addAnnotation("Getter");
-        fromFieldDeclaration.addAndGetAnnotation("ManyToOne");
-        fromFieldDeclaration.addAndGetAnnotation("JoinColumn")
-                .addPair("name", new StringLiteralExpr(fromField.getColumnName()));
-
-        CompilationUnit toUnit = toJava.getCompilationUnit();
-        toUnit.addImport(Set.class);
-        toUnit.addImport(HashSet.class);
-
-        ClassOrInterfaceDeclaration toEntityDeclaration = (ClassOrInterfaceDeclaration) toJava.getMainTypeDeclaration();
-        String toFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fromField.getTypeName()) + "s";
-        FieldDeclaration toFieldDeclaration = toEntityDeclaration.addFieldWithInitializer(
-                "Set<" + fromField.getTypeName() + ">",
-                toFieldName,
-                JavaDocument.PARSER.parseExpression("new HashSet<>()").getResult().orElse(new NullLiteralExpr()),
-                Modifier.Keyword.PRIVATE);
-        toFieldDeclaration.addAnnotation("Getter");
-        toFieldDeclaration.addAndGetAnnotation("OneToMany")
-                .addPair("mappedBy", new StringLiteralExpr(fromField.getFieldName()));
-    }
 
     private FieldDeclaration declareField(JavaDocument entityJava, ClassOrInterfaceDeclaration entityDeclaration, SpringEntityFieldSpec fieldSpec) {
         String[] fieldTypeHint = fieldSpec.getFieldTypeHint().split(":");

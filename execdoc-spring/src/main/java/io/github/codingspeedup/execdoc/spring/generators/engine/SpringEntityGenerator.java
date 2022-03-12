@@ -158,6 +158,31 @@ public class SpringEntityGenerator extends AbstractSpringGenerator {
     }
 
     private void addOneToManyRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {
+        String toFieldName = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_CAMEL, fromField.getTypeName());
+
+        CompilationUnit fromUnit = fromJava.getCompilationUnit();
+        fromUnit.addImport(Set.class);
+        fromUnit.addImport(HashSet.class);
+
+        ClassOrInterfaceDeclaration fromEntityDeclaration = (ClassOrInterfaceDeclaration) fromJava.getMainTypeDeclaration();
+        FieldDeclaration fromFieldDeclaration = fromEntityDeclaration.addFieldWithInitializer(
+                "Set<" + toField.getTypeName() + ">",
+                fromField.getFieldName(),
+                JavaDocument.PARSER.parseExpression("new HashSet<>()").getResult().orElse(new NullLiteralExpr()),
+                Modifier.Keyword.PRIVATE);
+        fromFieldDeclaration.addAnnotation("Getter");
+        fromFieldDeclaration.addAndGetAnnotation("OneToMany")
+                .addPair("mappedBy", new StringLiteralExpr(toFieldName));
+
+        ClassOrInterfaceDeclaration toEntityDeclaration = (ClassOrInterfaceDeclaration) toJava.getMainTypeDeclaration();
+        FieldDeclaration toFieldDeclaration = toEntityDeclaration.addField(
+                fromField.getTypeName(),
+                toFieldName,
+                Modifier.Keyword.PRIVATE);
+        toFieldDeclaration.addAnnotation("Getter");
+        toFieldDeclaration.addAndGetAnnotation("ManyToOne");
+        toFieldDeclaration.addAndGetAnnotation("JoinColumn")
+                .addPair("name", new StringLiteralExpr(CaseFormat.LOWER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, toFieldName)));
     }
 
     private void addManyToManyRelationship(JavaDocument fromJava, SpringEntityFieldSpec fromField, JavaDocument toJava, SpringEntityFieldSpec toField) {

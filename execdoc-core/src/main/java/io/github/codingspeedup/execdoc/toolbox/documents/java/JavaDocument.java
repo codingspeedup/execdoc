@@ -26,7 +26,7 @@ public class JavaDocument extends TextFileWrapper {
     public static final PrinterConfiguration DEFAULT_PRINTER_CONFIGURATION = new DefaultPrinterConfiguration();
 
     private static final ParserConfiguration CONFIGURATION = new ParserConfiguration();
-    private static final JavaParser PARSER = new JavaParser(CONFIGURATION);
+    public static final JavaParser PARSER = new JavaParser(CONFIGURATION);
 
     @Getter
     @Setter

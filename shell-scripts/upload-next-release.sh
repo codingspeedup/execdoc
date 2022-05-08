@@ -1,4 +1,6 @@
-cd ${BASH_SOURCE:-$0:h:h}
+cd "${BASH_SOURCE:-$0:h:h}" || exit
+PROJECT_ROOT=$(pwd)
+echo Working in "$PROJECT_ROOT"
 
 VERSION=`mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v "^\["`
 mvn versions:set -DnewVersion=${VERSION//-SNAPSHOT/}

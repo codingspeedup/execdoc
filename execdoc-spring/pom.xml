@@ -7,14 +7,14 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>2022-02-19.12-SNAPSHOT</version>
+        <version>2022-05-08.11-SNAPSHOT</version>
     </parent>
 
     <artifactId>execdoc-spring</artifactId>
-    <version>2022-02-19.12-SNAPSHOT</version>
+    <version>2022-05-08.11-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>execdoc-core</name>
+    <name>execdoc-spring</name>
     <description>Spring components generator</description>
     <url>https://github.com/codingspeedup/execdoc</url>
 
@@ -38,7 +38,7 @@
         <dependency>
             <groupId>io.github.codingspeedup</groupId>
             <artifactId>execdoc-apps</artifactId>
-            <version>2022-02-19.12-SNAPSHOT</version>
+            <version>2022-05-08.11-SNAPSHOT</version>
         </dependency>
 
     </dependencies>

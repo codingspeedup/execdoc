@@ -6,7 +6,8 @@
 
     <groupId>io.github.codingspeedup</groupId>
     <artifactId>execdoc</artifactId>
-    <version>2022-05-08.11-SNAPSHOT</version>
+    <version>2022-05-10.18-SNAPSHOT</version>
+
     <packaging>pom</packaging>
 
     <modules>
@@ -16,6 +17,23 @@
         <module>execdoc-jhipster</module>
         <module>execdoc-spring</module>
     </modules>
+
+
+    <name>execdoc</name>
+    <description>execdoc BOM</description>
+    <url>https://github.com/codingspeedup/execdoc</url>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <url>https://github.com/codingspeedup/execdoc</url>
+    </scm>
 
     <properties>
         <!-- SOURCES -->
@@ -36,7 +54,7 @@
         <java-diff-utils.version>4.11</java-diff-utils.version>
         <javaparser.version>3.24.0</javaparser.version>
         <jgrapht.version>1.5.1</jgrapht.version>
-        <json.version>20211205</json.version>
+        <json.version>20220320</json.version>
         <junit.version>5.8.2</junit.version>
         <lombok.version>1.18.22</lombok.version>
         <mockito.version>4.3.1</mockito.version>
@@ -67,6 +85,18 @@
         <sonartype.domain>https://s01.oss.sonatype.org/</sonartype.domain>
         <gpg.key-name>F94D90BD</gpg.key-name>
     </properties>
+
+    <!-- Maven Central related -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>${sonartype.domain}content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>${sonartype.domain}content/repositories/releases/</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
 

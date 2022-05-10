@@ -2,6 +2,8 @@
 
 - the consolidated version of the other /execdoc/ projects
 
+Maven artifact location https://s01.oss.sonatype.org/#nexus-search;quick~execdoc
+
 Maybe add in .m2/settings.xml
 
     <profiles>

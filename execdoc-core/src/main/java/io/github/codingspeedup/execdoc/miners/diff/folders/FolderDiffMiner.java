@@ -4,7 +4,6 @@ import io.github.codingspeedup.execdoc.miners.diff.folders.defaults.DefaultDiffC
 import io.github.codingspeedup.execdoc.miners.diff.folders.defaults.DefaultFileComparator;
 import io.github.codingspeedup.execdoc.miners.diff.folders.defaults.DefaultFileFilter;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -13,16 +12,24 @@ import java.io.FileFilter;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@NoArgsConstructor
 @Getter
 @Setter
 public class FolderDiffMiner {
 
-    private FileFilter leftFilter = new DefaultFileFilter();
-    private FileFilter rigtFilter = new DefaultFileFilter();
+    private final FileFilter leftFilter;
+    private final FileFilter rightFilter;
     private boolean caseSensitive = false;
     private Comparator<File> fileComparator = new DefaultFileComparator(true);
     private DiffContainerFactory diffContainerFactory = new DefaultDiffContainerFactory();
+
+    public FolderDiffMiner() {
+        this(new DefaultFileFilter(), new DefaultFileFilter());
+    }
+
+    public FolderDiffMiner(FileFilter leftFilter, FileFilter rightFilter) {
+        this.leftFilter = leftFilter;
+        this.rightFilter = rightFilter;
+    }
 
     @SneakyThrows
     public FolderDiffContainer compare(File leftRoot, File rightRoot) {
@@ -45,7 +52,7 @@ public class FolderDiffMiner {
                 .collect(Collectors.toSet());
 
         Set<String> rightNames = Arrays.stream(Objects.requireNonNull(rightFolder.listFiles()))
-                .filter(rigtFilter::accept)
+                .filter(rightFilter::accept)
                 .map(File::getName)
                 .map(name -> caseSensitive ? name : name.toLowerCase(Locale.ROOT))
                 .collect(Collectors.toSet());

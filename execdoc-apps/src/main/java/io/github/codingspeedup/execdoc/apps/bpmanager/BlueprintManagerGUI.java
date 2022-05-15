@@ -2,6 +2,7 @@ package io.github.codingspeedup.execdoc.apps.bpmanager;
 
 import io.github.codingspeedup.execdoc.apps.AppCtx;
 import io.github.codingspeedup.execdoc.apps.folderdiff.FolderDiffGUI;
+import io.github.codingspeedup.execdoc.apps.folderdiff.FolderDiffGuiConfiguration;
 import io.github.codingspeedup.execdoc.blueprint.Blueprint;
 import io.github.codingspeedup.execdoc.blueprint.utilities.NormReport;
 import io.github.codingspeedup.execdoc.toolbox.files.Folder;
@@ -189,7 +190,8 @@ public class BlueprintManagerGUI<B extends Blueprint<?>> extends JFrame {
     }
 
     private void compare(ActionEvent ev) {
-        new Thread(() -> new FolderDiffGUI(getBlueprint().getWrappedFile(), null, JFrame.DISPOSE_ON_CLOSE)).start();
+        new Thread(() -> new FolderDiffGUI(new FolderDiffGuiConfiguration() {
+        }, getBlueprint().getWrappedFile(), null, JFrame.DISPOSE_ON_CLOSE)).start();
     }
 
     private void explore(ActionEvent ev) {

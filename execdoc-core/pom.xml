@@ -7,11 +7,11 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>2022-05-10.18-SNAPSHOT</version>
+        <version>2022-05-15.19-SNAPSHOT</version>
     </parent>
 
     <artifactId>execdoc-core</artifactId>
-    <version>2022-05-10.18-SNAPSHOT</version>
+    <version>2022-05-15.19-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>execdoc-core</name>
@@ -50,7 +50,7 @@
         <dependency>
             <groupId>io.github.codingspeedup</groupId>
             <artifactId>execdoc-kb</artifactId>
-            <version>2022-05-10.18-SNAPSHOT</version>
+            <version>2022-05-15.19-SNAPSHOT</version>
         </dependency>
 
         <dependency>

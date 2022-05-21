@@ -72,6 +72,9 @@ public final class XlsxUtil {
                 case BLANK:
                     return (T) Double.valueOf(0);
                 case NUMERIC:
+                    if (BigDecimal.class.isAssignableFrom(asType)) {
+                        return (T) BigDecimal.valueOf(cell.getNumericCellValue());
+                    }
                     return (T) Double.valueOf(cell.getNumericCellValue());
                 case STRING:
                     return (T) new BigDecimal(cell.getStringCellValue());
@@ -94,6 +97,13 @@ public final class XlsxUtil {
                 return (T) new CellFormula(cell.getCellFormula());
             } else {
                 return null;
+            }
+        } else if (java.util.Date.class.isAssignableFrom(asType)) {
+            switch (cell.getCellType()) {
+                case BLANK:
+                    return null;
+                case NUMERIC:
+                    return (T) cell.getDateCellValue();
             }
         }
         throw new UnsupportedOperationException("Convert " + cell.getCellType().name() + " to " + asType.getName());
@@ -212,6 +222,10 @@ public final class XlsxUtil {
         }
         if (cell.getCellType() == CellType.STRING) {
             return StringUtils.isEmpty(cell.getStringCellValue());
+        }
+        if (cell.getCellType() == CellType.NUMERIC) {
+            String val = getCellValue(cell, String.class);
+            return StringUtils.isBlank(val);
         }
         return cell.getCellType() != CellType.FORMULA;
     }

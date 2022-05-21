@@ -15,6 +15,7 @@ public class XlsxBaseColumn {
     private String name;
     private XlsxBaseType type;
     private boolean mandatory;
+    private boolean pk;
 
     public static XlsxBaseColumn from(SqlTableColumn jdbcColumn) {
         XlsxBaseColumn column = new XlsxBaseColumn();

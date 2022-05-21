@@ -67,7 +67,8 @@ public class XlsxBaseTable {
         column.setIndex(columnIndex);
         column.setName(columnName);
         column.setType(XlsxBaseType.from(typeHint));
-        column.setMandatory(typeHint.endsWith(XlsxBase.MANDATORY_MARKER));
+        column.setPk(typeHint.contains(XlsxBase.PK_MARKER));
+        column.setMandatory(column.isPk() || typeHint.contains(XlsxBase.MANDATORY_MARKER));
         return column;
     }
 

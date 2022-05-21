@@ -11,11 +11,26 @@ public class UuidUtility {
     }
 
     public static String nextCompactUuid() {
-        return UUID.randomUUID().toString().replace("-", "");
+        return toCompactUuid(UUID.randomUUID());
     }
 
     public static String nextFriendlyUuid() {
-        return FriendlyId.toFriendlyId(UUID.randomUUID());
+        return toFriendlyUuid(UUID.randomUUID());
+    }
+
+    public static String toCompactUuid(UUID uuid) {
+        return uuid.toString().replace("-", "");
+    }
+
+    public static String toFriendlyUuid(UUID uuid) {
+        return FriendlyId.toFriendlyId(uuid);
+    }
+
+    public static void main(String[] args) {
+        UUID uuid = UUID.randomUUID();
+        System.out.println(uuid);
+        System.out.println(toCompactUuid(uuid));
+        System.out.println(toFriendlyUuid(uuid));
     }
 
 }

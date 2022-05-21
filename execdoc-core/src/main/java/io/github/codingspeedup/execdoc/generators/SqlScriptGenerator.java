@@ -42,6 +42,10 @@ public class SqlScriptGenerator {
                     List<String> values = fetchSqlValues(record, columns, sqlEngine);
                     insertStatement = openInsertStatement(fqTableName, columns, sqlEngine);
                     extendInsertStatement(insertStatement, values);
+                    if (SqlEngine.PGSQL == sqlEngine) {
+                        appendOnConflict(insertStatement, columns, sqlEngine);
+                        appendDoUpdateSet(insertStatement, columns, values, sqlEngine);
+                    }
                     sqlScript.append("\n").append(closeInsertStatement(insertStatement));
                 }
             }
@@ -49,25 +53,59 @@ public class SqlScriptGenerator {
         return sqlScript.toString();
     }
 
+
+
+    private String quoteIdentifier(String identifier, SqlEngine sqlEngine) {
+        String identifierQuoteString = sqlEngine == SqlEngine.PGSQL ? "\"" : "`";
+        return identifierQuoteString + identifier + identifierQuoteString;
+    }
+
     private void appendTableDeclaration(StringBuilder sql, XlsxBaseTable table) {
         if (sql.length() > 0) {
             sql.append("\n");
         }
         int commentLength = table.getName().length() + 6;
-        sql.append(StringUtils.repeat("-", commentLength)).append("\n");
+        sql.append("\n").append(StringUtils.repeat("-", commentLength)).append("\n");
         sql.append("-- ").append(table.getName()).append(" --\n");
-        sql.append(StringUtils.repeat("-", commentLength)).append("\n");
+        sql.append(StringUtils.repeat("-", commentLength));
     }
 
     private StringBuilder openInsertStatement(String tableName, List<XlsxBaseColumn> columns, SqlEngine sqlEngine) {
-        String identifierQuoteString = "`";
         StringBuilder statement = new StringBuilder("Insert into ").append(tableName).append(" ");
-        statement.append(columns.stream().map(XlsxBaseColumn::getName).map(n -> identifierQuoteString + n + identifierQuoteString).collect(Collectors.joining(",", "(", ")")));
+        statement.append(columns.stream()
+                .map(XlsxBaseColumn::getName)
+                .map(n -> quoteIdentifier(n, sqlEngine))
+                .collect(Collectors.joining(",", "(", ")")));
         return statement.append(" values ");
     }
 
     private void extendInsertStatement(StringBuilder statement, List<String> values) {
         statement.append(values.stream().collect(Collectors.joining(",", "(", ")")));
+    }
+
+    private void appendOnConflict(StringBuilder statement, List<XlsxBaseColumn> columns, SqlEngine sqlEngine) {
+        statement.append("\n  on conflict(");
+        for (XlsxBaseColumn column : columns) {
+            if (column.isPk()) {
+                statement.append(quoteIdentifier(column.getName(), sqlEngine)).append(",");
+            }
+        }
+        statement.setLength(statement.length() - 1);
+        statement.append(")");
+    }
+
+    private void appendDoUpdateSet(
+            StringBuilder statement, List<XlsxBaseColumn> columns, List<String> values, SqlEngine sqlEngine) {
+        statement.append("\n  do update set ");
+        for (XlsxBaseColumn column : columns) {
+            if (!column.isPk()) {
+                statement.append(quoteIdentifier(column.getName(), sqlEngine));
+                statement.append("=");
+                statement.append(values.get(column.getIndex()));
+                statement.append(",");
+            }
+        }
+        statement.setLength(statement.length() - 1);
     }
 
     private String closeInsertStatement(StringBuilder statement) {
@@ -128,8 +166,10 @@ public class SqlScriptGenerator {
             case DERBY:
             case MYSQL:
                 return "DATE('" + DateTimeUtility.toIsoDateString(value) + "')";
+            case PGSQL:
+                return "'" + DateTimeUtility.toIsoDateString(value)  + "'";
             default:
-                throw newConversionException(cell, XlsxBaseType.BOOLEAN);
+                throw newConversionException(cell, XlsxBaseType.DATE);
         }
     }
 
@@ -138,7 +178,17 @@ public class SqlScriptGenerator {
         switch (sqlEngine) {
             case DERBY:
             case MYSQL:
-                return value.toString();
+            case PGSQL:
+                String strValue = value.toString();
+                if (strValue.contains(".")) {
+                    while (strValue.endsWith("0")) {
+                        strValue = strValue.substring(0, strValue.length() - 1);
+                    }
+                    if (strValue.endsWith(".")) {
+                        strValue = strValue.substring(0, strValue.length() - 1);
+                    }
+                }
+                return strValue;
             default:
                 throw newConversionException(cell, XlsxBaseType.BOOLEAN);
         }
@@ -149,6 +199,7 @@ public class SqlScriptGenerator {
         switch (sqlEngine) {
             case DERBY:
             case MYSQL:
+            case PGSQL:
                 value = value.replace("'", "''");
                 break;
             default:

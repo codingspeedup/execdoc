@@ -16,6 +16,7 @@ public class XlsxBase extends XlsxDocument {
     public static final int TYPE_ROW_INDEX = 1;
     public static final int FIRST_DATA_ROW_INDEX = 2;
     public static final String MANDATORY_MARKER = "*";
+    public static final String PK_MARKER = "+";
 
     public XlsxBase(File file) {
         super(file);

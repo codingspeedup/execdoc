@@ -3,6 +3,7 @@ package io.github.codingspeedup.execdoc.toolbox.utilities;
 import com.devskiller.friendly_id.FriendlyId;
 
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 public class UuidUtility {
 
@@ -31,6 +32,9 @@ public class UuidUtility {
         System.out.println(uuid);
         System.out.println(toCompactUuid(uuid));
         System.out.println(toFriendlyUuid(uuid));
+        System.out.println();
+
+        IntStream.range(0, 2000).forEach(i -> System.out.println(nextFriendlyUuid()));
     }
 
 }

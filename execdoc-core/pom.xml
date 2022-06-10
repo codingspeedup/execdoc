@@ -7,11 +7,11 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>2022-05-15.19-SNAPSHOT</version>
+        <version>2022-05-21.18-SNAPSHOT</version>
     </parent>
 
     <artifactId>execdoc-core</artifactId>
-    <version>2022-05-15.19-SNAPSHOT</version>
+    <version>2022-05-21.18-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>execdoc-core</name>
@@ -50,13 +50,19 @@
         <dependency>
             <groupId>io.github.codingspeedup</groupId>
             <artifactId>execdoc-kb</artifactId>
-            <version>2022-05-15.19-SNAPSHOT</version>
+            <version>2022-05-21.18-SNAPSHOT</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.tika</groupId>
             <artifactId>tika-core</artifactId>
             <version>${tika.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
@@ -105,12 +111,28 @@
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf</artifactId>
             <version>${thymeleaf.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>javassist</artifactId>
+                    <groupId>org.javassist</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
             <version>${poi.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>log4j-api</artifactId>
+                    <groupId>org.apache.logging.log4j</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>

@@ -7,6 +7,7 @@ import io.github.codingspeedup.execdoc.bootstrap.sql.XlsxBaseType;
 import io.github.codingspeedup.execdoc.miners.jdbc.SqlEngine;
 import io.github.codingspeedup.execdoc.toolbox.documents.xlsx.XlsxUtil;
 import io.github.codingspeedup.execdoc.toolbox.utilities.DateTimeUtility;
+import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,8 +29,12 @@ public class SqlScriptGenerator {
         this.xlsxBase = xlsxBase;
     }
 
-    public String getSqlScript(String tablePrefix, SqlEngine sqlEngine) {
+    @Getter
+    private List<String> statementsOnly;
+
+    public synchronized String getSqlScript(String tablePrefix, SqlEngine sqlEngine) {
         StringBuilder sqlScript = new StringBuilder();
+        statementsOnly = new ArrayList<>();
         for (String tableName : xlsxBase.getTableNames()) {
             XlsxBaseTable table = xlsxBase.getTable(tableName);
             appendTableDeclaration(sqlScript, table);
@@ -46,14 +51,13 @@ public class SqlScriptGenerator {
                         appendOnConflict(insertStatement, columns, sqlEngine);
                         appendDoUpdateSet(insertStatement, columns, values, sqlEngine);
                     }
+                    statementsOnly.add(insertStatement.toString());
                     sqlScript.append("\n").append(closeInsertStatement(insertStatement));
                 }
             }
         }
         return sqlScript.toString();
     }
-
-
 
     private String quoteIdentifier(String identifier, SqlEngine sqlEngine) {
         String identifierQuoteString = sqlEngine == SqlEngine.PGSQL ? "\"" : "`";

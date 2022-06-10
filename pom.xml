@@ -6,7 +6,7 @@
 
     <groupId>io.github.codingspeedup</groupId>
     <artifactId>execdoc</artifactId>
-    <version>2022-05-15.19-SNAPSHOT</version>
+    <version>2022-05-21.18-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -56,14 +56,15 @@
         <jgrapht.version>1.5.1</jgrapht.version>
         <json.version>20220320</json.version>
         <junit.version>5.8.2</junit.version>
+        <log4j.version>2.17.2</log4j.version>
         <lombok.version>1.18.22</lombok.version>
         <mockito.version>4.3.1</mockito.version>
         <openhtmltopdf.version>1.0.10</openhtmltopdf.version>
         <plantuml.version>1.2021.10</plantuml.version>
-        <poi.version>5.0.0</poi.version>
+        <poi.version>5.2.2</poi.version>
         <slf4j.version>1.7.36</slf4j.version>
         <tika.version>2.1.0</tika.version>
-        <thymeleaf.version>3.0.14.RELEASE</thymeleaf.version>
+        <thymeleaf.version>3.1.0.M2</thymeleaf.version>
         <tuprolog.version>0.20.4</tuprolog.version>
 
         <!-- PLUGIN VERSIONS -->
@@ -136,6 +137,16 @@
             <artifactId>slf4j-simple</artifactId>
             <version>${slf4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-to-slf4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.google.guava</groupId>
@@ -162,6 +173,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-text</artifactId>
             <version>${commons-text.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>

@@ -7,11 +7,11 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>2022-05-15.19-SNAPSHOT</version>
+        <version>2022-05-21.18-SNAPSHOT</version>
     </parent>
 
     <artifactId>execdoc-kb</artifactId>
-    <version>2022-05-15.19-SNAPSHOT</version>
+    <version>2022-05-21.18-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>execdoc-kb</name>
@@ -57,6 +57,12 @@
             <groupId>it.unibo.tuprolog</groupId>
             <artifactId>ide-plp</artifactId>
             <version>${tuprolog.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
     </dependencies>

@@ -234,6 +234,9 @@ public final class XlsxUtil {
         if (row == null) {
             return true;
         }
+        if (row.getFirstCellNum() < 0) {
+            return true;
+        }
         for (int colIdx = row.getFirstCellNum(); colIdx <= row.getLastCellNum(); ++colIdx) {
             if (!isEmpty(row.getCell(colIdx))) {
                 return false;

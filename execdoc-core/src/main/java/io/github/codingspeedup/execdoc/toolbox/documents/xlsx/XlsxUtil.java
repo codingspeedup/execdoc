@@ -80,6 +80,17 @@ public final class XlsxUtil {
                     return (T) new BigDecimal(cell.getStringCellValue());
                 case BOOLEAN:
                     return (T) (cell.getBooleanCellValue() ? Double.valueOf(1) : Double.valueOf(0));
+                case FORMULA:
+                    switch (cell.getCachedFormulaResultType()) {
+                        case BLANK:
+                            return null;
+                        case STRING:
+                            return (T) new BigDecimal(cell.getStringCellValue());
+                        case NUMERIC:
+                            return (T) Double.valueOf(cell.getNumericCellValue());
+                        case BOOLEAN:
+                            return (T) Double.valueOf(cell.getBooleanCellValue() ? 1 : 0);
+                    }
             }
         } else if (Boolean.class.isAssignableFrom(asType)) {
             switch (cell.getCellType()) {
@@ -129,7 +140,12 @@ public final class XlsxUtil {
         } else if (value instanceof RichTextString) {
             cell.setCellValue((RichTextString) value);
         } else if (value instanceof CellFormula) {
-            cell.setCellFormula(((CellFormula) value).getSource());
+            String formula = ((CellFormula) value).getSource();
+            if (StringUtils.isBlank(formula)) {
+                cell.setBlank();
+            } else {
+                cell.setCellFormula(formula);
+            }
         } else if (value instanceof Hyperlink) {
             cell.setHyperlink((Hyperlink) value);
         } else {
@@ -251,9 +267,9 @@ public final class XlsxUtil {
 
     public static boolean areEqual(Cell f1, Cell f2) {
         return f1 != null && f2 != null
-                       && f1.getRowIndex() == f2.getRowIndex()
-                       && f1.getColumnIndex() == f2.getColumnIndex()
-                       && f1.getSheet().getSheetName().equals(f2.getSheet().getSheetName());
+                && f1.getRowIndex() == f2.getRowIndex()
+                && f1.getColumnIndex() == f2.getColumnIndex()
+                && f1.getSheet().getSheetName().equals(f2.getSheet().getSheetName());
     }
 
     public static Cell backtraceCellBySimpleFormulaReference(Cell cell) {

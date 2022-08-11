@@ -6,7 +6,7 @@
 
     <groupId>io.github.codingspeedup</groupId>
     <artifactId>execdoc</artifactId>
-    <version>2022-06-16.14-SNAPSHOT</version>
+    <version>2022-08-11.20-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -63,7 +63,7 @@
         <plantuml.version>1.2021.10</plantuml.version>
         <poi.version>5.2.2</poi.version>
         <slf4j.version>1.7.36</slf4j.version>
-        <tika.version>2.4.0</tika.version>
+        <tika.version>2.4.1</tika.version>
         <thymeleaf.version>3.1.0.M2</thymeleaf.version>
         <tuprolog.version>0.20.4</tuprolog.version>
 
@@ -184,6 +184,12 @@
             <groupId>commons-beanutils</groupId>
             <artifactId>commons-beanutils</artifactId>
             <version>${commons-beanutils.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>commons-collections</artifactId>
+                    <groupId>commons-collections</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>

@@ -4,7 +4,9 @@ import io.github.codingspeedup.execdoc.toolbox.files.Folder;
 import lombok.SneakyThrows;
 
 import java.awt.*;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
+import java.net.URI;
 
 public class OsUtility {
 
@@ -30,8 +32,17 @@ public class OsUtility {
 
     @SneakyThrows
     public static void open(File path) {
-        Desktop dtop = Desktop.getDesktop();
-        dtop.open(path);
+        Desktop.getDesktop().open(path);
+    }
+
+    @SneakyThrows
+    public static void browse(String uri) {
+        Desktop.getDesktop().browse(new URI(uri));
+    }
+
+    public static void copyToSystemClipboard(String text) {
+        var clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+        clipboard.setContents(new StringSelection(text), null);
     }
 
 }

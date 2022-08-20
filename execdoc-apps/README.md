@@ -1,6 +1,4 @@
-# execdoc-apps
-
-Remark: *this is work in progress*.
+## execdoc-apps
 
 UI components for building [execdoc-core](https://github.com/codingspeedup/execdoc-core) based utilities.
 

@@ -1,5 +1,6 @@
 ### Plugins
 
+- [Maven Helper](https://plugins.jetbrains.com/plugin/7179-maven-helper)
 - [Mintlify Doc Writer](https://plugins.jetbrains.com/plugin/18606-mintlify-doc-writer)
 - [PlantUML Integration](https://plugins.jetbrains.com/plugin/7017-plantuml-integration/)
 
@@ -85,7 +86,6 @@
 
 
 ### Articles
-
 
 - [JHipster](https://www.jhipster.tech/)
     - [Creating an entity](https://www.jhipster.tech/creating-an-entity/)

@@ -1,10 +1,11 @@
-# execdoc
+## execdoc
 
 Experiments and lessons-learned -- more details [here](execdoc-core/README.md) and [here](execdoc-apps/README.md)
 
 ![Alt text](docs/readme/diagrams/dependencies.svg)
 
-Maven artifact location https://s01.oss.sonatype.org/#nexus-search;quick~execdoc
+Maven artifact location 
+- [SNAPSHOT](https://s01.oss.sonatype.org/#nexus-search;quick~execdoc)
 
 Maybe add in .m2/settings.xml
 

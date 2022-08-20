@@ -1,6 +1,6 @@
 # execdoc
 
-This is the consolidated version of the other *execdoc* projects
+Experiments and lessons-learned -- more details [here](execdoc-core/README.md) and [here](execdoc-apps/README.md)
 
 ![Alt text](docs/readme/diagrams/dependencies.svg)
 
@@ -29,6 +29,4 @@ Maybe add in .m2/settings.xml
        </profile>
     </profiles>
 
-IntelliJ plugins for documentation
-- [PlantUML Integration](https://plugins.jetbrains.com/plugin/7017-plantuml-integration/)
-- 
+

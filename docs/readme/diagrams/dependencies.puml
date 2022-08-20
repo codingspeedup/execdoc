@@ -2,8 +2,8 @@
 'https://plantuml.com/component-diagram
 
 [execdoc-kb] as ex_kb
-[execdoc-core] as ex_core [[execdoc-core/README.md]]
-[execdoc-apps] as ex_apps [[https://github.com/codingspeedup/execdoc-apps]]
+[execdoc-core] as ex_core
+[execdoc-apps] as ex_apps
 [execdoc-spring] as ex_spring
 [execdoc-jhipster] as ex_jhipster
 

@@ -1,12 +1,12 @@
 ## execdoc-apps
 
-UI components for building [execdoc-core](https://github.com/codingspeedup/execdoc-core) based utilities.
+UI components for building [execdoc-core](../execdoc-core/README.md) based utilities.
 
 Here is a PoC application demonstrating how a Java project source folder can be explored and visualized.
 
 It is intended to ease the understanding of a large project code base for the newcomers.
 
-After selecting a (group of) folders, the resources tree in the screenshot is
+After selecting a (group of) folders, the resources' tree in the screenshot is
 gradually build and cached in response to user actions.
 
 <img src="../docs/readme/images/code-miner.png" width="800" height="480">

@@ -4,8 +4,8 @@ This library provides core functionalities for developing various automation uti
 that can mine and generate both executable code and office documents.
 
 The idea came from the painful realization that managing all the pieces of information
-pertaining for a software development project is a laborious, time-consuming task and that
-little details can have a tremendous impact on the project cost and schedule.
+pertaining to a software development project is a laborious, time-consuming task and that
+overlooked details can have a significant impact on the project cost and schedule.
 
 The objective here is to build and maintain a "single source of truth" knowledge base that
 can be intuitively or even transparently used both by humans and computers in collaboration.
@@ -46,5 +46,5 @@ For now minimal mining functionalities are implemented for:
 
 For generation are provided:
 - Diff reports for files & folders
-- A basic code mining desktop application [execdoc-apps](https://github.com/codingspeedup/execdoc-apps)
-- A PoC for generating end-to-end enterprise applications via JDL [jhipster-execdoc-poc](https://github.com/codingspeedup/jhipster-execdoc-poc)
+- A basic code mining desktop application [execdoc-apps](../execdoc-apps/README.md)
+- A PoC for generating end-to-end enterprise applications via JDL [execdoc-jhipster](../execdoc-jhipster)

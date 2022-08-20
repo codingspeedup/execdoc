@@ -1,0 +1,15 @@
+@startuml
+'https://plantuml.com/component-diagram
+
+[execdoc-kb] as ex_kb
+[execdoc-core] as ex_core [[execdoc-core/README.md]]
+[execdoc-apps] as ex_apps [[https://github.com/codingspeedup/execdoc-apps]]
+[execdoc-spring] as ex_spring
+[execdoc-jhipster] as ex_jhipster
+
+ex_kb <-- ex_core
+ex_core <- ex_apps
+ex_apps <- ex_spring
+ex_spring <- ex_jhipster
+
+@enduml

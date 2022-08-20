@@ -1,6 +1,8 @@
 # execdoc
 
-- the consolidated version of the other /execdoc/ projects
+This is the consolidated version of the other *execdoc* projects
+
+![Alt text](docs/readme/diagrams/dependencies.svg)
 
 Maven artifact location https://s01.oss.sonatype.org/#nexus-search;quick~execdoc
 
@@ -26,3 +28,7 @@ Maybe add in .m2/settings.xml
          </repositories>
        </profile>
     </profiles>
+
+IntelliJ plugins for documentation
+- [PlantUML Integration](https://plugins.jetbrains.com/plugin/7017-plantuml-integration/)
+- 

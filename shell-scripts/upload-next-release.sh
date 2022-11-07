@@ -2,7 +2,8 @@ cd "${BASH_SOURCE:-$0:h:h}" || exit
 PROJECT_ROOT=$(pwd)
 echo Working in "$PROJECT_ROOT"
 
-VERSION=`mvn org.apache.maven.plugins:maven-help-plugin:2.1.1:evaluate -Dexpression=project.version | grep -v "^\["`
-mvn versions:set -DnewVersion=${VERSION//-SNAPSHOT/}
+VERSION="2022-11-01"
+echo Version is \`"${VERSION}"\'
+mvn versions:set -DnewVersion="${VERSION}"
 
-mvn clean source:jar javadoc:jar deploy # -Dmaven.test.skip=true
+mvn clean source:jar deploy # -Dmaven.test.skip=true

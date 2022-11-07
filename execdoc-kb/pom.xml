@@ -7,11 +7,11 @@
     <parent>
         <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
-        <version>2022-08-11.20-SNAPSHOT</version>
+        <version>2022-11-01</version>
     </parent>
 
     <artifactId>execdoc-kb</artifactId>
-    <version>2022-08-11.20-SNAPSHOT</version>
+    <version>2022-11-01</version>
     <packaging>jar</packaging>
 
     <name>execdoc-kb</name>

@@ -6,7 +6,7 @@
 
     <groupId>io.github.codingspeedup</groupId>
     <artifactId>execdoc</artifactId>
-    <version>2022-08-11.20-SNAPSHOT</version>
+    <version>2022-11-01</version>
 
     <packaging>pom</packaging>
 

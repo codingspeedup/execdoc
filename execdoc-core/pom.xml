@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>execdoc</artifactId>
         <groupId>io.github.codingspeedup</groupId>
+        <artifactId>execdoc</artifactId>
         <version>2022-11-01</version>
     </parent>
 
